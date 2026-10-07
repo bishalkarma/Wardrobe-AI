@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState, type FormEvent } from "react";
-import { Check, Heart, ImagePlus, Pencil, Plus, Search, Shirt, SlidersHorizontal, Trash2, X } from "lucide-react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { Camera, Check, Heart, ImagePlus, LoaderCircle, Pencil, Plus, Search, Shirt, SlidersHorizontal, Sparkles, Trash2, X } from "lucide-react";
 import { usePrototype } from "@/components/prototype-provider";
 import { Modal, PageHeading } from "@/components/ui";
 import { CATEGORIES, CATEGORY_IMAGE } from "@/lib/mock-data";
@@ -138,6 +138,25 @@ function AddItemForm({ onCancel, onSave, notify }: { onCancel: () => void; onSav
   const [name, setName] = useState("");
   const [category, setCategory] = useState<ClothingCategory>("Tops");
   const [color, setColor] = useState("");
+  const [photoSelected, setPhotoSelected] = useState(false);
+  const [analysisState, setAnalysisState] = useState<"idle" | "processing" | "reviewed">("idle");
+
+  useEffect(() => {
+    if (analysisState !== "processing") return;
+    const timer = window.setTimeout(() => {
+      setName("The linen shirt");
+      setCategory("Tops");
+      setColor("Ivory");
+      setAnalysisState("reviewed");
+    }, 1100);
+    return () => window.clearTimeout(timer);
+  }, [analysisState]);
+
+  function selectSamplePhoto(source: "camera" | "gallery") {
+    setPhotoSelected(true);
+    setAnalysisState("idle");
+    notify(`${source === "camera" ? "Camera" : "Gallery"} action previewed with a bundled sample image. Nothing was uploaded.`);
+  }
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -151,7 +170,7 @@ function AddItemForm({ onCancel, onSave, notify }: { onCancel: () => void; onSav
       season: ["All season"],
       formality: "Casual",
       occasions: ["Everyday"],
-      notes: "Added as a local prototype item.",
+      notes: analysisState === "reviewed" ? "Sample classification reviewed and edited by the user." : "Added as a local prototype item.",
       image: CATEGORY_IMAGE[category],
     });
   }
@@ -160,14 +179,28 @@ function AddItemForm({ onCancel, onSave, notify }: { onCancel: () => void; onSav
     <form className="add-item-form" onSubmit={submit}>
       <div className="mock-upload-panel">
         <div className="mock-upload-icon"><ImagePlus size={21} /></div>
-        <div><strong>Add a photo of your piece</strong><p>Keep the original. We’ll never silently replace it.</p></div>
-        <div className="mock-upload-actions"><button type="button" className="button button-light button-small" onClick={() => notify("Camera access is not connected in this prototype.")}>Take a photo</button><button type="button" className="button button-light button-small" onClick={() => notify("Gallery upload is not connected in this prototype.")}>Choose image</button></div>
-        <span className="mock-upload-tag">PHOTO UPLOAD · DEMO ONLY</span>
+        <div><strong>{photoSelected ? "Sample garment photo selected" : "Add a photo of your piece"}</strong><p>Original image stays separate from any future cleanup.</p></div>
+        <div className="mock-upload-actions"><button type="button" className="button button-light button-small" onClick={() => selectSamplePhoto("camera")}><Camera size={13} /> Take a photo</button><button type="button" className="button button-light button-small" onClick={() => selectSamplePhoto("gallery")}><ImagePlus size={13} /> Choose image</button></div>
+        <span className="mock-upload-tag">PHOTO CAPTURE · MOCK</span>
       </div>
+
+      {photoSelected && (
+        <div className="analysis-photo-preview">
+          <div className="analysis-photo-thumb"><Image src="/images/item-linen-shirt.jpg" alt="Bundled sample photo of an ivory linen shirt" fill sizes="52px" className="cover-image" /></div>
+          <span><strong>Ivory linen shirt · sample</strong><small>Original sample retained · no upload</small></span>
+          <span className="sample-photo-state"><Check size={12} /> READY</span>
+        </div>
+      )}
+
+      {analysisState === "processing" && <div className="analysis-status-row"><LoaderCircle size={16} className="spin-icon" /><span><strong>Reviewing the sample garment…</strong><small>Checking category, color, and visible details.</small></span></div>}
+      {analysisState === "reviewed" && <div className="analysis-suggestion-banner"><Sparkles size={15} /><span><strong>Sample suggestions are ready to review</strong><small>These are editable mock suggestions, not an AI result.</small></span><span className="suggestion-status"><Check size={12} /> REVIEW</span></div>}
+
       <div className="form-row"><label className="field-label">What is it called?<input className="text-input" value={name} onChange={(event) => setName(event.target.value)} placeholder="e.g. The Sunday shirt" required /></label><label className="field-label">Category<select className="text-input" value={category} onChange={(event) => setCategory(event.target.value as ClothingCategory)}>{CATEGORIES.filter((value) => value !== "All").map((value) => <option key={value}>{value}</option>)}</select></label></div>
       <label className="field-label">Main color<input className="text-input" value={color} onChange={(event) => setColor(event.target.value)} placeholder="e.g. Soft blue" /></label>
-      <p className="prototype-disclaimer">This adds a sample entry to this browser session only. No image is uploaded or saved.</p>
-      <div className="modal-action-row"><button className="button button-light" type="button" onClick={onCancel}>Cancel</button><button className="button button-dark" type="submit"><Plus size={16} /> Add to wardrobe</button></div>
+
+      <div className="analysis-actions-row"><button type="button" className="button button-light" disabled={!photoSelected || analysisState === "processing"} onClick={() => setAnalysisState("processing")}><Sparkles size={14} />{analysisState === "processing" ? "Reviewing…" : "Analyze sample photo"}</button><span>Mock processing · no AI provider connected</span></div>
+      <p className="prototype-disclaimer">Confirm or edit any suggestion before adding. This sample entry and image exist only in this browser session.</p>
+      <div className="modal-action-row"><button className="button button-light" type="button" onClick={onCancel}>Cancel</button><button className="button button-dark" type="submit" disabled={!photoSelected || !name.trim()}><Plus size={16} /> Add to wardrobe</button></div>
     </form>
   );
 }

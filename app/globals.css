@@ -325,6 +325,22 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .modal-action-row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 5px; }
 .prototype-disclaimer { display: flex; align-items: center; gap: 6px; margin: 2px 0 0; color: #898a80; font-size: 8px; line-height: 1.5; }
+.analysis-photo-preview { display: flex; align-items: center; gap: 9px; padding: 8px; border: 1px solid #e4e3da; background: #fbfaf6; }
+.analysis-photo-thumb { position: relative; width: 43px; height: 48px; flex: 0 0 auto; overflow: hidden; background: #eee9df; }
+.analysis-photo-preview > span:nth-child(2) { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.analysis-photo-preview strong, .analysis-photo-preview small { display: block; }
+.analysis-photo-preview strong { color: #57594e; font-size: 9px; font-weight: 650; }
+.analysis-photo-preview small { margin-top: 2px; color: #96958b; font-size: 8px; }
+.sample-photo-state { display: inline-flex; align-items: center; gap: 4px; color: #778168; font-size: 7px; font-weight: 700; letter-spacing: .08em; }
+.analysis-status-row, .analysis-suggestion-banner { display: flex; align-items: center; gap: 9px; padding: 10px; border: 1px solid #e1e3d8; background: #f0f2eb; color: #737b64; }
+.analysis-status-row > span, .analysis-suggestion-banner > span:first-of-type { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.analysis-status-row strong, .analysis-suggestion-banner strong { color: #5c614f; font-size: 9px; font-weight: 650; }
+.analysis-status-row small, .analysis-suggestion-banner small { margin-top: 2px; color: #8c8e83; font-size: 8px; }
+.analysis-suggestion-banner > svg { flex: 0 0 auto; }
+.suggestion-status { display: inline-flex; align-items: center; gap: 4px; color: #7c856d; font-size: 7px; font-weight: 700; letter-spacing: .08em; }
+.analysis-actions-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.analysis-actions-row > span { color: #96958a; font-size: 8px; }
+.analysis-actions-row .button { min-height: 36px; }
 
 /* AI Stylist */
 .stylist-screen { gap: 25px; }

@@ -10,7 +10,7 @@ The approved North Star is a user completing the full real-wardrobe journey: acc
 **Complete.** The initial repository contained only a title README. The approved architecture and open decisions are documented in `docs/`.
 
 ### Phase 1 — UI/UX prototype with mock data
-**Complete.** The full user-facing flow uses local fixtures: onboarding, profile-photo guidance, wardrobe CRUD interactions, AI Stylist conversation and sample recommendations, try-on loading/success/failure states, saved outfits, favorites/ratings, and profile/style preferences. There is no backend, authentication, real image upload, AI-provider call, or production credential.
+**Complete.** The full user-facing flow uses local fixtures: onboarding, profile-photo guidance, wardrobe CRUD interactions, simulated garment-photo analysis/loading and editable metadata suggestions, AI Stylist conversation and sample recommendations, try-on loading/success/failure states, saved outfits, favorites/ratings, and profile/style preferences. There is no backend, authentication, real image upload, AI-provider call, or production credential.
 
 The routes are navigable and responsive by design. `npm run typecheck`, `npm run build`, route smoke checks, and `npm audit` pass. The prototype is ready for product review; Phase 2 remains gated on separate approval.
 

@@ -24,7 +24,7 @@ A premium consumer fashion product: calm, editorial, practical, and personal. Le
 | `/welcome` | Brand welcome, “Your Clothes. Your Style.”, Get Started and sign-in/register placeholders. |
 | `/` | Home: personal welcome, profile-photo reminder when needed, wardrobe snapshot, stylist entry point, and outfit inspiration. |
 | `/profile/photo` | Add/take/upload affordances, full-body photo guidance, preview, replace and delete states. No real upload in Phase 1. |
-| `/wardrobe` | Search, category filters, garment cards, empty/loading examples, add action, and item detail/edit/delete interactions. |
+| `/wardrobe` | Search, category filters, garment cards, empty/loading examples, add action, and item detail/edit/delete interactions. The add flow simulates photo selection, analysis progress, and editable metadata suggestions using a bundled sample image. |
 | `/stylist` | Conversational mock chat, suggested prompts, sample response, and a structured outfit recommendation using mock item IDs. |
 | `/try-on` | Selected outfit, generation progress, success, failure, save/favorite/rating states. Generation is simulated only. |
 | `/outfits` | Saved outfits, favorites filter, outfit cards, and outfit details. |
