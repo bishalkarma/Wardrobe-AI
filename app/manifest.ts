@@ -1,0 +1,21 @@
+import type { MetadataRoute } from "next";
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: "Wardrobe AI — Your Clothes. Your Style.",
+    short_name: "Wardrobe AI",
+    description: "A personal wardrobe, thoughtfully styled.",
+    start_url: "/",
+    display: "standalone",
+    background_color: "#f7f5f0",
+    theme_color: "#f7f5f0",
+    icons: [
+      {
+        src: "/icon.svg",
+        sizes: "any",
+        type: "image/svg+xml",
+        purpose: "any",
+      },
+    ],
+  };
+}

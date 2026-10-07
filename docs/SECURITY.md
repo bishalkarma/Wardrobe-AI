@@ -1,6 +1,6 @@
 # Security and Privacy
 
-**Status:** Requirements approved; Phase 1 is mock-only and has no real user data.  
+**Status:** Requirements approved; Phase 1 is mock-only and has no real user data.
 **Last updated:** 2026-10-07
 
 ## Data classification
@@ -24,7 +24,7 @@ Provide deletion workflows for individual clothing items and their original/proc
 
 ## Phase 1 safeguards
 
-The current UI uses only local, illustrative mock data. There is no login, real file upload, remote image bucket, AI request, tracking SDK, secret, or persistent personal information. Mock “delete” and “save” controls only change prototype state; they are not represented as secure persisted operations.
+The current UI uses only local, illustrative mock data and generated editorial assets in the public static bundle. These images are not user media. There is no login, real file upload, remote image bucket, AI request, tracking SDK, secret, or persistent personal information. Mock “delete” and “save” controls only change in-memory prototype state; they are not represented as secure persisted operations.
 
 ## Pre-Phase-2 security checklist
 

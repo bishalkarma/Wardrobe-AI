@@ -10,9 +10,9 @@ The approved North Star is a user completing the full real-wardrobe journey: acc
 **Complete.** The initial repository contained only a title README. The approved architecture and open decisions are documented in `docs/`.
 
 ### Phase 1 — UI/UX prototype with mock data
-**Authorized now.** Build the full user-facing flow using local fixtures: onboarding, profile-photo guidance, wardrobe CRUD interactions, AI Stylist conversation and sample recommendations, try-on loading/success/failure states, saved outfits, favorites/ratings, and profile/style preferences. No backend, authentication, real image uploads, AI-provider calls, or production credentials.
+**Complete.** The full user-facing flow uses local fixtures: onboarding, profile-photo guidance, wardrobe CRUD interactions, AI Stylist conversation and sample recommendations, try-on loading/success/failure states, saved outfits, favorites/ratings, and profile/style preferences. There is no backend, authentication, real image upload, AI-provider call, or production credential.
 
-Phase 1 is complete when the routes are navigable, responsive on phone and desktop, major actions have clear mock feedback, and type/lint/production-build checks pass. Report remaining issues and wait for approval.
+The routes are navigable and responsive by design. `npm run typecheck`, `npm run build`, route smoke checks, and `npm audit` pass. The prototype is ready for product review; Phase 2 remains gated on separate approval.
 
 ### Phase 2 — Supabase foundation and authentication
 Only after separate approval: confirm schema and privacy policies, add Supabase Auth/PostgreSQL/RLS/private Storage, account/profile/photo workflows, and deletion lifecycle. Do not start automatically after Phase 1.

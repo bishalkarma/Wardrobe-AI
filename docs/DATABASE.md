@@ -1,6 +1,6 @@
 # Database
 
-**Status:** Approved platform direction; logical schema proposal only. No database or migrations are created in Phase 1.  
+**Status:** Approved platform direction; logical schema proposal only. No database or migrations are created in Phase 1.
 **Last updated:** 2026-10-07
 
 ## Platform and ownership model

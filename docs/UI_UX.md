@@ -1,6 +1,6 @@
 # UI/UX
 
-**Status:** Phase 1 prototype scope.  
+**Status:** Phase 1 prototype implemented; mock-only.
 **Last updated:** 2026-10-07
 
 ## Product feel
@@ -15,6 +15,7 @@ A premium consumer fashion product: calm, editorial, practical, and personal. Le
 - Preserve image aspect ratios and use consistent editorial crops. Provide useful alt text and avoid layout shifts.
 - Respect reduced-motion preferences; animations should be brief and status-oriented.
 - Use semantic controls, visible focus, keyboard access, labelled dialogs, and accessible contrast.
+- The PWA foundation includes a web manifest, app icon, theme color, and viewport-fit configuration. Offline caching/service-worker behavior is deferred.
 
 ## Screen and route map
 

@@ -1,6 +1,6 @@
 # AI Architecture
 
-**Status:** Provider-neutral design approved; Phase 1 uses local mock data only.  
+**Status:** Provider-neutral design approved; Phase 1 uses local mock data only.
 **Last updated:** 2026-10-07
 
 ## Non-negotiable boundary
@@ -64,4 +64,4 @@ Define pass thresholds before evaluating providers with product stakeholders. If
 
 ## Phase 1 boundary
 
-All chat messages, classifications, outfit IDs, loading/success/failure states, and try-on previews in the prototype are local mock fixtures. No real AI requests, provider credentials, or user images are involved. Nano Banana may be included in a future candidate evaluation; it is not selected by this document.
+All chat messages, classifications, outfit IDs, loading/success/failure states, and try-on previews in the prototype are local mock fixtures. Local generated fashion editorial images are illustrative public assets and are not user uploads or results from a try-on API. No real AI requests, provider credentials, or user images are involved. Nano Banana may be included in a future candidate evaluation; it is not selected by this document.

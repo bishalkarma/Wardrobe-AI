@@ -1,6 +1,6 @@
 # Architecture
 
-**Status:** Approved direction; Phase 1 prototype in progress.  
+**Status:** Approved direction; Phase 1 prototype in progress.
 **Last updated:** 2026-10-07
 
 ## Approved principles
@@ -34,7 +34,7 @@ The UI is a client of the application API, not a client of AI vendors. A future 
 
 ## Phase 1 implementation boundary
 
-The prototype uses Next.js App Router, React, TypeScript, custom CSS, and local mock data. It has no database, authentication, API handlers, real upload, provider SDK, AI key, or persistent server state. Local interactions demonstrate the intended experience and may reset on refresh. A simulated generation state is not a real AI result.
+The prototype uses Next.js App Router 16.4.0, React 19.3.0, TypeScript 5.9.3, custom CSS, Lucide icons, and local mock data. It has no database, authentication, API handlers, real upload, provider SDK, AI key, or persistent server state. Local interactions demonstrate the intended experience and reset on refresh. Local generated editorial assets are illustrative public demo content only; they are not user uploads or real try-on results. A simulated generation state is not a real AI result.
 
 ## Future module responsibilities
 

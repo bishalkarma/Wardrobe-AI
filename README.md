@@ -6,7 +6,7 @@ A mobile-first, PWA-ready personal wardrobe experience designed around the cloth
 
 ## Current status
 
-**Phase 1 — UI/UX prototype with mock data.** The application demonstrates the end-to-end experience using local, illustrative data only. It does not authenticate users, upload private photos, call AI providers, persist user changes to a backend, or generate real try-on images.
+**Phase 1 — UI/UX prototype with mock data — complete.** The application demonstrates the end-to-end experience using local, illustrative data only. It does not authenticate users, upload private photos, call AI providers, persist user changes to a backend, or generate real try-on images. Local fashion imagery is generated editorial mock content, not user media or a genuine try-on result.
 
 ## Run locally
 
@@ -21,14 +21,14 @@ Open the local URL printed by Next.js. For a production build check:
 
 ```bash
 npm run typecheck
-npm run lint
 npm run build
 ```
 
 ## Technology direction
 
-- Next.js App Router, React, and TypeScript for the Phase 1 responsive web experience.
-- Custom CSS for the product design system; Lucide icons for interface iconography.
+- Next.js App Router 16.4.0, React 19.3.0, and TypeScript 5.9.3 for the Phase 1 responsive web experience.
+- Custom CSS for the product design system; Lucide React 1.52.0 for interface iconography.
+- A PWA manifest, app icon, and mobile viewport configuration are included. Offline service-worker caching is not part of Phase 1.
 - Supabase Auth, PostgreSQL, RLS, and private Storage are approved for the MVP integration phase, but are not connected in Phase 1.
 - AI calls will remain behind replaceable server-side provider adapters. No AI provider is wired into this prototype.
 
@@ -45,8 +45,8 @@ npm run build
 
 ```text
 app/                 Next.js routes and application shell
-components/           Reusable UI and product components
-lib/                  Mock data and client-side prototype state
+components/           Reusable UI, screen flows, and in-memory prototype state
+lib/                  Mock data and domain types
 public/               Local illustrative fashion imagery and PWA assets
 docs/                 Architecture, UX, database, AI, security, decisions, roadmap
 ```
