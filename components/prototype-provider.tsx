@@ -14,6 +14,13 @@ import { INITIAL_FAVORITE_OUTFIT_IDS, INITIAL_SAVED_OUTFIT_IDS, MOCK_OUTFITS, MO
 import type { Outfit, WardrobeItem } from "@/lib/types";
 
 type NewWardrobeItem = Omit<WardrobeItem, "id" | "favorite" | "addedAt">;
+type StylePreferences = { style: string; colorPalette: string; fit: string };
+
+const DEFAULT_STYLE_PREFERENCES: StylePreferences = {
+  style: "Clean classic",
+  colorPalette: "Warm neutrals",
+  fit: "Relaxed",
+};
 
 type PrototypeState = {
   items: WardrobeItem[];
@@ -22,7 +29,9 @@ type PrototypeState = {
   ratings: Record<string, number>;
   samplePhoto: boolean;
   selectedOutfitId: string;
+  stylePreferences: StylePreferences;
   notify: (message: string) => void;
+  saveStylePreferences: (preferences: StylePreferences) => void;
   addItem: (item: NewWardrobeItem) => void;
   updateItem: (id: string, patch: Partial<WardrobeItem>) => void;
   deleteItem: (id: string) => void;
@@ -43,6 +52,7 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
   const [favoriteOutfitIds, setFavoriteOutfitIds] = useState(INITIAL_FAVORITE_OUTFIT_IDS);
   const [ratings, setRatings] = useState<Record<string, number>>({ "look-business": 4 });
   const [samplePhoto, setSamplePhoto] = useState(false);
+  const [stylePreferences, setStylePreferences] = useState(DEFAULT_STYLE_PREFERENCES);
   const [selectedOutfitId, setSelectedOutfitId] = useState("look-business");
   const [toast, setToast] = useState("");
   const toastTimer = useRef<number | null>(null);
@@ -106,6 +116,11 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
     notify("Thanks — your rating is saved for this demo.");
   }, [notify]);
 
+  const saveStylePreferences = useCallback((preferences: StylePreferences) => {
+    setStylePreferences(preferences);
+    notify("Preferences saved in demo memory; refreshing resets them.");
+  }, [notify]);
+
   const savedOutfits = useMemo(
     () => MOCK_OUTFITS.filter((outfit) => savedIds.includes(outfit.id)),
     [savedIds],
@@ -118,7 +133,9 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
     ratings,
     samplePhoto,
     selectedOutfitId,
+    stylePreferences,
     notify,
+    saveStylePreferences,
     addItem,
     updateItem,
     deleteItem,

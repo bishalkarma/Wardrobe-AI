@@ -55,7 +55,7 @@ export function ProfilePhotoScreen() {
       <div className="onboarding-footer">
         <Link href="/" className="text-link">Skip for now</Link>
         <div className="photo-actions">
-          {samplePhoto && <button className="button button-quiet" type="button" onClick={() => notify("Choose photo is a prototype placeholder.")}><RefreshCw size={15} /> Replace</button>}
+          {samplePhoto && <button className="button button-quiet" type="button" onClick={() => { setSamplePhoto(false); notify("Sample photo cleared. Choose a photo or preview the sample again."); }}><RefreshCw size={15} /> Replace</button>}
           {samplePhoto && <button className="button button-quiet danger-text" type="button" onClick={() => { setSamplePhoto(false); notify("Sample photo removed from this demo."); }}><Trash2 size={15} /> Remove</button>}
           <Link href="/wardrobe" className="button button-dark">{samplePhoto ? "Continue" : "Continue without photo"} <ArrowRight size={16} /></Link>
         </div>

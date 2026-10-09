@@ -37,7 +37,7 @@ export function OutfitsScreen() {
       ) : (
         <div className="empty-state outfits-empty"><span className="empty-state-icon"><Heart size={22} /></span><h2>{filter === "Favorites" ? "No favorites just yet" : "Your saved looks will be here"}</h2><p>When a look feels like you, save it here for another day.</p><Link className="button button-dark" href="/stylist">Ask your stylist <ArrowUpRight size={15} /></Link></div>
       )}
-      <p className="saved-looks-note"><span /> Sample outfits are built from your mock wardrobe. Saved changes stay in this browser session only.</p>
+      <p className="saved-looks-note"><span /> Sample outfits are built from your mock wardrobe. Changes stay in demo memory until you refresh.</p>
     </div>
   );
 }

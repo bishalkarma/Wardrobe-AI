@@ -10,10 +10,10 @@ const styleOptions = ["Clean classic", "Soft tailoring", "Relaxed minimal", "A l
 const colorOptions = ["Warm neutrals", "Earthy greens", "Deep tones", "Soft color"];
 
 export function ProfileScreen() {
-  const { items, samplePhoto, notify } = usePrototype();
-  const [selectedStyle, setSelectedStyle] = useState("Clean classic");
-  const [selectedColor, setSelectedColor] = useState("Warm neutrals");
-  const [fit, setFit] = useState("Relaxed");
+  const { items, samplePhoto, notify, stylePreferences, saveStylePreferences } = usePrototype();
+  const [selectedStyle, setSelectedStyle] = useState(stylePreferences.style);
+  const [selectedColor, setSelectedColor] = useState(stylePreferences.colorPalette);
+  const [fit, setFit] = useState(stylePreferences.fit);
   const [showSettings, setShowSettings] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showSignOut, setShowSignOut] = useState(false);
@@ -29,7 +29,7 @@ export function ProfileScreen() {
       </section>
 
       <section className="preferences-section">
-        <div className="section-heading-row"><div><p className="eyebrow">A FEW PREFERENCES</p><h2>Your style, your way</h2></div><button type="button" className="text-link" onClick={() => notify("Preferences are only saved for this demo session.")}>Save changes <Check size={15} /></button></div>
+        <div className="section-heading-row"><div><p className="eyebrow">A FEW PREFERENCES</p><h2>Your style, your way</h2></div><button type="button" className="text-link" onClick={() => saveStylePreferences({ style: selectedStyle, colorPalette: selectedColor, fit })}>Save changes <Check size={15} /></button></div>
         <div className="preferences-grid">
           <div className="preference-card"><div className="preference-card-heading"><span className="preference-icon"><Palette size={17} /></span><span><strong>Your style</strong><small>What feels most like you?</small></span></div><div className="preference-options">{styleOptions.map((option) => <button type="button" className={`preference-chip${selectedStyle === option ? " is-selected" : ""}`} key={option} aria-pressed={selectedStyle === option} onClick={() => setSelectedStyle(option)}>{selectedStyle === option && <Check size={12} />}{option}</button>)}</div></div>
           <div className="preference-card"><div className="preference-card-heading"><span className="preference-icon"><Sparkles size={17} /></span><span><strong>Colors you reach for</strong><small>We’ll keep your palette in mind.</small></span></div><div className="preference-options">{colorOptions.map((option) => <button type="button" className={`preference-chip${selectedColor === option ? " is-selected" : ""}`} key={option} aria-pressed={selectedColor === option} onClick={() => setSelectedColor(option)}>{selectedColor === option && <Check size={12} />}{option}</button>)}</div></div>

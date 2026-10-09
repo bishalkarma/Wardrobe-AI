@@ -199,7 +199,7 @@ function AddItemForm({ onCancel, onSave, notify }: { onCancel: () => void; onSav
       <label className="field-label">Main color<input className="text-input" value={color} onChange={(event) => setColor(event.target.value)} placeholder="e.g. Soft blue" /></label>
 
       <div className="analysis-actions-row"><button type="button" className="button button-light" disabled={!photoSelected || analysisState === "processing"} onClick={() => setAnalysisState("processing")}><Sparkles size={14} />{analysisState === "processing" ? "Reviewing…" : "Analyze sample photo"}</button><span>Mock processing · no AI provider connected</span></div>
-      <p className="prototype-disclaimer">Confirm or edit any suggestion before adding. This sample entry and image exist only in this browser session.</p>
+      <p className="prototype-disclaimer">Confirm or edit any suggestion before adding. The entry uses a bundled image and stays in demo memory until you refresh.</p>
       <div className="modal-action-row"><button className="button button-light" type="button" onClick={onCancel}>Cancel</button><button className="button button-dark" type="submit" disabled={!photoSelected || !name.trim()}><Plus size={16} /> Add to wardrobe</button></div>
     </form>
   );
