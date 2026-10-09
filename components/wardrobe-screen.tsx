@@ -15,7 +15,7 @@ function WardrobeCard({ item, onOpen, onFavorite }: { item: WardrobeItem; onOpen
         <Image src={item.image} alt={item.name} fill sizes="(max-width: 680px) 48vw, (max-width: 1100px) 30vw, 260px" className="cover-image" />
         <span className="item-category-tag">{item.category}</span>
       </button>
-      <button className={`item-favorite${item.favorite ? " is-favorite" : ""}`} type="button" onClick={onFavorite} aria-label={item.favorite ? `Remove ${item.name} from favorites` : `Add ${item.name} to favorites`} aria-pressed={item.favorite}>
+      <button className={`item-favorite${item.favorite ? " is-favorite" : ""}`} type="button" onClick={onFavorite} aria-label={item.favorite ? `Remove ${item.name} from demo favorites` : `Add ${item.name} to demo favorites`} aria-pressed={item.favorite}>
         <Heart size={17} fill={item.favorite ? "currentColor" : "none"} strokeWidth={1.7} />
       </button>
       <button className="item-card-copy" type="button" onClick={onOpen}>
@@ -79,7 +79,7 @@ export function WardrobeScreen() {
         <div className="empty-state"><span className="empty-state-icon"><Shirt size={23} /></span><h2>No pieces found</h2><p>Try a different search or category, or add something new.</p><button type="button" className="button button-outline" onClick={() => { setQuery(""); setCategory("All"); }}>Clear filters</button></div>
       )}
 
-      <div className="wardrobe-note"><span className="note-check"><Check size={14} /></span><span>AI suggestions are just a starting point. You’re always in control of what a piece is called.</span></div>
+      <div className="wardrobe-note"><span className="note-check"><Check size={14} /></span><span>AI suggestions are just a starting point; you’re in control of each piece. Wardrobe changes stay in temporary demo memory and reset on refresh.</span></div>
 
       <Modal open={Boolean(selected) && !editMode} onClose={closeDetails} title={selected?.name ?? "Clothing details"} size="wide">
         {selected && (
@@ -94,7 +94,7 @@ export function WardrobeScreen() {
               {selected.notes && <p className="detail-note">“{selected.notes}”</p>}
               <p className="ai-suggestion-note"><span className="ai-suggestion-dot" /> Metadata is editable. This sample was reviewed by its owner.</p>
               <div className="detail-actions"><button className="button button-dark" type="button" onClick={() => setEditMode(true)}><Pencil size={15} /> Edit details</button><button className="button button-quiet danger-text" type="button" onClick={() => setDeleteConfirm(true)}><Trash2 size={15} /> Delete</button></div>
-              {deleteConfirm && <div className="delete-confirm"><span><strong>Remove this piece?</strong><small>This only changes the local demo wardrobe.</small></span><div><button type="button" className="button button-quiet" onClick={() => setDeleteConfirm(false)}>Keep it</button><button type="button" className="button button-danger" onClick={() => { deleteItem(selected.id); closeDetails(); }}>Remove</button></div></div>}
+              {deleteConfirm && <div className="delete-confirm"><span><strong>Remove this piece from the demo?</strong><small>This changes temporary demo memory only. Refreshing restores the original sample wardrobe.</small></span><div><button type="button" className="button button-quiet" onClick={() => setDeleteConfirm(false)}>Keep it</button><button type="button" className="button button-danger" onClick={() => { deleteItem(selected.id); closeDetails(); }}>Remove</button></div></div>}
             </div>
           </div>
         )}
@@ -129,7 +129,8 @@ function EditItemForm({ item, onCancel, onSave }: { item: WardrobeItem; onCancel
       <div className="form-row"><label className="field-label">Category<select className="text-input" value={category} onChange={(event) => setCategory(event.target.value as ClothingCategory)}>{CATEGORIES.filter((value) => value !== "All").map((value) => <option key={value}>{value}</option>)}</select></label><label className="field-label">Color<input className="text-input" value={color} onChange={(event) => setColor(event.target.value)} /></label></div>
       <label className="field-label">Material<input className="text-input" value={material} onChange={(event) => setMaterial(event.target.value)} /></label>
       <label className="field-label">Your notes<textarea className="text-input text-area" value={notes} onChange={(event) => setNotes(event.target.value)} placeholder="Anything you want to remember about it?" rows={3} /></label>
-      <div className="modal-action-row"><button className="button button-light" type="button" onClick={onCancel}>Cancel</button><button className="button button-dark" type="submit"><Check size={15} /> Save changes</button></div>
+      <p className="prototype-disclaimer">Edits stay in temporary demo memory and reset on refresh.</p>
+      <div className="modal-action-row"><button className="button button-light" type="button" onClick={onCancel}>Cancel</button><button className="button button-dark" type="submit"><Check size={15} /> Apply changes</button></div>
     </form>
   );
 }
@@ -138,7 +139,7 @@ function AddItemForm({ onCancel, onSave, notify }: { onCancel: () => void; onSav
   const [name, setName] = useState("");
   const [category, setCategory] = useState<ClothingCategory>("Tops");
   const [color, setColor] = useState("");
-  const [photoSelected, setPhotoSelected] = useState(false);
+  const [sampleSelected, setSampleSelected] = useState(false);
   const [analysisState, setAnalysisState] = useState<"idle" | "processing" | "reviewed">("idle");
 
   useEffect(() => {
@@ -152,10 +153,18 @@ function AddItemForm({ onCancel, onSave, notify }: { onCancel: () => void; onSav
     return () => window.clearTimeout(timer);
   }, [analysisState]);
 
-  function selectSamplePhoto(source: "camera" | "gallery") {
-    setPhotoSelected(true);
+  function previewBundledSample() {
+    setSampleSelected(true);
     setAnalysisState("idle");
-    notify(`${source === "camera" ? "Camera" : "Gallery"} action previewed with a bundled sample image. Nothing was uploaded.`);
+    notify("Bundled sample preview selected. No personal photo was selected or uploaded.");
+  }
+
+  function showCameraUnavailable() {
+    notify("Camera capture is unavailable in this prototype. No personal photo was taken or uploaded.");
+  }
+
+  function showPhotoPickerUnavailable() {
+    notify("Selecting a personal photo is unavailable in this prototype. No personal photo was selected or uploaded.");
   }
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -179,16 +188,20 @@ function AddItemForm({ onCancel, onSave, notify }: { onCancel: () => void; onSav
     <form className="add-item-form" onSubmit={submit}>
       <div className="mock-upload-panel">
         <div className="mock-upload-icon"><ImagePlus size={21} /></div>
-        <div><strong>{photoSelected ? "Sample garment photo selected" : "Add a photo of your piece"}</strong><p>Original image stays separate from any future cleanup.</p></div>
-        <div className="mock-upload-actions"><button type="button" className="button button-light button-small" onClick={() => selectSamplePhoto("camera")}><Camera size={13} /> Take a photo</button><button type="button" className="button button-light button-small" onClick={() => selectSamplePhoto("gallery")}><ImagePlus size={13} /> Choose image</button></div>
-        <span className="mock-upload-tag">PHOTO CAPTURE · MOCK</span>
+        <div><strong>{sampleSelected ? "Bundled sample selected" : "No personal photo selected"}</strong><p>Camera capture, personal photo selection, and uploads are unavailable. Only the bundled sample can be previewed.</p></div>
+        <div className="mock-upload-actions">
+          <button type="button" className="button button-light button-small" onClick={showCameraUnavailable}><Camera size={13} /> Camera unavailable</button>
+          <button type="button" className="button button-light button-small" onClick={showPhotoPickerUnavailable}><ImagePlus size={13} /> Photo picker unavailable</button>
+          <button type="button" className="button button-light button-small" onClick={previewBundledSample}><ImagePlus size={13} /> Preview bundled sample</button>
+        </div>
+        <span className="mock-upload-tag">BUNDLED SAMPLE · MOCK</span>
       </div>
 
-      {photoSelected && (
+      {sampleSelected && (
         <div className="analysis-photo-preview">
-          <div className="analysis-photo-thumb"><Image src="/images/item-linen-shirt.jpg" alt="Bundled sample photo of an ivory linen shirt" fill sizes="52px" className="cover-image" /></div>
-          <span><strong>Ivory linen shirt · sample</strong><small>Original sample retained · no upload</small></span>
-          <span className="sample-photo-state"><Check size={12} /> READY</span>
+          <div className="analysis-photo-thumb"><Image src="/images/item-linen-shirt.jpg" alt="Bundled sample preview of an ivory linen shirt, not a user photo" fill sizes="52px" className="cover-image" /></div>
+          <span><strong>Bundled ivory linen shirt · sample</strong><small>Bundled sample only; no personal photo was selected or uploaded.</small></span>
+          <span className="sample-photo-state"><Check size={12} /> SAMPLE PREVIEW</span>
         </div>
       )}
 
@@ -198,9 +211,9 @@ function AddItemForm({ onCancel, onSave, notify }: { onCancel: () => void; onSav
       <div className="form-row"><label className="field-label">What is it called?<input className="text-input" value={name} onChange={(event) => setName(event.target.value)} placeholder="e.g. The Sunday shirt" required /></label><label className="field-label">Category<select className="text-input" value={category} onChange={(event) => setCategory(event.target.value as ClothingCategory)}>{CATEGORIES.filter((value) => value !== "All").map((value) => <option key={value}>{value}</option>)}</select></label></div>
       <label className="field-label">Main color<input className="text-input" value={color} onChange={(event) => setColor(event.target.value)} placeholder="e.g. Soft blue" /></label>
 
-      <div className="analysis-actions-row"><button type="button" className="button button-light" disabled={!photoSelected || analysisState === "processing"} onClick={() => setAnalysisState("processing")}><Sparkles size={14} />{analysisState === "processing" ? "Reviewing…" : "Analyze sample photo"}</button><span>Mock processing · no AI provider connected</span></div>
-      <p className="prototype-disclaimer">Confirm or edit any suggestion before adding. The entry uses a bundled image and stays in demo memory until you refresh.</p>
-      <div className="modal-action-row"><button className="button button-light" type="button" onClick={onCancel}>Cancel</button><button className="button button-dark" type="submit" disabled={!photoSelected || !name.trim()}><Plus size={16} /> Add to wardrobe</button></div>
+      <div className="analysis-actions-row"><button type="button" className="button button-light" disabled={!sampleSelected || analysisState === "processing"} onClick={() => setAnalysisState("processing")}><Sparkles size={14} />{analysisState === "processing" ? "Reviewing…" : "Analyze sample photo"}</button><span>Mock processing · no AI provider connected</span></div>
+      <p className="prototype-disclaimer">Confirm or edit the mock suggestions. This entry uses a bundled sample image and temporary demo memory; refreshing restores the original wardrobe.</p>
+      <div className="modal-action-row"><button className="button button-light" type="button" onClick={onCancel}>Cancel</button><button className="button button-dark" type="submit" disabled={!sampleSelected || !name.trim()}><Plus size={16} /> Add to wardrobe</button></div>
     </form>
   );
 }

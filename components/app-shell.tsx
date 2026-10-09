@@ -45,7 +45,7 @@ const routeLabels: Record<string, string> = {
   "/stylist": "A little inspiration, just for you",
   "/try-on": "See the look come together",
   "/profile": "Your style, your settings",
-  "/profile/photo": "Your photo, always yours",
+  "/profile/photo": "Photo preview · demo only",
 };
 
 export function AppShell({ children }: { children: ReactNode }) {

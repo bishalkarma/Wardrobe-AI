@@ -15,27 +15,27 @@ export function ProfilePhotoScreen() {
       <div className="onboarding-heading">
         <p className="eyebrow">STEP 01 <i /> MAKE IT YOURS</p>
         <h1>First, let’s meet <em>you.</em></h1>
-        <p className="page-subtitle">A full-body photo helps us show how your own wardrobe might come together on you.</p>
+        <p className="page-subtitle">A full-body photo could personalize previews. Real photo selection and uploads are unavailable in this prototype; you can preview a bundled sample instead.</p>
       </div>
 
       <div className="photo-setup-grid">
         <section className={`photo-dropzone${samplePhoto ? " has-photo" : ""}`}>
           {samplePhoto ? (
             <>
-              <Image src="/images/mock-outfit-editorial.jpg" alt="Sample photo preview for the demo" fill sizes="(max-width: 760px) 100vw, 440px" className="cover-image" />
-              <div className="photo-preview-overlay"><span className="sample-photo-tag"><span /> Sample photo · demo only</span><span className="photo-ready-check"><Check size={15} /> Looking good</span></div>
+              <Image src="/images/mock-outfit-editorial.jpg" alt="Bundled illustrative sample shown as a demo preview, not a personal photo" fill sizes="(max-width: 760px) 100vw, 440px" className="cover-image" />
+              <div className="photo-preview-overlay"><span className="sample-photo-tag"><span /> Bundled sample · demo preview</span><span className="photo-ready-check"><Check size={15} /> Preview ready</span></div>
             </>
           ) : (
             <>
               <div className="photo-placeholder-mark"><UserRound size={37} strokeWidth={1.2} /></div>
-              <span className="photo-drop-label">YOUR PHOTO, YOUR CHOICE</span>
+              <span className="photo-drop-label">SAMPLE PREVIEW · DEMO ONLY</span>
               <h2>A little more you.</h2>
-              <p>Add a photo to preview your outfits. It can always be replaced or removed.</p>
+              <p>Personal photos cannot be selected or uploaded here. Preview the bundled sample to see this demo state.</p>
               <div className="photo-choice-row">
-                <button type="button" className="button button-dark" onClick={() => notify("Camera access is not connected in this prototype.")}><Camera size={16} /> Take a photo</button>
-                <button type="button" className="button button-light" onClick={() => notify("Gallery upload is not connected in this prototype.")}><ImagePlus size={16} /> Choose photo</button>
+                <button type="button" className="button button-light" onClick={() => notify("Camera capture is unavailable in this prototype. No photo was taken or uploaded.")}><Camera size={16} /> Camera unavailable</button>
+                <button type="button" className="button button-light" onClick={() => notify("Selecting a personal photo and uploading it are unavailable in this prototype. Nothing was selected or uploaded.")}><ImagePlus size={16} /> Photo picker unavailable</button>
               </div>
-              <button className="sample-photo-action" type="button" onClick={() => setSamplePhoto(true)}>Preview with a sample photo</button>
+              <button className="sample-photo-action" type="button" onClick={() => { setSamplePhoto(true); notify("Bundled sample preview selected. No personal photo was selected or uploaded."); }}>Preview bundled sample</button>
             </>
           )}
         </section>
@@ -48,16 +48,16 @@ export function ProfilePhotoScreen() {
             <li><span className="guidance-check"><Check size={13} /></span><span><strong>Good, natural light</strong><small>A bright room makes details easier to see.</small></span></li>
             <li><span className="guidance-check"><Check size={13} /></span><span><strong>Just you in the frame</strong><small>A clear, simple background works best.</small></span></li>
           </ul>
-          <div className="privacy-note"><LockKeyhole size={15} /><span>Your photo is private. This demo does not upload or store images.</span></div>
+          <div className="privacy-note"><LockKeyhole size={15} /><span>Only a bundled sample preview is available. No personal image is captured, selected, uploaded, or stored.</span></div>
         </aside>
       </div>
 
       <div className="onboarding-footer">
         <Link href="/" className="text-link">Skip for now</Link>
         <div className="photo-actions">
-          {samplePhoto && <button className="button button-quiet" type="button" onClick={() => { setSamplePhoto(false); notify("Sample photo cleared. Choose a photo or preview the sample again."); }}><RefreshCw size={15} /> Replace</button>}
-          {samplePhoto && <button className="button button-quiet danger-text" type="button" onClick={() => { setSamplePhoto(false); notify("Sample photo removed from this demo."); }}><Trash2 size={15} /> Remove</button>}
-          <Link href="/wardrobe" className="button button-dark">{samplePhoto ? "Continue" : "Continue without photo"} <ArrowRight size={16} /></Link>
+          {samplePhoto && <button className="button button-quiet" type="button" onClick={() => { setSamplePhoto(false); notify("Bundled sample preview cleared. Personal photos cannot be added in this prototype."); }}><RefreshCw size={15} /> Replace</button>}
+          {samplePhoto && <button className="button button-quiet danger-text" type="button" onClick={() => { setSamplePhoto(false); notify("Bundled sample preview removed. No personal image was stored."); }}><Trash2 size={15} /> Remove</button>}
+          <Link href="/wardrobe" className="button button-dark">{samplePhoto ? "Continue with sample preview" : "Continue without photo"} <ArrowRight size={16} /></Link>
         </div>
       </div>
     </div>

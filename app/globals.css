@@ -221,6 +221,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .photo-dropzone h2 { margin: 9px 0 0; font-family: var(--serif); font-size: 29px; font-weight: 400; letter-spacing: -.035em; }
 .photo-dropzone > p { max-width: 310px; margin: 9px auto 18px; color: #797a70; font-size: 11px; line-height: 1.6; }
 .photo-choice-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.photo-choice-row .button { white-space: normal; text-align: center; }
 .sample-photo-action { margin-top: 14px; padding: 4px; color: #777a6d; border: 0; background: transparent; cursor: pointer; font-size: 9px; text-decoration: underline; text-underline-offset: 3px; }
 .photo-preview-overlay { position: absolute; inset: 15px; display: flex; align-items: flex-start; justify-content: space-between; }
 .sample-photo-tag, .photo-ready-check { display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; color: white; border: 1px solid rgba(255,255,255,.3); border-radius: 30px; background: rgba(40,41,35,.37); backdrop-filter: blur(8px); font-size: 9px; }
@@ -261,9 +262,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .category-chip.is-selected span { color: rgba(255,255,255,.73); }
 .wardrobe-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 22px 15px; }
 .item-card { position: relative; min-width: 0; }
-.item-card-image { position: relative; display: block; width: 100%; padding: 0; aspect-ratio: 4 / 4.75; overflow: hidden; border: 0; background: #ebe7dc; cursor: pointer; text-align: left; }
-.item-card-image .cover-image { transition: transform .4s cubic-bezier(.2,.8,.2,1); }
-.item-card:hover .cover-image { transform: scale(1.035); }
+.item-card-image { position: relative; display: block; width: 100%; padding: 0; aspect-ratio: 29 / 36; overflow: hidden; border: 0; background: #ebe7dc; cursor: pointer; text-align: left; }
+.item-card-image .cover-image { object-fit: contain; object-position: center; }
 .item-category-tag { position: absolute; z-index: 1; left: 9px; bottom: 9px; display: inline-flex; align-items: center; padding: 5px 8px; color: #626459; border: 1px solid rgba(255,255,255,.6); border-radius: 3px; background: rgba(255,254,250,.82); backdrop-filter: blur(9px); font-size: 8px; font-weight: 650; }
 .static-tag { position: static; border-color: #e5e3da; background: #f7f6f0; }
 .item-favorite { position: absolute; z-index: 2; top: 9px; right: 9px; display: grid; place-items: center; width: 31px; height: 31px; color: #77776e; border: 1px solid rgba(255,255,255,.62); border-radius: 50%; background: rgba(255,254,250,.78); backdrop-filter: blur(7px); cursor: pointer; transition: color .16s ease, transform .16s ease; }
@@ -285,7 +285,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .empty-state h2 { margin: 0; font-family: var(--serif); font-size: 24px; font-weight: 400; }
 .empty-state p { max-width: 330px; margin: 8px 0 17px; color: #828278; font-size: 11px; }
 .item-detail-layout { display: grid; grid-template-columns: minmax(230px, .8fr) minmax(280px, 1.2fr); gap: 24px; padding-bottom: 4px; }
-.item-detail-photo { position: relative; min-height: 390px; overflow: hidden; background: #e7e2d7; }
+.item-detail-photo { position: relative; align-self: start; width: 100%; aspect-ratio: 29 / 36; max-height: min(72vh, 560px); min-height: 0; overflow: hidden; background: #e7e2d7; }
+.item-detail-photo .cover-image { object-fit: contain; object-position: center; }
 .item-detail-info { display: flex; flex-direction: column; align-items: flex-start; }
 .detail-topline { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 9px; }
 .detail-added { color: #a09f95; font-size: 9px; }
@@ -314,7 +315,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .mock-upload-panel > div:nth-child(2) { flex: 1; }
 .mock-upload-panel strong { font-size: 10px; }
 .mock-upload-panel p { margin: 3px 0 0; color: #8a8a80; font-size: 8px; }
-.mock-upload-actions { display: flex; gap: 5px; }
+.mock-upload-actions { display: flex; flex-wrap: wrap; gap: 5px; }
 .mock-upload-tag { position: absolute; right: 9px; top: -7px; padding: 2px 5px; color: #929288; background: #f5f4ee; font-size: 7px; font-weight: 700; letter-spacing: .1em; }
 .field-label { display: flex; flex-direction: column; gap: 6px; color: #55564e; font-size: 9px; font-weight: 650; }
 .text-input { width: 100%; min-height: 41px; padding: 9px 11px; color: var(--ink); border: 1px solid #dfded4; border-radius: 4px; outline: 0; background: #fffefa; font-size: 11px; font-weight: 450; }
@@ -760,7 +761,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .category-scroller { margin-right: -17px; padding-right: 17px; }
   .category-chip { min-height: 30px; padding: 0 10px; font-size: 9px; }
   .wardrobe-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 17px 10px; }
-  .item-card-image { aspect-ratio: 4 / 4.7; }
+  .item-card-image { aspect-ratio: 29 / 36; }
   .item-category-tag { left: 6px; bottom: 6px; padding: 4px 6px; font-size: 7px; }
   .item-favorite { top: 6px; right: 6px; width: 28px; height: 28px; }
   .item-card-copy { padding-top: 7px; }
@@ -772,7 +773,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .wardrobe-note { align-items: flex-start; font-size: 8px; }
   .note-check { flex: 0 0 auto; }
   .item-detail-layout { grid-template-columns: 1fr; gap: 14px; }
-  .item-detail-photo { min-height: 280px; max-height: 42vh; }
+  .item-detail-photo { width: min(100%, 336px); min-height: 0; max-height: min(48vh, 420px); margin-inline: auto; }
   .detail-meta-grid { gap: 9px; }
   .detail-actions { margin-top: 12px; }
   .mock-upload-panel { flex-wrap: wrap; padding: 13px 10px; }

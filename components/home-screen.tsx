@@ -26,8 +26,8 @@ export function HomeScreen() {
       {!samplePhoto && (
         <Link href="/profile/photo" className="photo-nudge">
           <span className="photo-nudge-icon"><Camera size={19} /></span>
-          <span className="photo-nudge-copy"><strong>Add your photo</strong><small>See your style in a whole new way. You can do this later.</small></span>
-          <span className="photo-nudge-action">Set up <ArrowRight size={15} /></span>
+          <span className="photo-nudge-copy"><strong>Try a sample photo</strong><small>Preview the bundled image; real photo capture and uploads are unavailable.</small></span>
+          <span className="photo-nudge-action">Preview <ArrowRight size={15} /></span>
         </Link>
       )}
 

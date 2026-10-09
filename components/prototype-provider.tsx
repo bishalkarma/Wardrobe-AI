@@ -77,22 +77,30 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
       },
       ...current,
     ]);
-    notify("Added to your wardrobe for this demo.");
+    notify("Added in temporary demo memory; refreshing restores the original wardrobe.");
   }, [notify]);
 
   const updateItem = useCallback((id: string, patch: Partial<WardrobeItem>) => {
     setItems((current) => current.map((item) => item.id === id ? { ...item, ...patch } : item));
-    notify("Changes saved for this demo.");
+    notify("Changes updated in temporary demo memory; refreshing resets them.");
   }, [notify]);
 
   const deleteItem = useCallback((id: string) => {
     setItems((current) => current.filter((item) => item.id !== id));
-    notify("Item removed from this demo wardrobe.");
+    notify("Removed from temporary demo memory; refreshing restores the sample wardrobe.");
   }, [notify]);
 
   const toggleItemFavorite = useCallback((id: string) => {
-    setItems((current) => current.map((item) => item.id === id ? { ...item, favorite: !item.favorite } : item));
-  }, []);
+    const item = items.find((current) => current.id === id);
+    if (!item) return;
+
+    setItems((current) => current.map((currentItem) => currentItem.id === id
+      ? { ...currentItem, favorite: !currentItem.favorite }
+      : currentItem));
+    notify(item.favorite
+      ? "Removed from favorites in temporary demo memory; refresh restores the original state."
+      : "Added to favorites in temporary demo memory; refresh resets it.");
+  }, [items, notify]);
 
   const saveOutfit = useCallback((outfit: Outfit) => {
     setSavedIds((current) => current.includes(outfit.id) ? current : [...current, outfit.id]);
@@ -118,7 +126,7 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
 
   const saveStylePreferences = useCallback((preferences: StylePreferences) => {
     setStylePreferences(preferences);
-    notify("Preferences saved in demo memory; refreshing resets them.");
+    notify("Preferences updated in temporary demo memory; refresh restores the defaults.");
   }, [notify]);
 
   const savedOutfits = useMemo(
