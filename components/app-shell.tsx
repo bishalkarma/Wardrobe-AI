@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bookmark, House, Shirt, Sparkles, UserRound } from "lucide-react";
 import type { ReactNode } from "react";
+import { BuildStamp } from "@/components/build-stamp";
 
 const navigation = [
   { href: "/", label: "Home", icon: House },
@@ -103,8 +104,15 @@ export function AppShell({
 
       <div className="app-main">
         <header className="topbar">
-          <div className="topbar-brand"><BrandMark mode={mode} /></div>
-          <div className="topbar-caption"><span className="topbar-overline">WARDROBE AI</span><span>{caption}</span></div>
+          <div className="topbar-brand">
+            <BrandMark mode={mode} />
+            <BuildStamp className="build-stamp-mobile" />
+          </div>
+          <div className="topbar-caption">
+            <span className="topbar-overline">WARDROBE AI</span>
+            <span>{caption}</span>
+            <BuildStamp className="build-stamp-desktop" />
+          </div>
           <div className="topbar-actions">
             {isDemo ? (
               <Link href="/welcome" className="demo-pill" aria-label="Return to Wardrobe AI welcome page"><span /> Demo · mock data</Link>
