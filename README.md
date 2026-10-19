@@ -44,10 +44,6 @@ npm run build
 - Protected pages are checked in the Next.js request proxy and again in the server-side authenticated layout. Auth identity is verified with Supabase Auth.
 - Preview authentication tests write Auth users to the same Supabase project used by Production. No database migrations, application-data persistence, Storage uploads, or AI integrations are part of Stage A.
 
-## Build identity
-
-Each Next.js start/build receives an automatic UTC timestamp plus the short Git revision when available. The build stamp is visible in the app shell, welcome page, and account-access pages so Preview and local builds can be distinguished. It is a per-build identifier, not a sequential counter; Vercel deployment metadata remains the source for deployment status.
-
 ## Technology
 
 - Next.js App Router 16.4.0, React 19.3.0, and TypeScript 5.9.3.

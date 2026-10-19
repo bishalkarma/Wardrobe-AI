@@ -6,7 +6,6 @@ import { useState } from "react";
 import { ArrowRight, LockKeyhole, Sparkles } from "lucide-react";
 import { AuthForm, type AuthMode } from "@/components/auth/auth-form";
 import { Modal } from "@/components/ui";
-import { BuildStamp } from "@/components/build-stamp";
 
 export type WelcomeNotice = {
   kind: "success" | "error";
@@ -35,10 +34,7 @@ export function WelcomeScreen({
           <span className="brand-mark" aria-hidden="true"><span /><span /><span /></span>
           <span className="brand-name">wardrobe<span>AI</span></span>
         </Link>
-        <div className="welcome-header-meta">
-          <span className="welcome-edition">A MORE PERSONAL WAY TO GET DRESSED</span>
-          <BuildStamp />
-        </div>
+        <span className="welcome-edition">A MORE PERSONAL WAY TO GET DRESSED</span>
       </div>
       <div className="welcome-grid">
         <section className="welcome-copy">

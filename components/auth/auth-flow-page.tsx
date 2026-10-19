@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowLeft } from "lucide-react";
-import { BuildStamp } from "@/components/build-stamp";
 
 export function AuthFlowPage({
   eyebrow,
@@ -21,10 +20,7 @@ export function AuthFlowPage({
           <span className="brand-mark" aria-hidden="true"><span /><span /><span /></span>
           <span className="brand-name">wardrobe<span>AI</span></span>
         </Link>
-        <div className="auth-flow-header-meta">
-          <span className="welcome-edition">ACCOUNT ACCESS</span>
-          <BuildStamp />
-        </div>
+        <span className="welcome-edition">ACCOUNT ACCESS</span>
       </div>
       <section className="auth-flow-card">
         <Link className="back-link auth-flow-back" href="/welcome"><ArrowLeft size={15} /> Back to sign in</Link>
