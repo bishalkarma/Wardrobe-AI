@@ -1,6 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { AppShell } from "@/components/app-shell";
-import { PrototypeProvider } from "@/components/prototype-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -24,11 +22,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>
-        <PrototypeProvider>
-          <AppShell>{children}</AppShell>
-        </PrototypeProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

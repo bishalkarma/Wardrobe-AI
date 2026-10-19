@@ -1,7 +1,7 @@
 # UI/UX
 
-**Status:** Phase 1 prototype implemented; mock-only.
-**Last updated:** 2026-10-07
+**Status:** Phase 1 demo preserved under `/demo/**`; Stage A Auth and route separation implemented. Preview live testing pending.
+**Last updated:** 2026-10-19
 
 ## Product feel
 
@@ -21,26 +21,23 @@ A premium consumer fashion product: calm, editorial, practical, and personal. Le
 
 | Route | Purpose and important states |
 |---|---|
-| `/welcome` | Brand welcome, “Your Clothes. Your Style.”, Get Started and sign-in/register placeholders. |
-| `/` | Home: personal welcome, profile-photo reminder when needed, wardrobe snapshot, stylist entry point, and outfit inspiration. |
-| `/profile/photo` | Add/take/upload affordances, full-body photo guidance, preview, replace and delete states. No real upload in Phase 1. |
-| `/wardrobe` | Search, category filters, garment cards, empty/loading examples, add action, and item detail/edit/delete interactions. The add flow simulates photo selection, analysis progress, and editable metadata suggestions using a bundled sample image. |
-| `/stylist` | Conversational mock chat, suggested prompts, sample response, and a structured outfit recommendation using mock item IDs. |
-| `/try-on` | Selected outfit, generation progress, success, failure, save/favorite/rating states. Generation is simulated only. |
-| `/outfits` | Saved outfits, favorites filter, outfit cards, and outfit details. |
-| `/profile` | Mock profile, editable style preference controls, style-profile placeholder, settings, and privacy placeholder. |
+| `/welcome` | Public brand welcome with real email/password sign-in and sign-up entry points. New accounts require email confirmation. |
+| `/auth/forgot-password` | Public recovery request with non-enumerating feedback. |
+| `/auth/callback` | Public email confirmation/recovery callback; validates internal continuation paths. |
+| `/auth/reset-password` | Password completion page; requires a valid recovery session. |
+| `/demo/**` | Clearly labelled, public mock prototype. Preserves the Phase 1 screens and in-memory interactions under `/demo`, `/demo/wardrobe`, `/demo/outfits`, `/demo/profile`, `/demo/profile/photo`, `/demo/stylist`, and `/demo/try-on`. |
+| `/` and actual app routes | Protected by server-side Supabase Auth checks. Stage A displays empty-account placeholders; no mock garments, outfits, or preferences are presented as account data. |
 
 ## Shared navigation and components
 
-The five approved primary destinations are Home, Wardrobe, Outfits, AI Stylist, and Profile. Onboarding and profile-photo setup are focused flows outside primary navigation. Reusable components include the app shell, navigation, page heading, garment card, category chip, outfit card, modal/dialog, rating control, and generation-status panel.
+The five approved primary destinations remain Home, Wardrobe, Outfits, AI Stylist, and Profile. Authenticated destinations require a verified session; `/demo/**` uses a visibly labelled mock shell with demo-prefixed navigation. Onboarding and account recovery are focused public flows outside primary navigation. Reusable components include the app shell, navigation, page heading, garment card, category chip, outfit card, modal/dialog, rating control, and generation-status panel.
 
 ## Interaction expectations
 
-- Search and category chips filter local wardrobe data immediately.
-- Add, edit, delete, favorite, and rating controls provide clear mock feedback. They do not persist to a backend.
-- Login/register buttons explain that authentication is a future integration; they must not imply an account was created.
-- AI Stylist examples explain outfit rationale and show the selected wardrobe item IDs in a user-friendly way.
-- Try-on has distinct queued/processing/success/failure examples and does not describe the mock image as a genuine generated result.
+- In `/demo/**`, search, add, edit, delete, favorite, ratings, and preferences remain temporary in-memory mock interactions and reset on refresh.
+- Sign-up and sign-in use real email/password Auth; sign-up explains the confirmation-email step and errors remain recoverable.
+- Authenticated routes start empty and do not import or display demo wardrobe/outfit state. Persistence is deferred.
+- Stylist and try-on examples remain demo-only and do not make real AI calls or claim a mock image is a generated result.
 
 ## Deferred
 

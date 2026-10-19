@@ -891,3 +891,42 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* Stage A authentication and clearly separated demo states. */
+.auth-message { margin: 0; padding: 10px 12px; border: 1px solid transparent; border-radius: 7px; font-size: 10px; line-height: 1.55; }
+.auth-message-error { color: #884f43; border-color: rgba(166, 109, 85, .2); background: #f7ece7; }
+.auth-message-success { color: #4e6145; border-color: rgba(98, 107, 83, .2); background: #edf0e7; }
+.auth-secondary-link { margin: 2px 0 0; color: var(--olive-dark); font-size: 10px; }
+.auth-secondary-link a { text-decoration: underline; text-decoration-color: #c7cbbd; text-underline-offset: 3px; }
+.auth-secondary-link a:hover { color: var(--ink); }
+.auth-flow-page { display: flex; flex-direction: column; min-height: 100vh; max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 64px); }
+.auth-flow-topbar { display: flex; align-items: center; justify-content: space-between; min-height: 75px; border-bottom: 1px solid var(--line); }
+.auth-flow-card { width: min(100%, 460px); margin: auto; padding: clamp(24px, 5vw, 42px); border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow-soft); }
+.auth-flow-card h1 { margin: 0; font-family: var(--serif); font-size: clamp(32px, 5vw, 42px); font-weight: 400; line-height: 1.1; letter-spacing: -.035em; }
+.auth-flow-card > .page-subtitle { margin-bottom: 22px; }
+.auth-flow-card .form-stack { margin-top: 16px; }
+.auth-flow-back { margin-bottom: 25px; }
+.auth-flow-footer { display: flex; align-items: center; justify-content: center; gap: 9px; min-height: 48px; margin: 0; color: var(--muted-light); font-size: 8px; font-weight: 700; letter-spacing: .12em; }
+.auth-flow-footer i { width: 3px; height: 3px; border-radius: 50%; background: #aaa89d; }
+.demo-route-banner { padding: 8px clamp(18px, 4vw, 58px); color: #59614b; border-bottom: 1px solid rgba(98, 107, 83, .13); background: #e9ece2; font-size: 9px; font-weight: 650; letter-spacing: .045em; text-align: center; }
+.sidebar-profile-copy strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sign-out-control { min-height: 34px; padding: 0 4px; color: #696b61; font-size: 10px; }
+.sign-out-control:hover { color: var(--ink); }
+.auth-tabs button { min-height: 28px; }
+.auth-tabs + .modal-intro { margin-bottom: 14px; }
+.auth-tabs ~ .form-stack { margin-top: 2px; }
+.auth-tabs ~ .prototype-disclaimer { margin-top: 13px; }
+.account-empty-state { max-width: 760px; align-self: center; width: 100%; padding: clamp(24px, 4vw, 44px); }
+.account-empty-state p { max-width: 520px; }
+.auth-flow-card .auth-message { margin-top: 14px; }
+.welcome-copy > .auth-message { max-width: 430px; margin-top: 16px; }
+
+@media (max-width: 760px) {
+  .auth-flow-page { padding: 0 16px; }
+  .auth-flow-topbar { min-height: 62px; }
+  .auth-flow-card { margin: auto 0; padding: 23px 18px; }
+  .auth-flow-card h1 { font-size: 32px; }
+  .demo-route-banner { padding: 7px 12px; font-size: 8px; }
+  .topbar-actions { gap: 8px; }
+  .sign-out-control { font-size: 9px; }
+}

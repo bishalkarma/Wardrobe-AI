@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { DemoLink as Link } from "@/components/demo-link";
 import { useState } from "react";
 import { ArrowRight, Bell, Check, ChevronRight, CircleHelp, LockKeyhole, LogOut, Palette, Ruler, ShieldCheck, Sparkles, UserRound } from "lucide-react";
 import { usePrototype } from "@/components/prototype-provider";

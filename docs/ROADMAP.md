@@ -1,49 +1,38 @@
 # Roadmap
 
-**Last updated:** 2026-10-07
+**Last updated:** 2026-10-19
 
 The approved North Star is a user completing the full real-wardrobe journey: account → full-body photo → several real garments → AI-suggested metadata review → wardrobe → owned-item outfit recommendation → try-on → save/rate.
 
-## Current authorization
+## Current authorization and status
 
 ### Phase 0 — Repository inspection and architecture proposal
-**Complete.** The initial repository contained only a title README. The approved architecture and open decisions are documented in `docs/`.
+**Complete.** Architecture and open decisions are documented in `docs/`.
 
 ### Phase 1 — UI/UX prototype with mock data
-**Complete.** The full user-facing flow uses local fixtures: onboarding, profile-photo guidance, wardrobe CRUD interactions, simulated garment-photo analysis/loading and editable metadata suggestions, AI Stylist conversation and sample recommendations, try-on loading/success/failure states, saved outfits, favorites/ratings, and profile/style preferences. There is no backend, authentication, real image upload, AI-provider call, or production credential.
+**Complete and preserved.** The complete illustrative experience remains available under `/demo/**`: onboarding guidance, wardrobe CRUD interactions, simulated garment-photo analysis, stylist recommendations, try-on states, saved outfits, favorites/ratings, and mock preferences. The mock state is in-memory and is not user-owned account data.
 
-The routes are navigable and responsive by design. `npm run typecheck`, `npm run build`, route smoke checks, and `npm audit` pass. The prototype is ready for product review; Phase 2 remains gated on separate approval.
+### Phase 2, Stage A — Authentication and route separation
+**Implementation complete; Preview live testing pending.** `/welcome` is public, `/demo/**` is isolated mock content, and actual application routes require a verified Supabase Auth session. Email/password sign-up requires confirmation; sign-in, sign-out, recovery, callback handling, session refresh, and safe internal redirects are implemented. Authenticated accounts start empty. No migrations, app-data persistence, image uploads, Storage buckets, or AI provider are included.
 
-### Phase 2 — Supabase foundation and authentication
-Only after separate approval: confirm schema and privacy policies, add Supabase Auth/PostgreSQL/RLS/private Storage, account/profile/photo workflows, and deletion lifecycle. Do not start automatically after Phase 1.
+Vercel Preview and Production use the same Supabase project. Preview sign-ups create users in the shared Auth system; this is not environment isolation. Preview checks must use dedicated synthetic accounts. The code does not alter Supabase or Vercel dashboard settings.
 
-### Phase 3 — Wardrobe management
-Owner-scoped clothing CRUD, original/derived image handling, search, category filtering, metadata editing, and duplicate/deleted-item behavior.
+### Phase 2, Stage B — Persistence
+**Not implemented; requires separate approval.** Confirm schema and deletion rules, add migrations and RLS, and persist profiles/garments/outfits in small testable sub-stages. Do not seed mock demo records into accounts.
 
-### Phase 4 — Clothing analysis
-Introduce validated image processing/classification providers, user-reviewable suggestions, caching, failure/retry behavior, and cost measurement.
+### Phase 2, Stage C — Private photos
+**Not implemented; requires separate approval.** Add private image selection, validation, upload/retrieval, replacement, and retryable cleanup only after the environment and Storage policy are approved.
 
-### Phase 5 — AI Stylist
-Retrieve relevant user-owned wardrobe candidates; add provider adapter, structured outputs, prompt/request limits, and user preference context.
+### Later AI stages
+Provider-neutral job readiness and any real provider implementation/evaluation remain deferred. No provider, AI key, AI call, or generation job is included here.
 
-### Phase 6 — Outfit recommendation engine
-Validate every selected wardrobe item ID, store structured outfit combinations, and provide deterministic fallback/clear failure behavior.
+## Testing and release gates
 
-### Phase 7 — Virtual try-on
-Run provider evaluation including the Garment Fidelity Test; implement jobs and private generated media only after provider access, terms, cost, and quality are approved.
-
-### Phase 8 — Save, favorite, and rate
-Persist outfit outcomes and ratings, with user-scoped retrieval and deletion behavior.
-
-### Phase 9 — Testing and security
-Exercise upload edge cases, multiple users, cross-user denial, duplicates, deletion, provider failures, slow responses, interruption, and all North Star flows.
-
-### Phase 10 — Performance and cost optimization
-Measure cache hit rates, provider use, latency, and spend; tune retrieval, image sizes, limits, and failure/retry policies.
-
-### Phase 11 — Production readiness
-Complete deployment, backups, monitoring, incident handling, data retention/deletion, privacy disclosures, and launch review.
+- Automated checks cover TypeScript, production build, redirect/route helpers, and the server-side identity guard.
+- Real email confirmation and recovery delivery require live testing in the Vercel Preview against the shared Supabase Auth project.
+- Do not treat a successful Preview deployment as proof of Preview/Production data isolation.
+- Do not proceed to Stage B without explicit owner approval and a verified safe environment for data writes.
 
 ## Explicitly deferred
 
-Payments, subscriptions, shopping/affiliate commerce, social features, weather integration, advanced travel packing, advanced recommendation analytics, complex notifications, and native Android/iOS clients. Architecture may accommodate them later, but they are not MVP priorities.
+Payments, subscriptions, shopping/affiliate commerce, social features, weather integration, advanced travel packing, advanced recommendation analytics, complex notifications, and native Android/iOS clients. Architecture may accommodate them later, but they are not current priorities.

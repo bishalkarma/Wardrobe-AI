@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { DemoLink as Link } from "@/components/demo-link";
 import { useEffect, useState } from "react";
 import { AlertTriangle, ArrowLeft, ArrowRight, Check, Heart, LoaderCircle, RefreshCw, ShieldCheck, Sparkles } from "lucide-react";
 import { usePrototype } from "@/components/prototype-provider";

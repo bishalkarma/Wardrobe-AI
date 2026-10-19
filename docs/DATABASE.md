@@ -1,13 +1,15 @@
 # Database
 
-**Status:** Approved platform direction; logical schema proposal only. No database or migrations are created in Phase 1.
-**Last updated:** 2026-10-07
+**Status:** Approved platform direction; logical schema proposal only. Stage A creates/applies no application tables or migrations.
+**Last updated:** 2026-10-19
 
 ## Platform and ownership model
 
 Use Supabase Auth and PostgreSQL for the MVP unless implementation reveals a concrete blocker. Supabase Auth owns credentials and authenticated identities; application profile rows reference the auth UUID. PostgreSQL Row Level Security (RLS) is required for user-owned rows. Never rely on a client-supplied `user_id` as authorization.
 
 Store image bytes in private Supabase Storage buckets, not database rows. Store object keys and media metadata in PostgreSQL; do not store permanent public URLs. Access to private media should be authorized and short-lived.
+
+**Stage A boundary:** no application tables, migrations, or Storage changes are made. The existing Supabase project is shared by Vercel Preview and Production. This repository does not inspect the live project schema or assume that it is empty; inventory it before any later persistence stage.
 
 ## Proposed logical entities
 

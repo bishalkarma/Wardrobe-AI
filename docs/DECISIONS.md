@@ -1,6 +1,6 @@
 # Architecture Decisions
 
-**Last updated:** 2026-10-07
+**Last updated:** 2026-10-19
 
 This log records decisions approved for Wardrobe AI and choices that remain open. New architectural choices should be added here before they are treated as production commitments.
 
@@ -38,6 +38,18 @@ Phase 1 covers only the UI/UX prototype. It must not include real authentication
 
 **Status:** Selected for Phase 1 implementation; not a deployment commitment.
 Use Next.js App Router 16.4.0, React 19.3.0, TypeScript 5.9.3, custom CSS, and Lucide React 1.52.0. This provides a responsive React UI and a natural place for future server-side application/API modules without introducing a separate frontend/backend stack during the prototype. The mock screens remain isolated from future persistence/provider adapters. A PWA manifest, theme color, viewport configuration, and app icon are present; offline service-worker caching is not part of Phase 1. A future mobile client must use the shared API rather than importing web UI logic.
+
+## ADR-008 — Stage A Auth and mock-demo separation
+
+**Status:** Approved and implemented in Stage A code; Vercel Preview live testing pending.
+Keep `/welcome` public, isolate the mock prototype at `/demo/**`, and require server-verified Supabase Auth identity for actual application routes. New authenticated accounts remain empty. The demo provider and mock records are not mounted or rendered in authenticated routes. Stage A includes Auth/session handling only; it does not add application persistence, migrations, uploads, Storage, or AI.
+
+Use same-origin server actions/handlers with Supabase SSR cookies, a Next.js request proxy for refresh, and server-side `getUser()` checks. Validate internal redirect destinations and use explicit email callback URLs.
+
+## ADR-009 — Existing Supabase project shared by Preview and Production
+
+**Status:** Approved by product owner for Stage A, with shared-Auth warning.
+Use the existing Supabase project; do not create another project. Vercel Preview and Production currently point to the same project. Preview sign-ups and confirmations create users in the shared Auth system, and project-level Auth settings are shared. Stage A creates no application database records or Storage objects. Use dedicated synthetic test accounts and do not claim Preview is isolated from Production. No Production environment or Supabase dashboard setting is changed by this implementation.
 
 ## Open decisions before production integration
 

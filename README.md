@@ -2,11 +2,13 @@
 
 **Your Clothes. Your Style.**
 
-A mobile-first, PWA-ready personal wardrobe experience designed around the clothes a person actually owns. The MVP is built toward this journey: add a profile photo and real garments, review AI-suggested garment metadata, get an outfit assembled from owned item IDs, preview a virtual try-on, then save and rate the outfit.
+A mobile-first, PWA-ready wardrobe experience designed around the clothes a person actually owns.
 
 ## Current status
 
-**Phase 1 — UI/UX prototype with mock data — complete.** The application demonstrates the end-to-end experience using local, illustrative data only. It does not authenticate users, upload private photos, call AI providers, persist user changes to a backend, or generate real try-on images. Local fashion imagery is generated editorial mock content, not user media or a genuine try-on result.
+**Phase 1 demo preserved; Phase 2 Stage A authentication implemented, Preview testing pending.** The mock prototype is isolated under `/demo/**` and uses local in-memory sample data. `/welcome` is public. The real application routes require a verified Supabase Auth session, but authenticated accounts are intentionally empty: wardrobe, preferences, outfits, photo uploads, Storage, and AI are not implemented.
+
+Vercel Preview and Production currently use the **same Supabase project**. Preview sign-up and confirmation create users in the shared Supabase Auth system; Preview is not isolated from Production. Use dedicated test accounts and do not use Production user credentials for testing.
 
 ## Run locally
 
@@ -14,41 +16,50 @@ Requirements: Node.js 22 or later and npm.
 
 ```bash
 npm install
+```
+
+For real authentication, provide the existing project's public values in an ignored local environment file or your local environment:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+These values are public client configuration, not authorization controls. Stage A does not require a privileged project key. Do not commit environment files or secrets.
+
+```bash
 npm run dev
 ```
 
-Open the local URL printed by Next.js. For a production build check:
+Open the local URL printed by Next.js. `/demo/**` remains available without authentication. For quality checks:
 
 ```bash
 npm run typecheck
+npm test
 npm run build
 ```
 
-## Technology direction
+## Stage A behavior
 
-- Next.js App Router 16.4.0, React 19.3.0, and TypeScript 5.9.3 for the Phase 1 responsive web experience.
-- Custom CSS for the product design system; Lucide React 1.52.0 for interface iconography.
-- A PWA manifest, app icon, and mobile viewport configuration are included. Offline service-worker caching is not part of Phase 1.
-- Supabase Auth, PostgreSQL, RLS, and private Storage are approved for the MVP integration phase, but are not connected in Phase 1.
-- AI calls will remain behind replaceable server-side provider adapters. No AI provider is wired into this prototype.
+- Email/password sign-up requires email confirmation. Sign-in, sign-out, recovery request, recovery completion, and the `/auth/callback` handler use same-origin server actions/handlers with cookie-backed Supabase SSR sessions.
+- New accounts see empty authenticated application routes. Mock items, preferences, and outfits exist only in `/demo/**` and are never treated as account records.
+- Protected pages are checked in the Next.js request proxy and again in the server-side authenticated layout. Auth identity is verified with Supabase Auth.
+- Preview authentication tests write Auth users to the same Supabase project used by Production. No database migrations, application-data persistence, Storage uploads, or AI integrations are part of Stage A.
 
-## Product principles
+## Technology
 
-- Recommendations use the user's actual wardrobe and stable wardrobe item IDs.
-- Original garment images are retained separately from any derived or processed images.
-- User media is private and ownership-checked.
-- AI classifications are editable suggestions.
-- Try-on quality is measured; the product must not claim exact garment preservation without evidence.
-- Expensive work is represented as a trackable job rather than blocking the application synchronously.
+- Next.js App Router 16.4.0, React 19.3.0, and TypeScript 5.9.3.
+- Supabase SSR (`@supabase/ssr`) and Supabase JS for cookie-backed Auth.
+- Vitest for unit tests of route protection and redirect validation.
+- Custom CSS and Lucide React; the existing responsive visual design and local editorial garment imagery remain in the mock demo.
 
 ## Project layout
 
 ```text
-app/                 Next.js routes and application shell
-components/           Reusable UI, screen flows, and in-memory prototype state
-lib/                  Mock data and domain types
-public/               Local illustrative fashion imagery and PWA assets
-docs/                 Architecture, UX, database, AI, security, decisions, roadmap
+app/                 Public auth routes, isolated /demo routes, protected account routes
+components/           Shared UI, auth forms, mock screens, and demo state
+lib/                  Auth redirect rules, Supabase server client, mock data, domain types
+tests/                 Authentication route/redirect unit tests
+public/                Local illustrative imagery and PWA assets
+docs/                  Architecture, UX, database, AI, security, decisions, roadmap
 ```
 
 ## Documentation
@@ -61,6 +72,6 @@ docs/                 Architecture, UX, database, AI, security, decisions, roadm
 - [Decisions](docs/DECISIONS.md)
 - [Roadmap](docs/ROADMAP.md)
 
-## Phase 1 boundary
+## Stage A boundary
 
-All displayed people, garments, recommendations, and generation states are examples for visual testing. “Generate try-on” only simulates a job locally. No credentials, production data, external AI requests, Supabase calls, or real image uploads are used. Phase 2 and any production integration require separate approval.
+No database schema/migrations, profile or wardrobe persistence, photo upload/Storage bucket, AI provider, payment, or Production setting changes are included. The existing Supabase project's Auth data is shared between Preview and Production; a Preview signup creates a user in that shared Auth system. The mock demo remains illustrative and in-memory only.

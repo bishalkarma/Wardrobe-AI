@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { DemoLink as Link } from "@/components/demo-link";
 import { ArrowLeft, ArrowRight, Camera, Check, ImagePlus, Lightbulb, LockKeyhole, RefreshCw, Trash2, UserRound } from "lucide-react";
 import { usePrototype } from "@/components/prototype-provider";
 

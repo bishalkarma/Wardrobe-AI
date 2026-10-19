@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { DemoLink as Link } from "@/components/demo-link";
 import { useParams } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check, Heart, Sparkles } from "lucide-react";
 import { usePrototype } from "@/components/prototype-provider";
