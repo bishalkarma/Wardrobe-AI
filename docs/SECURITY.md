@@ -1,7 +1,7 @@
 # Security and Privacy
 
-**Status:** Stage A Auth code implemented; shared-project Preview testing pending. No application database or personal media is connected.
-**Last updated:** 2026-10-19
+**Status:** Stage A Auth core flows confirmed in Preview; Stage B discovery/design active. No application database or personal media is connected.
+**Last updated:** 2026-10-20
 
 ## Data classification
 
@@ -43,6 +43,8 @@ Before enabling database writes or personal-photo uploads, prefer using the othe
 
 Provide deletion workflows for individual clothing items and their original/processed images, profile photos, generated images, and accounts. Account deletion must coordinate database cleanup and private-storage object cleanup, handle retries, and define backup-retention limits. Confirm provider-side retention/deletion implications before sending real media to a model.
 
-## Stage A validation status
+## Validation status and Stage B gate
 
-Automated tests cover internal redirect validation and the server-side identity guard. They do not exercise real Supabase email delivery. Live Preview testing must confirm sign-up, email confirmation, session refresh, sign-out, and recovery using a synthetic account in the shared Auth system.
+The owner confirmed Preview sign-up, email confirmation, sign-in/out, session refresh, the empty authenticated account, and demo separation/navigation using a synthetic account. Password recovery returned a Supabase rate-limit response and is deferred at the owner's request. Automated tests cover redirect validation and the server-side identity guard, but do not exercise real Supabase email delivery.
+
+Before Stage B database writes, inspect the live schema and confirm the intended non-production test target or an explicit safe test/rollback plan. Preview and Production share the Supabase project; RLS enforces user ownership but does not separate deployments.

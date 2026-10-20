@@ -1,7 +1,7 @@
 # Database
 
-**Status:** Approved platform direction; logical schema proposal only. Stage A creates/applies no application tables or migrations.
-**Last updated:** 2026-10-19
+**Status:** Phase 2 Stage B discovery/design active; schema remains a proposal. No application migrations have been implemented or applied.
+**Last updated:** 2026-10-20
 
 ## Platform and ownership model
 
@@ -9,7 +9,7 @@ Use Supabase Auth and PostgreSQL for the MVP unless implementation reveals a con
 
 Store image bytes in private Supabase Storage buckets, not database rows. Store object keys and media metadata in PostgreSQL; do not store permanent public URLs. Access to private media should be authorized and short-lived.
 
-**Stage A boundary:** no application tables, migrations, or Storage changes are made. The existing Supabase project is shared by Vercel Preview and Production. This repository does not inspect the live project schema or assume that it is empty; inventory it before any later persistence stage.
+**Current boundary:** Stage A created no application tables, migrations, or Storage objects. Stage B is approved for discovery/design, but no migrations or database writes have started. The existing Supabase project is shared by Vercel Preview and Production. The live schema has not been inspected; inventory it and verify a safe test/rollback target before any migration.
 
 ## Proposed logical entities
 

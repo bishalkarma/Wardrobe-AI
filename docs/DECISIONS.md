@@ -1,6 +1,6 @@
 # Architecture Decisions
 
-**Last updated:** 2026-10-19
+**Last updated:** 2026-10-20
 
 This log records decisions approved for Wardrobe AI and choices that remain open. New architectural choices should be added here before they are treated as production commitments.
 
@@ -41,7 +41,7 @@ Use Next.js App Router 16.4.0, React 19.3.0, TypeScript 5.9.3, custom CSS, and L
 
 ## ADR-008 — Stage A Auth and mock-demo separation
 
-**Status:** Approved and implemented in Stage A code; Vercel Preview live testing pending.
+**Status:** Approved and implemented; core Preview flows confirmed by the owner. Password recovery remains deferred due to a Supabase rate-limit response.
 Keep `/welcome` public, isolate the mock prototype at `/demo/**`, and require server-verified Supabase Auth identity for actual application routes. New authenticated accounts remain empty. The demo provider and mock records are not mounted or rendered in authenticated routes. Stage A includes Auth/session handling only; it does not add application persistence, migrations, uploads, Storage, or AI.
 
 Use same-origin server actions/handlers with Supabase SSR cookies, a Next.js request proxy for refresh, and server-side `getUser()` checks. Validate internal redirect destinations and use explicit email callback URLs.
@@ -50,6 +50,11 @@ Use same-origin server actions/handlers with Supabase SSR cookies, a Next.js req
 
 **Status:** Approved by product owner for Stage A, with shared-Auth warning.
 Use the existing Supabase project; do not create another project. Vercel Preview and Production currently point to the same project. Preview sign-ups and confirmations create users in the shared Auth system, and project-level Auth settings are shared. Stage A creates no application database records or Storage objects. Use dedicated synthetic test accounts and do not claim Preview is isolated from Production. No Production environment or Supabase dashboard setting is changed by this implementation.
+
+## ADR-010 — Begin Stage B with database discovery and safety review
+
+**Status:** Owner approved Stage B discovery/design on 2026-10-20; database writes remain gated.
+Start by inventorying the existing Supabase schema and confirming the safe test/rollback target. Preview and Production share the same project, so do not assume deployment isolation from RLS alone. No migration should be applied until the live schema and data-write target are verified. Do not create another Supabase project or alter dashboard settings without separate approval.
 
 ## Open decisions before production integration
 

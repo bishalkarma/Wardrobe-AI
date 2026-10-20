@@ -1,7 +1,7 @@
 # UI/UX
 
-**Status:** Phase 1 demo preserved under `/demo/**`; Stage A Auth and route separation implemented. Preview live testing pending.
-**Last updated:** 2026-10-19
+**Status:** Phase 1 demo preserved under `/demo/**`; Stage A core Auth flows confirmed in Preview; Stage B discovery/design active.
+**Last updated:** 2026-10-20
 
 ## Product feel
 
