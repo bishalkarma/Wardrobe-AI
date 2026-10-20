@@ -19,7 +19,7 @@
 
 ## Stage 2B work breakdown
 
-1. **B0 — Environment and schema discovery (current):** identify the approved data-write target; inventory existing tables, policies, and constraints; record backup/rollback expectations.
+1. **B0 — Environment and schema discovery (current):** shared project chosen conditionally; read-only table listing shows no application tables. Confirm backup/rollback expectations before drafting the exact initial migration for review.
 2. **B1 — Domain model:** settle profile/preferences, wardrobes, garments/categories, outfits, and outfit-item relationships, including ownership and deletion behavior.
 3. **B2 — Migrations and RLS:** add reviewed migrations and owner-scoped policies/constraints. Do not import or seed `/demo` records.
 4. **B3 — Application persistence:** connect authenticated profile, wardrobe, and outfit interactions to server-side, owner-checked persistence; keep accounts empty until users add their own data.
@@ -29,8 +29,8 @@
 
 - Vercel Preview and Production share the **same Supabase project**. Preview Auth users are shared with Production; Auth rate limits are shared too.
 - The owner selected the existing shared Supabase project as the **conditional** Stage B target after review. This is not approval to apply a migration yet.
-- Read-only queries against `public` returned no tables/columns on 2026-10-20. This is only a partial inventory; other schemas and migration history remain uninspected. Do not assume the whole project is empty.
-- Stage B RLS must enforce per-user row ownership; it does **not** isolate Preview from Production. Before any write, complete the schema inventory, agree a backup/rollback plan, and get confirmation of the exact migration.
+- Read-only inventory on 2026-10-20 found no `public` tables/columns and listed only Supabase-managed schemas (`auth`, `extensions`, `realtime`, `storage`, `vault`); no app-owned tables were shown. No row data or Vault secrets were queried.
+- Stage B RLS must enforce per-user row ownership; it does **not** isolate Preview from Production. Before any write, agree a backup/rollback plan and get confirmation of the exact migration.
 - Stage 2B excludes private image uploads/Storage, AI calls, payments, and production deployment changes.
 
 ## Current implementation map
