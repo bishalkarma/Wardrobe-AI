@@ -28,9 +28,9 @@
 ## Safety gates and known constraints
 
 - Vercel Preview and Production share the **same Supabase project**. Preview Auth users are shared with Production; Auth rate limits are shared too.
+- The owner selected the existing shared Supabase project as the **conditional** Stage B target after review. This is not approval to apply a migration yet.
 - The live database schema has **not** been inspected. Do not assume the project is empty or apply migrations blindly.
-- Stage B RLS must enforce per-user row ownership; it does **not** isolate Preview from Production. No database writes/migrations should be applied until the Stage B target and existing schema are verified and a safe test/rollback plan is agreed.
-- Do not create another Supabase project or change dashboard settings without the owner's explicit direction. If a separate existing non-production project is available, confirm it before use.
+- Stage B RLS must enforce per-user row ownership; it does **not** isolate Preview from Production. Before any write, inspect the existing schema, agree a backup/rollback plan, and get confirmation of the exact migration.
 - Stage 2B excludes private image uploads/Storage, AI calls, payments, and production deployment changes.
 
 ## Current implementation map

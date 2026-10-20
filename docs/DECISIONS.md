@@ -53,8 +53,8 @@ Use the existing Supabase project; do not create another project. Vercel Preview
 
 ## ADR-010 — Begin Stage B with database discovery and safety review
 
-**Status:** Owner approved Stage B discovery/design on 2026-10-20; database writes remain gated.
-Start by inventorying the existing Supabase schema and confirming the safe test/rollback target. Preview and Production share the same project, so do not assume deployment isolation from RLS alone. No migration should be applied until the live schema and data-write target are verified. Do not create another Supabase project or alter dashboard settings without separate approval.
+**Status:** Owner approved Stage B discovery/design on 2026-10-20 and selected the existing shared project conditionally; database writes remain gated.
+Start by inventorying the existing Supabase schema and agreeing the backup/rollback plan. Preview and Production share the same project, so do not assume deployment isolation from RLS alone. No migration should be applied until the live schema is verified and the owner confirms the exact change. Do not create another Supabase project or alter dashboard settings without separate approval.
 
 ## Open decisions before production integration
 
