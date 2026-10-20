@@ -9,7 +9,7 @@ Use Supabase Auth and PostgreSQL for the MVP unless implementation reveals a con
 
 Store image bytes in private Supabase Storage buckets, not database rows. Store object keys and media metadata in PostgreSQL; do not store permanent public URLs. Access to private media should be authorized and short-lived.
 
-**Current boundary:** Stage A created no application tables, migrations, or Storage objects. Stage B is approved for discovery/design, but no migrations or database writes have started. The existing Supabase project is shared by Vercel Preview and Production. The live schema has not been inspected; inventory it and verify a safe test/rollback target before any migration.
+**Current boundary:** Stage A created no application tables, migrations, or Storage objects. Stage B is approved for discovery/design, but no migrations or database writes have started. The existing Supabase project is shared by Vercel Preview and Production. Read-only table/column checks on `public` returned no rows on 2026-10-20; other schemas and migration history remain uninspected. Complete the inventory and verify backup/rollback before any migration.
 
 ## Proposed logical entities
 
