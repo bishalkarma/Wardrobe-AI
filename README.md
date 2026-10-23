@@ -6,7 +6,7 @@ A mobile-first, PWA-ready wardrobe experience designed around the clothes a pers
 
 ## Current status
 
-**Phase 1 demo preserved; Phase 2 Stage A authentication implemented and core Preview flows confirmed. Stage B persistence discovery/design is approved to start; no database schema or migrations are implemented.** The mock prototype is isolated under `/demo/**` and uses local in-memory sample data. `/welcome` is public. The real application routes require a verified Supabase Auth session, but authenticated accounts are intentionally empty: wardrobe, preferences, outfits, photo uploads, Storage, and AI are not implemented. Password recovery currently returns a Supabase rate-limit response and is deferred at the owner's request.
+**Phase 1 demo preserved; Phase 2 Stage A authentication implemented and core Preview flows confirmed. Stage B persistence discovery/design is active; an initial SQL draft is pending owner review and no migration has been applied. No restorable backup/export has been created or verified.** The mock prototype is isolated under `/demo/**` and uses local in-memory sample data. `/welcome` is public. The real application routes require a verified Supabase Auth session, but authenticated accounts are intentionally empty: wardrobe, preferences, outfits, photo uploads, Storage, and AI are not implemented. Password recovery currently returns a Supabase rate-limit response and is deferred at the owner's request.
 
 Vercel Preview and Production currently use the **same Supabase project**. Preview sign-up and confirmation create users in the shared Supabase Auth system; Preview is not isolated from Production. Use dedicated test accounts and do not use Production user credentials for testing.
 
@@ -46,7 +46,7 @@ npm run build
 
 ## Technology
 
-- Next.js App Router 16.4.0, React 19.3.0, and TypeScript 5.9.3.
+- Next.js App Router 16.4.2, React 19.3.0, and TypeScript 5.9.3.
 - Supabase SSR (`@supabase/ssr`) and Supabase JS for cookie-backed Auth.
 - Vitest for unit tests of route protection and redirect validation.
 - Custom CSS and Lucide React; the existing responsive visual design and local editorial garment imagery remain in the mock demo.

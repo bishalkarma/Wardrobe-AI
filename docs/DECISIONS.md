@@ -1,6 +1,6 @@
 # Architecture Decisions
 
-**Last updated:** 2026-10-20
+**Last updated:** 2026-10-23
 
 This log records decisions approved for Wardrobe AI and choices that remain open. New architectural choices should be added here before they are treated as production commitments.
 
@@ -37,7 +37,7 @@ Phase 1 covers only the UI/UX prototype. It must not include real authentication
 ## ADR-007 — Phase 1 web implementation stack
 
 **Status:** Selected for Phase 1 implementation; not a deployment commitment.
-Use Next.js App Router 16.4.0, React 19.3.0, TypeScript 5.9.3, custom CSS, and Lucide React 1.52.0. This provides a responsive React UI and a natural place for future server-side application/API modules without introducing a separate frontend/backend stack during the prototype. The mock screens remain isolated from future persistence/provider adapters. A PWA manifest, theme color, viewport configuration, and app icon are present; offline service-worker caching is not part of Phase 1. A future mobile client must use the shared API rather than importing web UI logic.
+Use Next.js App Router 16.4.2, React 19.3.0, TypeScript 5.9.3, custom CSS, and Lucide React 1.52.0. This provides a responsive React UI and a natural place for future server-side application/API modules without introducing a separate frontend/backend stack during the prototype. The mock screens remain isolated from future persistence/provider adapters. A PWA manifest, theme color, viewport configuration, and app icon are present; offline service-worker caching is not part of Phase 1. A future mobile client must use the shared API rather than importing web UI logic.
 
 ## ADR-008 — Stage A Auth and mock-demo separation
 
@@ -55,6 +55,12 @@ Use the existing Supabase project; do not create another project. Vercel Preview
 
 **Status:** Owner approved Stage B discovery/design on 2026-10-20 and selected the existing shared project conditionally; database writes remain gated.
 Start by inventorying the existing Supabase schema and agreeing the backup/rollback plan. Preview and Production share the same project, so do not assume deployment isolation from RLS alone. No migration should be applied until the live schema is verified and the owner confirms the exact change. Do not create another Supabase project or alter dashboard settings without separate approval.
+
+## ADR-011 — Initial persistence deletion and state fields
+
+**Status:** Owner-selected for the initial schema draft on 2026-10-23; exact SQL approval and database writes remain gated.
+
+Use recoverable deletion for clothing items and outfits, represented by `deleted_at`; normal application lists must exclude deleted rows, while an owner can restore a row. Store favorite/save/rating state as columns on the records: `clothing_items.is_favorite`, and `outfits.is_favorite`, `outfits.is_saved`, and `outfits.rating`. Do not create separate favorite or rating tables in the initial draft. The draft is `docs/STAGE_B_INITIAL_SCHEMA_DRAFT.sql` and is not applied. A restorable backup/export has not been created or verified. No migration may be applied until the owner confirms a restorable backup/rollback plan and explicitly approves the exact SQL.
 
 ## Open decisions before production integration
 
