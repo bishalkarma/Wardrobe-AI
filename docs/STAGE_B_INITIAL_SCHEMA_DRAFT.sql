@@ -1,6 +1,8 @@
 -- DRAFT FOR OWNER REVIEW — NOT APPLIED.
--- Do not execute until the owner approves this exact change and confirms a
--- restorable backup/rollback plan for the shared Supabase project.
+-- Do not execute without the owner's explicit approval of this exact SQL and
+-- a separate apply instruction. The owner has deferred the backup step due to
+-- the Supabase Free plan; no restorable backup has been verified. Reconfirm
+-- this no-backup risk immediately before any database write.
 --
 -- Scope: initial relational persistence only. This draft creates new tables
 -- in public, leaves all Supabase-managed schemas untouched, and inserts only

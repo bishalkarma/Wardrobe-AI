@@ -60,7 +60,13 @@ Start by inventorying the existing Supabase schema and agreeing the backup/rollb
 
 **Status:** Owner-selected for the initial schema draft on 2026-10-23; exact SQL approval and database writes remain gated.
 
-Use recoverable deletion for clothing items and outfits, represented by `deleted_at`; normal application lists must exclude deleted rows, while an owner can restore a row. Store favorite/save/rating state as columns on the records: `clothing_items.is_favorite`, and `outfits.is_favorite`, `outfits.is_saved`, and `outfits.rating`. Do not create separate favorite or rating tables in the initial draft. The draft is `docs/STAGE_B_INITIAL_SCHEMA_DRAFT.sql` and is not applied. A restorable backup/export has not been created or verified. No migration may be applied until the owner confirms a restorable backup/rollback plan and explicitly approves the exact SQL.
+Use recoverable deletion for clothing items and outfits, represented by `deleted_at`; normal application lists must exclude deleted rows, while an owner can restore a row. Store favorite/save/rating state as columns on the records: `clothing_items.is_favorite`, and `outfits.is_favorite`, `outfits.is_saved`, and `outfits.rating`. Do not create separate favorite or rating tables in the initial draft. The draft is `docs/STAGE_B_INITIAL_SCHEMA_DRAFT.sql` and is not applied. Exact SQL approval and a separate apply instruction are still required.
+
+## ADR-012 — Defer the backup step for Stage B
+
+**Status:** Owner requested deferral on 2026-10-23 because the Supabase Free plan does not provide the desired backup option.
+
+No restorable backup/export has been created or verified. This is a known risk and a deferred safeguard, not approval to run the draft. Before any future apply, restate that no backup is available, obtain explicit approval of the exact SQL, and receive a separate instruction to apply it.
 
 ## Open decisions before production integration
 

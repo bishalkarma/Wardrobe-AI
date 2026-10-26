@@ -18,7 +18,7 @@ The approved North Star is a user completing the full real-wardrobe journey: acc
 Vercel Preview and Production use the same Supabase project. Preview sign-ups create users in the shared Auth system; this is not environment isolation. Use dedicated synthetic accounts. The code does not alter Supabase or Vercel dashboard settings.
 
 ### Phase 2, Stage B — Persistence
-**Discovery complete; initial schema draft prepared for review, not applied.** Read-only inventory found no app-owned tables. The owner selected recoverable deletion for clothing items/outfits and record columns for favorite/save/rating state. The additive SQL draft is `docs/STAGE_B_INITIAL_SCHEMA_DRAFT.sql`. No restorable backup/export has been created or verified, and no database write has occurred. The owner must confirm a restorable backup/rollback plan and explicitly approve the exact SQL before any migration is considered. Do not seed mock demo records into accounts. RLS does not isolate Preview from Production.
+**Discovery complete; initial schema draft prepared for review, not applied.** Read-only inventory found no app-owned tables. The owner selected recoverable deletion for clothing items/outfits and record columns for favorite/save/rating state. The additive SQL draft and visual overview are in `docs/`; neither is applied. The owner deferred the backup step because the Supabase Free plan does not provide the desired backup option; no restorable backup/export has been verified. This deferral does not authorize a migration: exact SQL approval and a separate apply instruction are still required, with the no-backup risk reconfirmed before any write. Do not seed mock demo records into accounts. RLS does not isolate Preview from Production.
 
 ### Phase 2, Stage C — Private photos
 **Not started; requires separate approval.** Add private image selection, validation, upload/retrieval, replacement, and retryable cleanup only after the environment and Storage policy are approved.
@@ -31,7 +31,7 @@ Provider-neutral job readiness and any real provider implementation/evaluation r
 - Automated checks cover TypeScript, production build, redirect/route helpers, and the server-side identity guard.
 - Owner-confirmed Preview checks: sign-up + email confirmation, sign-in/out, session refresh, empty account, and demo separation/navigation.
 - Password recovery remains blocked by a Supabase rate-limit response; deferred at the owner's request.
-- Before any Stage B migration or data write, the owner must confirm a restorable backup/rollback plan and explicitly approve the exact SQL draft. Then test anonymous access and at least two synthetic users, cross-user relationship rejection, create/update/soft-delete/restore, and account cleanup. Do not treat RLS or a successful Preview deployment as Preview/Production data isolation.
+- Before any Stage B migration or data write, reconfirm that the owner has deferred the backup and understands no restorable backup is available; obtain explicit approval of the exact SQL and a separate apply instruction. Then test anonymous access and at least two synthetic users, cross-user relationship rejection, create/update/soft-delete/restore, and account cleanup. Do not treat RLS or a successful Preview deployment as Preview/Production data isolation.
 - Track the full hierarchy and current gates in [`docs/PROJECT_STATUS.md`](PROJECT_STATUS.md).
 
 ## Explicitly deferred

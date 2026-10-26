@@ -13,11 +13,13 @@ Store image bytes in private Supabase Storage, not database rows. Stage C will s
 
 Stage A created no application tables, migrations, or Storage objects. Read-only inventory performed on 2026-10-20 found no app-owned tables or columns in `public`; the broader non-system relation listing contained only Supabase-managed `auth`, `extensions`, `realtime`, `storage`, and `vault` relations. No row data or Vault secret contents were queried.
 
-The existing Supabase project is shared by Vercel Preview and Production. The owner selected it conditionally for Stage B. The agent has no Supabase dashboard/database access, so **no restorable backup/export has been created or verified**. There have been no DDL or data writes. Do not apply anything until the owner both confirms a restorable backup/rollback plan and explicitly approves the exact SQL draft.
+The existing Supabase project is shared by Vercel Preview and Production. The owner selected it conditionally for Stage B. The owner reports that the Supabase Free plan does not provide the desired backup option and has deferred that step for now; **no restorable backup/export has been created or verified**. There have been no DDL or data writes. Backup deferral is not approval to apply SQL.
 
 ## Initial schema draft
 
 The exact additive draft is [`STAGE_B_INITIAL_SCHEMA_DRAFT.sql`](STAGE_B_INITIAL_SCHEMA_DRAFT.sql). It is a documentation artifact, not an executable migration, and has not been run against Supabase.
+
+![Stage B initial schema draft overview](assets/stage-b-schema-overview.png)
 
 The draft contains only these initial tables:
 
@@ -39,15 +41,15 @@ The draft seeds only the five static clothing categories (tops, bottoms, shoes, 
 ### Security and integrity in the draft
 
 - RLS is enabled for every owner table. Owner policies compare the row's `user_id` with `auth.uid()` for reads and writes.
-- The draft revokes `PUBLIC`, `anon`, and `authenticated` table grants, then grants owner-scoped CRUD as needed to `authenticated`; the shared category catalogue is authenticated read-only. It does not alter table-owner/service-role privileges. Authenticated users have no direct hard-delete privilege on clothing items or outfits; those records are retired/restored through `deleted_at`.
+- The draft revokes `PUBLIC`, `anon`, and `authenticated` table grants, then grants owner-scoped privileges as needed to `authenticated`; the shared category catalogue is authenticated read-only. It does not alter table-owner/service-role privileges. Authenticated users have no direct hard-delete privilege on clothing items or outfits; those records are retired/restored through `deleted_at`.
 - Composite foreign keys prevent wardrobe, outfit, and garment links from crossing account ownership.
 - No client-supplied owner identity is trusted. Service-role usage, Storage access, and AI/provider flows are outside this draft.
 
 ## Backup, review, and rollout gates
 
-1. The owner creates or verifies a **restorable** backup/export for the shared Supabase project and confirms the restore/rollback plan. Do not send database passwords, connection strings, or service-role secrets in chat.
-2. The owner reviews [`STAGE_B_INITIAL_SCHEMA_DRAFT.sql`](STAGE_B_INITIAL_SCHEMA_DRAFT.sql) and explicitly approves that exact SQL (or requests revisions).
-3. Only after both conditions are met may a separately directed migration apply be considered. A committed draft, successful Preview build, or earlier schema inventory is not approval to execute it.
+1. **Backup status:** deferred by the owner because of the Free plan. No restorable backup/restore path has been verified. If the owner later obtains one, record its date and restore procedure; do not send credentials or dumps in chat.
+2. **Exact SQL review:** the owner reviews [`STAGE_B_INITIAL_SCHEMA_DRAFT.sql`](STAGE_B_INITIAL_SCHEMA_DRAFT.sql) and explicitly approves that exact text or requests revisions. No approval has been given yet.
+3. **Apply:** backup deferral alone is not permission to execute. A database write requires a separate explicit apply instruction after reconfirming that no restorable backup is available and the exact SQL is approved.
 4. Before broader rollout, test anonymous access and at least two synthetic authenticated users, cross-user relationship rejection, create/update/soft-delete/restore flows, and account cleanup behavior.
 
 Stage C private photos/Storage, real AI, payments, and Production setting changes are not included.

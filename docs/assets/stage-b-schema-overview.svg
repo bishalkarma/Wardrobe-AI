@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1240" viewBox="0 0 1920 1240" role="img" aria-labelledby="title desc">
+  <title id="title">Stage B initial schema draft overview</title>
+  <desc id="desc">A review-only diagram of seven proposed Supabase public tables, relationships, RLS ownership, chosen recoverable deletion and record-column state, and deferred backup status.</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#17243d" flood-opacity="0.09"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9b814d"/>
+    </marker>
+    <style>
+      .sans { font-family: "DejaVu Sans", Arial, sans-serif; }
+      .mono { font-family: "DejaVu Sans Mono", monospace; }
+      .title { font-size: 50px; font-weight: 700; fill: #17243d; }
+      .subtitle { font-size: 23px; font-weight: 400; fill: #536078; }
+      .eyebrow { font-size: 17px; font-weight: 700; letter-spacing: 1.5px; fill: #647087; }
+      .table-title { font-size: 21px; font-weight: 700; fill: #fffdf8; }
+      .field { font-size: 18px; fill: #26334a; }
+      .note-title { font-size: 20px; font-weight: 700; fill: #17243d; }
+      .note { font-size: 18px; fill: #39465c; }
+      .small { font-size: 16px; fill: #536078; }
+      .tag { font-size: 16px; font-weight: 700; fill: #755b2e; }
+    </style>
+  </defs>
+
+  <rect width="1920" height="1240" fill="#f8f7f2"/>
+  <circle cx="1835" cy="70" r="170" fill="#ece9df" opacity="0.42"/>
+  <circle cx="76" cy="1170" r="150" fill="#e9eee8" opacity="0.54"/>
+
+  <text x="64" y="76" class="sans title">Stage B — Initial Schema Draft</text>
+  <text x="67" y="117" class="sans subtitle">Seven proposed public tables · review only · NOT APPLIED</text>
+  <rect x="1550" y="48" width="306" height="54" rx="27" fill="#f2ead8" stroke="#b89b62" stroke-width="1.5"/>
+  <text x="1703" y="82" text-anchor="middle" class="sans tag" fill="#755b2e">DRAFT · NO DATABASE WRITES</text>
+
+  <text x="64" y="166" class="sans eyebrow">IDENTITY &amp; OWNER BOUNDARY</text>
+  <g filter="url(#shadow)">
+    <rect x="64" y="185" width="355" height="130" rx="16" fill="#fffefa" stroke="#315b4d" stroke-width="2"/>
+    <path d="M80 185h323a16 16 0 0 1 16 16v34H64v-34a16 16 0 0 1 16-16z" fill="#315b4d"/>
+    <text x="241" y="216" text-anchor="middle" class="sans table-title">Supabase Auth</text>
+    <text x="241" y="277" text-anchor="middle" class="mono field">auth.users</text>
+
+    <rect x="444" y="185" width="1412" height="130" rx="16" fill="#fffefa" stroke="#d8d1bf" stroke-width="2"/>
+    <text x="478" y="224" class="sans note-title">Every user-owned row carries <tspan class="mono">user_id</tspan> → <tspan class="mono">auth.users.id</tspan></text>
+    <text x="478" y="264" class="sans note">RLS enforces <tspan class="mono">user_id = auth.uid()</tspan> for owner-scoped access.</text>
+    <text x="478" y="293" class="sans small">Composite foreign keys keep wardrobe, outfit, and garment links within the same account.</text>
+  </g>
+
+  <text x="64" y="363" class="sans eyebrow">PROFILE &amp; WARDROBE TABLES</text>
+  <g filter="url(#shadow)">
+    <rect x="64" y="384" width="412" height="226" rx="15" fill="#fffefa" stroke="#cbd6ce" stroke-width="2"/>
+    <path d="M79 384h382a15 15 0 0 1 15 15v39H64v-39a15 15 0 0 1 15-15z" fill="#315b4d"/>
+    <text x="88" y="418" class="mono table-title">user_profiles</text>
+    <text x="88" y="476" class="mono field">user_id → auth.users.id</text>
+    <text x="88" y="511" class="mono field">display_name</text>
+    <text x="88" y="546" class="mono field">preferred_units</text>
+    <text x="88" y="581" class="small">Created on demand · no signup trigger</text>
+
+    <rect x="496" y="384" width="412" height="226" rx="15" fill="#fffefa" stroke="#cbd6ce" stroke-width="2"/>
+    <path d="M511 384h382a15 15 0 0 1 15 15v39H496v-39a15 15 0 0 1 15-15z" fill="#315b4d"/>
+    <text x="520" y="418" class="mono table-title">style_preferences</text>
+    <text x="520" y="476" class="mono field">user_id → auth.users.id</text>
+    <text x="520" y="511" class="mono field">preferred_style</text>
+    <text x="520" y="546" class="mono field">color_palette · fit_preference</text>
+    <text x="520" y="581" class="small">Created on demand · one row per user</text>
+
+    <rect x="928" y="384" width="412" height="226" rx="15" fill="#fffefa" stroke="#cbd6ce" stroke-width="2"/>
+    <path d="M943 384h382a15 15 0 0 1 15 15v39H928v-39a15 15 0 0 1 15-15z" fill="#315b4d"/>
+    <text x="952" y="418" class="mono table-title">wardrobes</text>
+    <text x="952" y="476" class="mono field">id · user_id → auth.users.id</text>
+    <text x="952" y="511" class="mono field">name</text>
+    <text x="952" y="546" class="sans note">One wardrobe per user</text>
+    <text x="952" y="581" class="small">Created when first needed</text>
+
+    <rect x="1360" y="384" width="496" height="226" rx="15" fill="#fffefa" stroke="#d6c59f" stroke-width="2"/>
+    <path d="M1375 384h466a15 15 0 0 1 15 15v39h-496v-39a15 15 0 0 1 15-15z" fill="#9a7b3e"/>
+    <text x="1384" y="418" class="mono table-title">clothing_categories</text>
+    <text x="1384" y="476" class="mono field">id · parent_id · label</text>
+    <text x="1384" y="511" class="sans note">Five shared UI categories only</text>
+    <text x="1384" y="546" class="sans note">Authenticated read-only</text>
+    <text x="1384" y="581" class="small">No sample wardrobe items</text>
+  </g>
+
+  <text x="64" y="660" class="sans eyebrow">GARMENTS &amp; OUTFITS · RELATIONSHIP FIELDS ARE SHOWN INLINE</text>
+  <g filter="url(#shadow)">
+    <rect x="64" y="680" width="590" height="260" rx="15" fill="#fffefa" stroke="#cbd6ce" stroke-width="2"/>
+    <path d="M79 680h560a15 15 0 0 1 15 15v39H64v-39a15 15 0 0 1 15-15z" fill="#315b4d"/>
+    <text x="88" y="714" class="mono table-title">clothing_items</text>
+    <text x="88" y="772" class="mono field">id · user_id → auth.users.id</text>
+    <text x="88" y="807" class="mono field">wardrobe_id → wardrobes.id</text>
+    <text x="88" y="842" class="mono field">category_id → clothing_categories.id</text>
+    <text x="88" y="877" class="mono field">garment metadata · season · occasions</text>
+    <rect x="88" y="895" width="262" height="31" rx="15" fill="#e7efe9"/>
+    <text x="219" y="917" text-anchor="middle" class="mono small">is_favorite · deleted_at</text>
+
+    <rect x="674" y="680" width="542" height="260" rx="15" fill="#fffefa" stroke="#d6c59f" stroke-width="2"/>
+    <path d="M689 680h512a15 15 0 0 1 15 15v39H674v-39a15 15 0 0 1 15-15z" fill="#9a7b3e"/>
+    <text x="698" y="714" class="mono table-title">outfit_items</text>
+    <text x="698" y="772" class="mono field">user_id</text>
+    <text x="698" y="807" class="mono field">outfit_id → outfits.id</text>
+    <text x="698" y="842" class="mono field">clothing_item_id → clothing_items.id</text>
+    <text x="698" y="877" class="mono field">slot · position</text>
+    <text x="698" y="914" class="sans small">Same-owner composite foreign keys</text>
+
+    <rect x="1236" y="680" width="620" height="260" rx="15" fill="#fffefa" stroke="#cbd6ce" stroke-width="2"/>
+    <path d="M1251 680h590a15 15 0 0 1 15 15v39h-620v-39a15 15 0 0 1 15-15z" fill="#315b4d"/>
+    <text x="1260" y="714" class="mono table-title">outfits</text>
+    <text x="1260" y="772" class="mono field">id · user_id → auth.users.id</text>
+    <text x="1260" y="807" class="mono field">name · occasion · style · reason</text>
+    <text x="1260" y="842" class="mono field">is_saved · is_favorite · rating (1–5)</text>
+    <rect x="1260" y="872" width="180" height="34" rx="17" fill="#e7efe9"/>
+    <text x="1350" y="895" text-anchor="middle" class="mono small">deleted_at</text>
+    <text x="1460" y="895" class="small">Soft-delete; no direct user DELETE</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="64" y="974" width="1792" height="178" rx="18" fill="#fffefa" stroke="#d8d1bf" stroke-width="2"/>
+    <text x="96" y="1014" class="sans note-title">Selected behavior &amp; scope</text>
+    <line x1="96" y1="1032" x2="1823" y2="1032" stroke="#e6e0d4" stroke-width="2"/>
+    <circle cx="108" cy="1074" r="8" fill="#315b4d"/>
+    <text x="130" y="1081" class="sans note">deleted_at lets owners restore items and outfits</text>
+    <circle cx="720" cy="1074" r="8" fill="#9a7b3e"/>
+    <text x="742" y="1081" class="sans note">Favorites, saved state, rating: record columns</text>
+    <circle cx="1325" cy="1074" r="8" fill="#315b4d"/>
+    <text x="1347" y="1081" class="sans note">No photos, Storage, AI, or demo rows</text>
+    <text x="96" y="1128" class="sans small">This build: SQL + visual draft. Next: owner review/approval → persistence CRUD. Later: private photos + AI. Backup deferred (Free plan); no writes. Preview and Production share this project.</text>
+  </g>
+
+  <text x="1860" y="1208" text-anchor="end" class="sans small">WARDROBE AI · STAGE B REVIEW</text>
+</svg>
