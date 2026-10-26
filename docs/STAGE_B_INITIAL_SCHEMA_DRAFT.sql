@@ -1,8 +1,8 @@
--- DRAFT FOR OWNER REVIEW — NOT APPLIED.
--- Do not execute without the owner's explicit approval of this exact SQL and
--- a separate apply instruction. The owner has deferred the backup step due to
--- the Supabase Free plan; no restorable backup has been verified. Reconfirm
--- this no-backup risk immediately before any database write.
+-- OWNER-APPROVED SQL (2026-10-26) — REVIEW COPY.
+-- The versioned migration is in supabase/migrations/.
+-- The owner deferred the backup step due to the Supabase Free plan; no
+-- restorable backup was verified at approval time. The agent has no database
+-- access. A Vercel build does not apply or roll back database schema or data.
 --
 -- Scope: initial relational persistence only. This draft creates new tables
 -- in public, leaves all Supabase-managed schemas untouched, and inserts only

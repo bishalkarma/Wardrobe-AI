@@ -1,6 +1,6 @@
 # Architecture Decisions
 
-**Last updated:** 2026-10-23
+**Last updated:** 2026-10-26
 
 This log records decisions approved for Wardrobe AI and choices that remain open. New architectural choices should be added here before they are treated as production commitments.
 
@@ -53,20 +53,27 @@ Use the existing Supabase project; do not create another project. Vercel Preview
 
 ## ADR-010 — Begin Stage B with database discovery and safety review
 
-**Status:** Owner approved Stage B discovery/design on 2026-10-20 and selected the existing shared project conditionally; database writes remain gated.
-Start by inventorying the existing Supabase schema and agreeing the backup/rollback plan. Preview and Production share the same project, so do not assume deployment isolation from RLS alone. No migration should be applied until the live schema is verified and the owner confirms the exact change. Do not create another Supabase project or alter dashboard settings without separate approval.
+**Status:** Owner approved Stage B discovery/design on 2026-10-20, selected the existing shared project conditionally, and approved the exact initial schema on 2026-10-26. The migration is staged but not applied because this workspace has no Supabase database access.
+
+The read-only inventory found no app-owned tables. Preview and Production share the same project, so do not assume deployment isolation from RLS alone. The owner waived/deferred backup due to the Free plan. Do not create another Supabase project or alter dashboard settings without separate approval.
 
 ## ADR-011 — Initial persistence deletion and state fields
 
-**Status:** Owner-selected for the initial schema draft on 2026-10-23; exact SQL approval and database writes remain gated.
+**Status:** Exact SQL approved and build requested by the owner on 2026-10-26; migration is prepared but not applied.
 
 Use recoverable deletion for clothing items and outfits, represented by `deleted_at`; normal application lists must exclude deleted rows, while an owner can restore a row. Store favorite/save/rating state as columns on the records: `clothing_items.is_favorite`, and `outfits.is_favorite`, `outfits.is_saved`, and `outfits.rating`. Do not create separate favorite or rating tables in the initial draft. The draft is `docs/STAGE_B_INITIAL_SCHEMA_DRAFT.sql` and is not applied. Exact SQL approval and a separate apply instruction are still required.
 
 ## ADR-012 — Defer the backup step for Stage B
 
-**Status:** Owner requested deferral on 2026-10-23 because the Supabase Free plan does not provide the desired backup option.
+**Status:** Owner waived/deferred the backup requirement on 2026-10-26 because the Supabase Free plan does not provide the desired backup option.
 
-No restorable backup/export has been created or verified. This is a known risk and a deferred safeguard, not approval to run the draft. Before any future apply, restate that no backup is available, obtain explicit approval of the exact SQL, and receive a separate instruction to apply it.
+No restorable backup/export has been created or verified. The owner approved the SQL and asked to proceed; the migration is staged in the repository but has not been executed because the agent has no database access.
+
+## ADR-013 — Application builds do not roll back database changes
+
+**Status:** Clarification recorded on 2026-10-26.
+
+A Vercel build number identifies an application deployment. Rolling back that build does not undo SQL migrations or restore database data. Database rollback is a separate operation, and dropping tables after user data has been written can permanently destroy that data.
 
 ## Open decisions before production integration
 

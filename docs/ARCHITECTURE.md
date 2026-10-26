@@ -32,7 +32,7 @@ Sign-up and recovery requests pass an explicit callback URL built from the curre
 
 The owner confirmed that Vercel Preview and Production use the **same Supabase project**. Preview is therefore not isolated from Production: preview sign-ups and confirmations create accounts in the shared Auth system, and Auth configuration is project-wide. Stage A added no application tables or Storage objects, but Auth user records and email activity are shared. Test Preview with dedicated synthetic accounts; do not describe it as a separate database or Auth environment.
 
-Stage B discovery/design is approved, but no application persistence or migrations are implemented/applied. Read-only inventory found no app-owned tables. The owner has deferred the backup step because of the Supabase Free plan; no restorable backup is verified. Before any write, obtain explicit approval of the exact SQL and a separate apply instruction, and reconfirm the no-backup risk. RLS does not separate Preview from Production.
+The initial Stage B schema is owner-approved and the migration is staged in `supabase/migrations/`, but no application persistence is implemented and the migration has not been applied. Read-only inventory found no app-owned tables. The owner waived/deferred the backup step because of the Supabase Free plan; no restorable backup is verified. This workspace has no Supabase database access. Vercel build rollback affects app code only, not database schema or data. RLS does not separate Preview from Production.
 
 ## Phase 1 demo implementation boundary
 
