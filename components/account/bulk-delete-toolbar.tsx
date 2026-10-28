@@ -11,7 +11,15 @@ function getSelectionInputs(): HTMLInputElement[] {
     .filter((input) => input.form === form);
 }
 
-export function BulkDeleteToolbar({ visibleCount }: { visibleCount: number }) {
+export function BulkDeleteToolbar({
+  visibleCount,
+  selectionMode,
+  onCancel,
+}: {
+  visibleCount: number;
+  selectionMode: boolean;
+  onCancel: () => void;
+}) {
   const [selectedCount, setSelectedCount] = useState(0);
 
   useEffect(() => {
@@ -35,7 +43,7 @@ export function BulkDeleteToolbar({ visibleCount }: { visibleCount: number }) {
   const allVisibleSelected = visibleCount > 0 && selectedCount === visibleCount;
 
   return (
-    <form id={WARDROBE_BULK_DELETE_FORM_ID} action={deleteSelectedClothingItemsAction} className="account-bulk-delete-toolbar">
+    <form id={WARDROBE_BULK_DELETE_FORM_ID} action={deleteSelectedClothingItemsAction} className="account-bulk-delete-toolbar" aria-hidden={!selectionMode}>
       <div className="account-bulk-delete-copy">
         <strong>Delete several pieces at once</strong>
         <span>Selected pieces move to your recoverable Archive. Outfit links stay intact.</span>
@@ -44,6 +52,7 @@ export function BulkDeleteToolbar({ visibleCount }: { visibleCount: number }) {
         <button className="button button-quiet button-small" type="button" onClick={toggleAllVisible} disabled={visibleCount === 0}>
           <CheckCheck size={14} />{allVisibleSelected ? "Clear selection" : "Select all visible"}
         </button>
+        <button className="button button-quiet button-small" type="button" onClick={onCancel}>Cancel</button>
         <button className="button button-danger button-small" type="submit" disabled={selectedCount === 0}>
           <Trash2 size={14} />Delete selected{selectedCount > 0 ? ` (${selectedCount})` : ""}
         </button>
