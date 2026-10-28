@@ -21,7 +21,7 @@ Account identifiers, profile details, style preferences, wardrobe metadata, and 
 
 - All seven public tables have RLS enabled. Owner policies compare `user_id` with `auth.uid()`; the static clothing-category table is authenticated read-only.
 - Server Components and Server Actions use the cookie-backed Supabase SSR client. Queries also include the verified user's UUID as a defense-in-depth filter.
-- The account UI offers a visible Delete action for clothing items and outfits. It sets `deleted_at` and moves the record to a recoverable Archive; restore clears `deleted_at`. The application does not issue direct hard deletes on those records. Archiving a clothing item preserves its outfit links; users may remove outfit-item links when editing an outfit.
+- The account UI offers visible Delete actions for clothing items and outfits. Deleting multiple wardrobe pieces is supported in one request (up to 500 IDs) after server-side UUID validation and owner checks. Delete sets `deleted_at` and moves records to a recoverable Archive; restore clears it. The application does not issue direct hard deletes. Archiving a clothing item preserves its outfit links; users may remove outfit-item links when editing an outfit.
 - Outfit creation validates that selected items are active and belong to the signed-in user; composite foreign keys prevent cross-owner links in the database.
 - Form data is validated server-side. Errors shown to users are generic and do not expose raw database responses.
 - Automated tests cover form validation, safe redirects, and the server-side identity guard. They do not yet prove actual two-user RLS isolation against the live project.

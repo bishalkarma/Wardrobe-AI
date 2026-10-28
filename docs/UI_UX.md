@@ -3,7 +3,7 @@
 **Status:** Phase 1 demo preserved under `/demo/**`; Stage A core Auth flows confirmed in Preview; Stage B authenticated account screens implemented, owner Preview testing next.
 **Last updated:** 2026-10-28
 
-**Current account-build visual:** [Recoverable Delete/Restore update and Preview checks](assets/stage-b-recoverable-delete.png) · [Initial account experience](assets/stage-b-account-build.png)
+**Current account-build visual:** [Bulk multi-select Delete/Restore and Preview checks](assets/stage-b-bulk-delete.png) · [Single-item Delete/Restore](assets/stage-b-recoverable-delete.png) · [Initial account experience](assets/stage-b-account-build.png)
 
 ## Product feel
 
@@ -30,7 +30,7 @@ A premium consumer fashion product: calm, editorial, practical, and personal. Le
 | `/demo/**` | Clearly labelled, public mock prototype. Preserves the Phase 1 screens and in-memory interactions under `/demo`, `/demo/wardrobe`, `/demo/outfits`, `/demo/profile`, `/demo/profile/photo`, `/demo/stylist`, and `/demo/try-on`. |
 | `/` | Protected account dashboard with current-user counts, first-use guidance, and recent account records. Starts with no user-data rows. |
 | `/profile` | Protected email identity and server-saved display name, units, and style preferences. Personal photos remain unavailable. |
-| `/wardrobe/**` | Protected active/trash lists, add/edit/detail pages, favorites, and recoverable archive/restore for account-owned clothing metadata. No image uploads. |
+| `/wardrobe/**` | Protected active/trash lists, add/edit/detail pages, favorites, per-item and multi-select recoverable Delete/Restore for account-owned clothing metadata. No image uploads. |
 | `/outfits/**` | Protected outfit creation from the user's active wardrobe items, editing, saved/favorite/rating state, detail, and archive/restore. |
 | `/stylist`, `/try-on`, `/profile/photo` | Protected, explicit not-yet-available states. No AI calls, personal photo uploads, or demo data are shown as real account results. |
 
@@ -43,7 +43,7 @@ The five approved primary destinations remain Home, Wardrobe, Outfits, AI Stylis
 - In `/demo/**`, search, add, edit, delete, favorite, ratings, and preferences remain temporary in-memory mock interactions and reset on refresh.
 - Sign-up and sign-in use real email/password Auth; sign-up explains the confirmation-email step and errors remain recoverable.
 - Authenticated account data is read and written by session-bound server components/actions under RLS. The server derives the user ID; the browser never supplies the authorization identity. New accounts are empty until their owner saves data.
-- The visible Delete action for an active wardrobe item or outfit moves it into the recoverable Archive; the user can restore it later. It does not permanently erase database rows. Deleting a clothing item this way preserves outfit links. Outfit selection is limited to active items from the same account.
+- The visible Delete action for an active wardrobe item or outfit moves it into the recoverable Archive; the user can restore it later. The wardrobe also supports selecting multiple visible active pieces (or Select all visible) and deleting them in one action. It does not permanently erase database rows. Deleting clothing this way preserves outfit links. Outfit selection is limited to active items from the same account.
 - Stylist and try-on examples remain demo-only and do not make real AI calls or claim a mock image is a generated result. The authenticated stylist/try-on routes are unavailable states.
 
 ## Deferred

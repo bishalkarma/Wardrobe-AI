@@ -5,7 +5,7 @@
 
 **Product goal:** Help someone use the clothes they actually own—from account and wardrobe setup through outfit recommendations and, later, try-on.
 
-**Visuals:** [Recoverable Delete/Restore update](assets/stage-b-recoverable-delete.png) · [Current account build and next steps](assets/stage-b-account-build.png) · [Applied schema and database verification](assets/stage-b-schema-live.png) · [Field-by-field schema overview](assets/stage-b-schema-overview.png)
+**Visuals:** [Bulk multi-select Delete/Restore update](assets/stage-b-bulk-delete.png) · [Recoverable Delete/Restore update](assets/stage-b-recoverable-delete.png) · [Current account build and next steps](assets/stage-b-account-build.png) · [Applied schema and database verification](assets/stage-b-schema-live.png) · [Field-by-field schema overview](assets/stage-b-schema-overview.png)
 
 ## Delivery hierarchy
 
@@ -24,8 +24,8 @@
 1. **B0 — Environment and schema discovery:** Complete. Read-only inventory initially found no app-owned tables. Preview and Production share the selected Supabase project.
 2. **B1 — Domain model and review:** Complete. The owner approved recoverable item/outfit deletion and record columns for favorite/save/rating.
 3. **B2 — Migration and RLS:** Complete. Migration `stage_b_initial_schema` (`20261028162903`) was applied and verified: all seven public tables exist, RLS is enabled on each, seven policies are present, and only five static categories were inserted. User-data tables had zero rows at verification.
-4. **B3 — Application persistence:** Implemented in this branch. The account home reads real counts and recent records; users can save profile/preferences, add/edit/favorite clothing items, use the visible recoverable Delete/Restore flow, and create/edit/save/favorite/rate outfits composed only of their active account items with the same recoverable Delete/Restore flow. `/demo/**` remains isolated.
-5. **B4 — Verification and rollout:** Pending owner sign-in on Preview and tests of create/edit/favorite/archive/restore plus outfits. Automated validation tests pass; anonymous and two-user cross-account behavior still needs live verification. RLS does not isolate Preview from Production.
+4. **B3 — Application persistence:** Implemented in this branch. The account home reads real counts and recent records; users can save profile/preferences, add/edit/favorite clothing items, delete one or multiple active pieces into the recoverable Archive, and restore them; outfits are composed only of their active account items with the same recoverable Delete/Restore flow. `/demo/**` remains isolated.
+5. **B4 — Verification and rollout:** Pending owner sign-in on Preview and tests of create/edit/favorite, single and bulk Delete/Restore, and outfit flows. Automated validation tests pass; anonymous and two-user cross-account behavior still needs live verification. RLS does not isolate Preview from Production.
 
 ## Safety gates and known constraints
 

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Archive, Plus, Search, ShieldCheck, Shirt } from "lucide-react";
 import { ActionFeedback, DataUnavailable, EmptyAccountState } from "@/components/account/feedback";
+import { BulkDeleteToolbar } from "@/components/account/bulk-delete-toolbar";
+import { WARDROBE_BULK_DELETE_FORM_ID } from "@/components/account/record-utils";
 import { WardrobeRecord } from "@/components/account/wardrobe-record";
 import { PageHeading } from "@/components/ui";
 import { requireAccountContext } from "@/lib/data/account";
@@ -65,9 +67,11 @@ export default async function WardrobePage({ searchParams }: { searchParams: Sea
         </form>
       )}
 
+      {view === "active" && shown.length > 0 && <BulkDeleteToolbar visibleCount={shown.length} />}
+
       {shown.length ? (
         <div className="account-record-list">
-          {shown.map((item) => <WardrobeRecord key={item.id} item={item} categoryLabel={categoryLabels.get(item.category_id) ?? "Clothing"} />)}
+          {shown.map((item) => <WardrobeRecord key={item.id} item={item} categoryLabel={categoryLabels.get(item.category_id) ?? "Clothing"} selectionFormId={view === "active" ? WARDROBE_BULK_DELETE_FORM_ID : undefined} />)}
         </div>
       ) : view === "active" && activeCount === 0 ? (
         <EmptyAccountState title="Start with one piece you love" description="Add the clothes you already own. This space uses only pieces you enter for this signed-in account; photos and AI are not enabled yet." actionHref="/wardrobe/new" actionLabel="Add your first piece" />

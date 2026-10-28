@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAccountContext } from "@/lib/data/account";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { isUuid, parseClothingForm } from "@/lib/data/validation";
+import { isUuid, parseClothingForm, parseUuidSelection } from "@/lib/data/validation";
 
 type ServerSupabase = Awaited<ReturnType<typeof createSupabaseServerClient>>;
 
@@ -126,6 +126,41 @@ export async function toggleItemFavoriteAction(formData: FormData): Promise<void
   revalidatePath("/");
   revalidatePath("/wardrobe");
   redirect("/wardrobe?notice=item-state-saved");
+}
+
+export async function deleteSelectedClothingItemsAction(formData: FormData): Promise<void> {
+  const parsed = parseUuidSelection(formData, "itemIds");
+  if (!parsed.ok) {
+    if (parsed.reason === "empty-selection") redirect("/wardrobe?error=selection");
+    if (parsed.reason === "selection-too-large") redirect("/wardrobe?error=selection-limit");
+    redirect("/wardrobe?error=invalid");
+  }
+
+  const { supabase, user } = await requireAccountContext();
+  const { data: ownedActiveItems, error: lookupError } = await supabase
+    .from("clothing_items")
+    .select("id")
+    .eq("user_id", user.id)
+    .is("deleted_at", null)
+    .in("id", parsed.value);
+  if (lookupError) redirect("/wardrobe?error=save");
+  if (!ownedActiveItems || ownedActiveItems.length !== parsed.value.length) redirect("/wardrobe?error=missing");
+
+  const deletedAt = new Date().toISOString();
+  const { data: updatedItems, error: updateError } = await supabase
+    .from("clothing_items")
+    .update({ deleted_at: deletedAt, updated_at: deletedAt })
+    .eq("user_id", user.id)
+    .is("deleted_at", null)
+    .in("id", parsed.value)
+    .select("id");
+  if (updateError) redirect("/wardrobe?error=save");
+  if (!updatedItems?.length) redirect("/wardrobe?error=missing");
+
+  revalidatePath("/");
+  revalidatePath("/wardrobe");
+  revalidatePath("/outfits");
+  redirect("/wardrobe?view=trash&notice=items-deleted");
 }
 
 export async function archiveItemAction(formData: FormData): Promise<void> {

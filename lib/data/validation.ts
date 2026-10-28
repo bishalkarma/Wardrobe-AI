@@ -67,6 +67,19 @@ export function isUuid(value: string): boolean {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
 }
 
+export const MAX_BULK_SELECTION = 500;
+
+export function parseUuidSelection(formData: FormData, fieldName: string, maximum = MAX_BULK_SELECTION): FormResult<string[]> {
+  const ids = [...new Set(formData.getAll(fieldName)
+    .filter((value): value is string => typeof value === "string")
+    .map((value) => value.trim())
+    .filter(Boolean))];
+  if (ids.length === 0) return { ok: false, reason: "empty-selection" };
+  if (ids.length > maximum) return { ok: false, reason: "selection-too-large" };
+  if (ids.some((id) => !isUuid(id))) return { ok: false, reason: "invalid-selection" };
+  return { ok: true, value: ids };
+}
+
 export function parseClothingForm(formData: FormData): FormResult<ClothingFormValue> {
   const name = textField(formData, "name");
   if (!name || name.length > 120) return { ok: false, reason: "invalid-name" };

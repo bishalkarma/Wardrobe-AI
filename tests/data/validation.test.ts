@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseClothingForm, parseOutfitForm, parseProfileForm } from "../../lib/data/validation";
+import { parseClothingForm, parseOutfitForm, parseProfileForm, parseUuidSelection } from "../../lib/data/validation";
 
 function form(entries: Record<string, string | string[]>): FormData {
   const data = new FormData();
@@ -62,6 +62,20 @@ describe("account form validation", () => {
     expect(result).toMatchObject({ ok: true, value: { name: "Office layers", itemIds: [itemOne, itemTwo] } });
     expect(parseOutfitForm(form({ name: "Empty look" })).ok).toBe(false);
     expect(parseOutfitForm(form({ name: "Bad look", itemIds: "not-a-uuid" })).ok).toBe(false);
+  });
+
+  it("deduplicates valid bulk wardrobe selections", () => {
+    expect(parseUuidSelection(form({ itemIds: [itemOne, itemOne, itemTwo] }), "itemIds")).toEqual({
+      ok: true,
+      value: [itemOne, itemTwo],
+    });
+  });
+
+  it("rejects empty, malformed, and oversized bulk selections", () => {
+    expect(parseUuidSelection(form({}), "itemIds")).toMatchObject({ ok: false, reason: "empty-selection" });
+    expect(parseUuidSelection(form({ itemIds: [itemOne, "not-a-uuid"] }), "itemIds")).toMatchObject({ ok: false, reason: "invalid-selection" });
+    const tooMany = Array.from({ length: 501 }, (_, index) => `00000000-0000-4000-8000-${index.toString(16).padStart(12, "0")}`);
+    expect(parseUuidSelection(form({ itemIds: tooMany }), "itemIds")).toMatchObject({ ok: false, reason: "selection-too-large" });
   });
 
   it("validates outfit update ids", () => {

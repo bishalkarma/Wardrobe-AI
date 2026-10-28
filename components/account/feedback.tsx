@@ -7,6 +7,7 @@ const notices: Record<string, string> = {
   "item-updated": "Your clothing details have been updated.",
   "item-state-saved": "Your favorite setting has been updated.",
   "item-archived": "Your piece was deleted from the active wardrobe and moved to the recoverable archive.",
+  "items-deleted": "Selected pieces were deleted from the active wardrobe and moved to the recoverable archive.",
   "item-restored": "Your piece has been restored to your wardrobe.",
   "outfit-added": "Your outfit has been saved to your account.",
   "outfit-updated": "Your outfit has been updated.",
@@ -20,6 +21,8 @@ const errors: Record<string, string> = {
   save: "We couldn’t save that change. Please try again.",
   missing: "That record is no longer available in your account.",
   items: "Choose active pieces from your own wardrobe and try again.",
+  selection: "Select at least one wardrobe piece to delete.",
+  "selection-limit": "Delete up to 500 pieces at a time. Clear your selection and try again.",
   unavailable: "Your account data is temporarily unavailable. Your records have not been changed.",
 };
 

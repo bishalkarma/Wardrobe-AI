@@ -20,7 +20,7 @@ type WardrobeRecord = {
   created_at: string;
 };
 
-export function WardrobeRecord({ item, categoryLabel }: { item: WardrobeRecord; categoryLabel: string }) {
+export function WardrobeRecord({ item, categoryLabel, selectionFormId }: { item: WardrobeRecord; categoryLabel: string; selectionFormId?: string }) {
   const archived = item.deleted_at !== null;
   const detailHref = `/wardrobe/${item.id}${archived ? "?view=trash" : ""}`;
   const details = [item.color, item.subcategory, item.material].filter(Boolean);
@@ -28,6 +28,7 @@ export function WardrobeRecord({ item, categoryLabel }: { item: WardrobeRecord; 
 
   return (
     <article className={`account-record-card${archived ? " is-archived" : ""}`}>
+      {!archived && selectionFormId && <label className="record-select-control"><span className="sr-only">Select {item.name} to delete</span><input type="checkbox" name="itemIds" value={item.id} form={selectionFormId} aria-label={`Select ${item.name} for bulk deletion`} /></label>}
       <Link className="record-mark" href={detailHref} aria-label={`View ${item.name}`}><Shirt size={22} /></Link>
       <div className="account-record-main">
         <div className="account-record-topline">
