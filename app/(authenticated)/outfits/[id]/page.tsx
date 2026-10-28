@@ -1,8 +1,9 @@
+import { ActionFeedback } from "@/components/account/action-feedback";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Bookmark, Heart, RotateCcw, Shirt, Star, Trash2 } from "lucide-react";
 import { archiveOutfitAction, restoreOutfitAction, setOutfitRatingAction, setOutfitStateAction } from "@/app/actions/outfits";
-import { ActionFeedback, DataUnavailable } from "@/components/account/feedback";
+import { DataUnavailable } from "@/components/account/feedback";
 import { OutfitForm } from "@/components/account/outfit-form";
 import { PermanentDeleteForm } from "@/components/account/permanent-delete-form";
 import { PageHeading } from "@/components/ui";

@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { Heart, RotateCcw, Shirt, Trash2 } from "lucide-react";
-import { archiveItemAction, restoreItemAction, toggleItemFavoriteAction } from "@/app/actions/wardrobe";
-import { PermanentDeleteForm } from "@/components/account/permanent-delete-form";
+import { Archive, Heart, RotateCcw, Shirt, Trash2 } from "lucide-react";
+import { restoreItemAction, toggleItemFavoriteAction } from "@/app/actions/wardrobe";
 import { formatDate } from "@/lib/data/account";
 
 type WardrobeRecord = {
@@ -13,7 +12,6 @@ type WardrobeRecord = {
   pattern: string | null;
   material: string | null;
   season: string[];
-  formality: string | null;
   occasions: string[];
   brand: string | null;
   is_favorite: boolean;
@@ -29,7 +27,7 @@ export function WardrobeRecord({ item, categoryLabel, selectionFormId }: { item:
 
   return (
     <article className={`account-record-card${archived ? " is-archived" : ""}`}>
-      {!archived && selectionFormId && <label className="record-select-control"><span className="sr-only">Select {item.name} to delete</span><input type="checkbox" name="itemIds" value={item.id} form={selectionFormId} aria-label={`Select ${item.name} for bulk deletion`} /></label>}
+      {selectionFormId && <label className="record-select-control"><span className="sr-only">Select {item.name} for a bulk action</span><input type="checkbox" name="itemIds" value={item.id} form={selectionFormId} aria-label={`Select ${item.name} for a bulk action`} /></label>}
       <Link className="record-mark" href={detailHref} aria-label={`View ${item.name}`}><Shirt size={22} /></Link>
       <div className="account-record-main">
         <div className="account-record-topline">
@@ -48,10 +46,9 @@ export function WardrobeRecord({ item, categoryLabel, selectionFormId }: { item:
                 <input type="hidden" name="itemId" value={item.id} />
                 <button className="button button-outline button-small" type="submit"><RotateCcw size={14} /> Restore piece</button>
               </form>
-              <details className="inline-confirm permanent-delete-confirm">
-                <summary><Trash2 size={14} /> Delete forever</summary>
-                <PermanentDeleteForm kind="clothing" recordId={item.id} recordName={item.name} />
-              </details>
+              <button className="button button-danger button-small" type="button" data-wardrobe-delete-forever="true" data-record-id={item.id} data-record-name={item.name}>
+                <Trash2 size={14} /> Delete forever
+              </button>
             </>
           ) : (
             <>
@@ -61,14 +58,9 @@ export function WardrobeRecord({ item, categoryLabel, selectionFormId }: { item:
                 <button className={`button button-light button-small${item.is_favorite ? " is-favorite-action" : ""}`} type="submit"><Heart size={14} fill={item.is_favorite ? "currentColor" : "none"} />{item.is_favorite ? "Favorited" : "Favorite"}</button>
               </form>
               <Link className="button button-light button-small" href={`/wardrobe/${item.id}/edit`}>Edit details</Link>
-              <details className="inline-confirm">
-                <summary><Trash2 size={14} /> Delete</summary>
-                <form action={archiveItemAction}>
-                  <input type="hidden" name="itemId" value={item.id} />
-                  <p>This removes the piece from your active wardrobe. It stays in the recoverable archive, and you can restore it later.</p>
-                  <button className="button button-danger button-small" type="submit">Delete piece</button>
-                </form>
-              </details>
+              <button className="button button-light button-small" type="button" data-wardrobe-archive="true" data-record-id={item.id} data-record-name={item.name}>
+                <Archive size={14} /> Archive
+              </button>
             </>
           )}
         </div>

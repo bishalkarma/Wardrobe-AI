@@ -163,6 +163,59 @@ export async function deleteSelectedClothingItemsAction(formData: FormData): Pro
   redirect("/wardrobe?view=trash&notice=items-deleted");
 }
 
+export async function manageArchivedClothingSelectionAction(formData: FormData): Promise<void> {
+  const intent = field(formData, "intent");
+  const parsed = parseUuidSelection(formData, "itemIds");
+  if (!parsed.ok) {
+    if (parsed.reason === "empty-selection") redirect("/wardrobe?view=trash&error=selection");
+    if (parsed.reason === "selection-too-large") redirect("/wardrobe?view=trash&error=selection-limit");
+    redirect("/wardrobe?view=trash&error=invalid");
+  }
+  if (intent !== "restore" && intent !== "permanent-delete") redirect("/wardrobe?view=trash&error=invalid");
+
+  const { supabase, user } = await requireAccountContext();
+  const { data: archivedItems, error: lookupError } = await supabase
+    .from("clothing_items")
+    .select("id")
+    .eq("user_id", user.id)
+    .not("deleted_at", "is", null)
+    .in("id", parsed.value);
+  if (lookupError) redirect("/wardrobe?view=trash&error=save");
+  if (!archivedItems || archivedItems.length !== parsed.value.length) redirect("/wardrobe?view=trash&error=archived-selection");
+
+  if (intent === "restore") {
+    const { data, error } = await supabase
+      .from("clothing_items")
+      .update({ deleted_at: null, updated_at: new Date().toISOString() })
+      .eq("user_id", user.id)
+      .not("deleted_at", "is", null)
+      .in("id", parsed.value)
+      .select("id");
+    if (error) redirect("/wardrobe?view=trash&error=save");
+    if (!data || data.length !== parsed.value.length) redirect("/wardrobe?view=trash&error=missing");
+
+    revalidatePath("/");
+    revalidatePath("/wardrobe");
+    revalidatePath("/outfits");
+    redirect("/wardrobe?view=trash&notice=items-restored");
+  }
+
+  const { data, error } = await supabase
+    .from("clothing_items")
+    .delete()
+    .eq("user_id", user.id)
+    .not("deleted_at", "is", null)
+    .in("id", parsed.value)
+    .select("id");
+  if (error) redirect("/wardrobe?view=trash&error=permanent-delete");
+  if (!data || data.length !== parsed.value.length) redirect("/wardrobe?view=trash&error=missing");
+
+  revalidatePath("/");
+  revalidatePath("/wardrobe");
+  revalidatePath("/outfits");
+  redirect("/wardrobe?view=trash&notice=items-permanently-deleted");
+}
+
 export async function archiveItemAction(formData: FormData): Promise<void> {
   const itemId = field(formData, "itemId");
   if (!isUuid(itemId)) redirect("/wardrobe?error=invalid");

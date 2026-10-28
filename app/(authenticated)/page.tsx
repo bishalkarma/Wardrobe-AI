@@ -1,6 +1,7 @@
+import { ActionFeedback } from "@/components/account/action-feedback";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Bookmark, CheckCircle2, Plus, Shirt, Sparkles, UserRound } from "lucide-react";
-import { ActionFeedback, DataUnavailable, EmptyAccountState } from "@/components/account/feedback";
+import { DataUnavailable, EmptyAccountState } from "@/components/account/feedback";
 import { PageHeading } from "@/components/ui";
 import { firstParam } from "@/components/account/record-utils";
 import { greetingName, requireAccountContext } from "@/lib/data/account";

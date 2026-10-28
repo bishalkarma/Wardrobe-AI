@@ -6,7 +6,7 @@ A mobile-first, PWA-ready wardrobe experience designed around the clothes a pers
 
 ## Current status
 
-**Phase 1 demo preserved; Stage A authentication is implemented and core Preview flows were confirmed. Stage B now includes account-scoped wardrobe/outfit CRUD, recoverable Archive/Restore, and confirmed Delete Forever for archived clothing and outfits. The full app has a Dark Studio Glass visual refresh across account, demo, welcome, and auth flows. Permanent deletion is owner-scoped and RLS-limited to archived records; deleting a garment also removes its outfit links. No account rows were seeded or permanently deleted by the agent. The owner waived the backup step, so no restorable backup/export is verified; Vercel rollback does not undo database changes.** `/welcome` remains public, `/demo/**` remains mock-only, and authenticated data never uses demo records. Personal photos/Storage and real AI styling/try-on remain deferred. Password-recovery rate-limit troubleshooting remains deferred at the owner’s request.
+**Phase 1 demo preserved; Stage A authentication is implemented and core Preview flows were confirmed. Stage B includes account-scoped wardrobe/outfit CRUD, recoverable Archive/Restore, and confirmed Delete Forever for archived clothing and outfits. The full app now supports Dark, Light, and System appearance, animated action confirmations/feedback, and multi-select archive management for clothing. Performance polish removes fixed-background repainting and reduces mobile glass blur, avoids duplicate Auth checks, and narrows account queries. Permanent deletion is owner-scoped and RLS-limited to archived records; deleting a garment also removes its outfit links. No account rows were seeded or permanently deleted by the agent. The owner waived the backup step, so no restorable backup/export is verified; Vercel rollback does not undo database changes.** `/welcome` remains public, `/demo/**` remains mock-only, and authenticated data never uses demo records. Personal photos/Storage and real AI styling/try-on remain deferred. Password-recovery rate-limit troubleshooting remains deferred at the owner’s request.
 
 Vercel Preview and Production currently use the **same Supabase project**. Preview sign-up and confirmation create users in the shared Supabase Auth system; Preview is not isolated from Production. Use dedicated test accounts and do not use Production user credentials for testing.
 
@@ -48,9 +48,9 @@ npm run build
 
 - The authenticated dashboard reads real account counts and recent records, then offers a guided empty state when the user has not added anything.
 - Save a display name, units, fit/style/color preferences to the signed-in profile.
-- Add, edit, and favorite clothing metadata. Press and hold an active piece (or use its context menu) to enter selection mode; then select more pieces or Select all visible and Delete them together. They move to the recoverable Archive, where they can be restored or individually deleted forever after confirmation. Permanent clothing deletion also removes its outfit links.
+- Add, edit, and favorite clothing metadata. Press and hold an active or archived piece (or use its context menu) to enter selection mode. In the active wardrobe, selected pieces move to the recoverable Archive; in Archive, selected pieces can be restored or permanently deleted together after explicit confirmation. The 500-ID limit and owner-scoped archive checks remain in force. Permanent clothing deletion also removes its outfit links.
 - Create outfits only from active pieces owned by the signed-in account. Edit, save/unsave, favorite, rate, archive/restore, and permanently delete archived outfits after confirmation. The first saved piece creates the user's wardrobe container; there are no demo rows or image uploads.
-- The Dark Studio Glass redesign uses an Apple-inspired system font stack, dark translucent surfaces, periwinkle/violet accents, and a floating glass navigation bar on mobile across the account, demo, welcome, and auth experiences.
+- The Dark Studio Glass redesign supports persistent Dark, Light, and Auto/System modes across account, demo, welcome, and auth screens. Spring-like button states, short page arrivals, reduced-motion support, animated confirmation sheets, and action-result toasts provide feedback without relying on heavy full-screen effects.
 - Every Preview write uses the existing Supabase project also used by Production. Owner sign-in and CRUD verification is still pending; the agent did not seed personal account rows.
 
 ## Technology
@@ -77,6 +77,7 @@ docs/                  Architecture, UX, database, AI, security, decisions, road
 - [Stage B schema detail diagram](docs/assets/stage-b-schema-overview.png)
 - [Build #10 pre-apply handoff (historical)](docs/assets/stage-b-migration-handoff.png)
 - [Dark Studio Glass full-app visual direction](docs/assets/stage-b-dark-studio-glass-revamp.png)
+- [Archive multi-select, appearance modes, and action feedback concept](docs/assets/stage-b-archive-themes-motion.png)
 - [Current account build and next steps](docs/assets/stage-b-account-build.png)
 - [Long-press selection mode and bulk Delete/Restore update](docs/assets/stage-b-longpress-selection.png)
 - [Earlier bulk multi-select Delete/Restore update](docs/assets/stage-b-bulk-delete.png)

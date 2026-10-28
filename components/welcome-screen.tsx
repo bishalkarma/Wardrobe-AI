@@ -6,6 +6,7 @@ import { useState } from "react";
 import { ArrowRight, LockKeyhole, Sparkles } from "lucide-react";
 import { AuthForm, type AuthMode } from "@/components/auth/auth-form";
 import { Modal } from "@/components/ui";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export type WelcomeNotice = {
   kind: "success" | "error";
@@ -34,7 +35,7 @@ export function WelcomeScreen({
           <span className="brand-mark" aria-hidden="true"><span /><span /><span /></span>
           <span className="brand-name">wardrobe<span>AI</span></span>
         </Link>
-        <span className="welcome-edition">A MORE PERSONAL WAY TO GET DRESSED</span>
+        <div className="welcome-topbar-actions"><span className="welcome-edition">A MORE PERSONAL WAY TO GET DRESSED</span><ThemeSwitcher /></div>
       </div>
       <div className="welcome-grid">
         <section className="welcome-copy">

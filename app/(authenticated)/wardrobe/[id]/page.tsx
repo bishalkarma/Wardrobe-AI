@@ -1,9 +1,10 @@
+import { ActionFeedback } from "@/components/account/action-feedback";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Heart, RotateCcw, Shirt, Trash2 } from "lucide-react";
 import { archiveItemAction, restoreItemAction, toggleItemFavoriteAction } from "@/app/actions/wardrobe";
 import { PermanentDeleteForm } from "@/components/account/permanent-delete-form";
-import { ActionFeedback, DataUnavailable } from "@/components/account/feedback";
+import { DataUnavailable } from "@/components/account/feedback";
 import { PageHeading } from "@/components/ui";
 import { requireAccountContext, formatDate } from "@/lib/data/account";
 import { isUuid } from "@/lib/data/validation";

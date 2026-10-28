@@ -1,6 +1,6 @@
+import { ActionFeedback } from "@/components/account/action-feedback";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { ActionFeedback } from "@/components/account/feedback";
 import { ClothingForm } from "@/components/account/clothing-form";
 import { PageHeading } from "@/components/ui";
 

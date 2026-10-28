@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Bookmark, Heart, Shirt, Star, Trash2 } from "lucide-react";
 import { archiveOutfitAction, restoreOutfitAction, setOutfitStateAction } from "@/app/actions/outfits";
+import { ConfirmActionForm } from "@/components/account/confirm-action-form";
 import { PermanentDeleteForm } from "@/components/account/permanent-delete-form";
 
 type OutfitRecordData = {
@@ -54,7 +55,15 @@ export function OutfitRecord({ outfit, items }: { outfit: OutfitRecordData; item
               <form action={setOutfitStateAction}><input type="hidden" name="outfitId" value={outfit.id} /><input type="hidden" name="stateKey" value="is_favorite" /><input type="hidden" name="nextValue" value={outfit.is_favorite ? "false" : "true"} /><button className="button button-light button-small" type="submit"><Heart size={14} fill={outfit.is_favorite ? "currentColor" : "none"} />{outfit.is_favorite ? "Unfavorite" : "Favorite"}</button></form>
               <form action={setOutfitStateAction}><input type="hidden" name="outfitId" value={outfit.id} /><input type="hidden" name="stateKey" value="is_saved" /><input type="hidden" name="nextValue" value={outfit.is_saved ? "false" : "true"} /><button className="button button-light button-small" type="submit"><Bookmark size={14} />{outfit.is_saved ? "Unsave" : "Save"}</button></form>
               <Link className="button button-outline button-small" href={`/outfits/${outfit.id}`}>Open</Link>
-              <details className="inline-confirm"><summary><Trash2 size={14} /> Delete</summary><form action={archiveOutfitAction}><input type="hidden" name="outfitId" value={outfit.id} /><p>This removes the outfit from active lists. It stays in the recoverable archive, and you can restore it later.</p><button className="button button-danger button-small" type="submit">Delete outfit</button></form></details>
+              <ConfirmActionForm
+                action={archiveOutfitAction}
+                fieldName="outfitId"
+                recordId={outfit.id}
+                triggerLabel="Archive"
+                title={`Move “${outfit.name}” to Archive?`}
+                description="It will leave your active outfit list but stay recoverable. Its clothing links will be preserved."
+                confirmLabel="Move to Archive"
+              />
             </>
           )}
         </div>

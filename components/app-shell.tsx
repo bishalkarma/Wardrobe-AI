@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bookmark, House, Shirt, Sparkles, UserRound } from "lucide-react";
 import type { ReactNode } from "react";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
 const navigation = [
   { href: "/", label: "Home", icon: House },
@@ -106,6 +107,7 @@ export function AppShell({
           <div className="topbar-brand"><BrandMark mode={mode} /></div>
           <div className="topbar-caption"><span className="topbar-overline">WARDROBE AI</span><span>{caption}</span></div>
           <div className="topbar-actions">
+            <ThemeSwitcher />
             {isDemo ? (
               <Link href="/welcome" className="demo-pill" aria-label="Return to Wardrobe AI welcome page"><span /> Demo · mock data</Link>
             ) : (

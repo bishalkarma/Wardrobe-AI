@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowLeft } from "lucide-react";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export function AuthFlowPage({
   eyebrow,
@@ -20,7 +21,7 @@ export function AuthFlowPage({
           <span className="brand-mark" aria-hidden="true"><span /><span /><span /></span>
           <span className="brand-name">wardrobe<span>AI</span></span>
         </Link>
-        <span className="welcome-edition">ACCOUNT ACCESS</span>
+        <div className="welcome-topbar-actions"><span className="welcome-edition">ACCOUNT ACCESS</span><ThemeSwitcher /></div>
       </div>
       <section className="auth-flow-card">
         <Link className="back-link auth-flow-back" href="/welcome"><ArrowLeft size={15} /> Back to sign in</Link>

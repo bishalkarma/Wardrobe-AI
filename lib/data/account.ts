@@ -1,13 +1,21 @@
 import "server-only";
 
+import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-export async function requireAccountContext() {
+// React's request-scoped cache shares this verified auth lookup between the
+// authenticated layout and the leaf page, avoiding a second Supabase round-trip.
+export const getAccountContext = cache(async () => {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user) redirect("/welcome?error=unavailable");
-  return { supabase, user: data.user };
+  return { supabase, user: error ? null : data.user, error };
+});
+
+export async function requireAccountContext() {
+  const context = await getAccountContext();
+  if (context.error || !context.user) redirect("/welcome?error=unavailable");
+  return { supabase: context.supabase, user: context.user };
 }
 
 export function greetingName(displayName: string | null | undefined, email: string | undefined): string {

@@ -1,7 +1,8 @@
+import { ActionFeedback } from "@/components/account/action-feedback";
 import Link from "next/link";
 import { ArrowRight, LockKeyhole, Palette, Ruler, UserRound } from "lucide-react";
 import { saveProfileAction } from "@/app/actions/profile";
-import { ActionFeedback, DataUnavailable } from "@/components/account/feedback";
+import { DataUnavailable } from "@/components/account/feedback";
 import { PageHeading } from "@/components/ui";
 import { firstParam } from "@/components/account/record-utils";
 import { requireAccountContext } from "@/lib/data/account";

@@ -1,6 +1,7 @@
+import { ActionFeedback } from "@/components/account/action-feedback";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { ActionFeedback, DataUnavailable, EmptyAccountState } from "@/components/account/feedback";
+import { DataUnavailable, EmptyAccountState } from "@/components/account/feedback";
 import { OutfitForm } from "@/components/account/outfit-form";
 import { PageHeading } from "@/components/ui";
 import { firstParam } from "@/components/account/record-utils";

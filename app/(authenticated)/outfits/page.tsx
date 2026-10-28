@@ -1,6 +1,7 @@
+import { ActionFeedback } from "@/components/account/action-feedback";
 import Link from "next/link";
 import { Archive, Bookmark, Heart, Plus, ShieldCheck } from "lucide-react";
-import { ActionFeedback, DataUnavailable, EmptyAccountState } from "@/components/account/feedback";
+import { DataUnavailable, EmptyAccountState } from "@/components/account/feedback";
 import { OutfitRecord } from "@/components/account/outfit-record";
 import { PageHeading } from "@/components/ui";
 import { requireAccountContext } from "@/lib/data/account";
@@ -16,20 +17,28 @@ export default async function OutfitsPage({ searchParams }: { searchParams: Sear
   const view: View = ["saved", "favorites", "all", "trash"].includes(requestedView) ? requestedView as View : "saved";
   const { supabase, user } = await requireAccountContext();
 
-  const [{ data: outfits, error: outfitsError }, { data: clothingItems, error: clothingError }, { data: categories, error: categoriesError }] = await Promise.all([
+  const [{ data: outfits, error: outfitsError }, { count: activeClothingCount, error: clothingError }, { data: categories, error: categoriesError }] = await Promise.all([
     supabase.from("outfits").select("id, name, occasion, style, reason, is_favorite, is_saved, rating, deleted_at, created_at").eq("user_id", user.id).order("created_at", { ascending: false }),
-    supabase.from("clothing_items").select("id, deleted_at").eq("user_id", user.id),
+    supabase.from("clothing_items").select("id", { count: "exact", head: true }).eq("user_id", user.id).is("deleted_at", null),
     supabase.from("clothing_categories").select("id, label").eq("is_active", true),
   ]);
 
-  if (outfitsError || clothingError || categoriesError || !outfits || !clothingItems || !categories) {
+  if (outfitsError || clothingError || categoriesError || !outfits || !categories) {
     return <div className="page-stack"><PageHeading eyebrow="YOUR OUTFITS" title="Saved looks" /><DataUnavailable /></div>;
   }
 
   const activeOutfits = outfits.filter((outfit) => outfit.deleted_at === null);
   const archivedOutfits = outfits.filter((outfit) => outfit.deleted_at !== null);
-  const activeClothingItems = clothingItems.filter((item) => item.deleted_at === null);
-  const outfitIds = outfits.map((outfit) => outfit.id);
+  const counts = {
+    saved: activeOutfits.filter((outfit) => outfit.is_saved).length,
+    favorites: activeOutfits.filter((outfit) => outfit.is_favorite).length,
+    all: activeOutfits.length,
+    trash: archivedOutfits.length,
+  };
+  const shown = view === "trash"
+    ? archivedOutfits
+    : activeOutfits.filter((outfit) => view === "all" || (view === "favorites" ? outfit.is_favorite : outfit.is_saved));
+  const outfitIds = shown.map((outfit) => outfit.id);
   const { data: links, error: linksError } = outfitIds.length
     ? await supabase.from("outfit_items").select("outfit_id, clothing_item_id").eq("user_id", user.id).in("outfit_id", outfitIds)
     : { data: [], error: null };
@@ -57,17 +66,9 @@ export default async function OutfitsPage({ searchParams }: { searchParams: Sear
     pieceLists.set(link.outfit_id, current);
   }
 
-  const counts = {
-    saved: activeOutfits.filter((outfit) => outfit.is_saved).length,
-    favorites: activeOutfits.filter((outfit) => outfit.is_favorite).length,
-    all: activeOutfits.length,
-    trash: archivedOutfits.length,
-  };
-  const shown = view === "trash"
-    ? archivedOutfits
-    : activeOutfits.filter((outfit) => view === "all" || (view === "favorites" ? outfit.is_favorite : outfit.is_saved));
-  const createHref = activeClothingItems.length ? "/outfits/new" : "/wardrobe/new";
-  const createLabel = activeClothingItems.length ? "Create an outfit" : "Add your first piece";
+  const hasActiveClothing = (activeClothingCount ?? 0) > 0;
+  const createHref = hasActiveClothing ? "/outfits/new" : "/wardrobe/new";
+  const createLabel = hasActiveClothing ? "Create an outfit" : "Add your first piece";
 
   return (
     <div className="page-stack account-page">
@@ -85,7 +86,7 @@ export default async function OutfitsPage({ searchParams }: { searchParams: Sear
         <div className="account-outfit-list">{shown.map((outfit) => <OutfitRecord key={outfit.id} outfit={outfit} items={pieceLists.get(outfit.id) ?? []} />)}</div>
       ) : view === "trash" ? (
         <EmptyAccountState title="No archived outfits" description="Restore an archived outfit or permanently delete it from here." actionHref="/outfits?view=all" actionLabel="Back to active outfits" />
-      ) : activeClothingItems.length === 0 ? (
+      ) : !hasActiveClothing ? (
         <EmptyAccountState title="Add your own pieces first" description="Outfits are assembled only from active garments in your account. Add your first piece to begin." actionHref="/wardrobe/new" actionLabel="Add a wardrobe piece" />
       ) : view === "saved" && counts.all > counts.saved ? (
         <EmptyAccountState title="No saved looks yet" description="You have an outfit that is not marked saved. Browse all outfits or create another look from your wardrobe." actionHref="/outfits?view=all" actionLabel="Browse all outfits" />

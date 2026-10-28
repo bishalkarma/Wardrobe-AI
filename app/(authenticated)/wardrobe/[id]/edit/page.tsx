@@ -1,7 +1,8 @@
+import { ActionFeedback } from "@/components/account/action-feedback";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { ActionFeedback, DataUnavailable } from "@/components/account/feedback";
+import { DataUnavailable } from "@/components/account/feedback";
 import { ClothingForm } from "@/components/account/clothing-form";
 import { PageHeading } from "@/components/ui";
 import { requireAccountContext } from "@/lib/data/account";
