@@ -30,7 +30,7 @@ The existing Supabase project is shared by Vercel Preview and Production. The ow
 
 - Versioned migration: [`supabase/migrations/20261028162903_stage_b_initial_schema.sql`](../supabase/migrations/20261028162903_stage_b_initial_schema.sql)
 - Owner-approved SQL copy: [`STAGE_B_INITIAL_SCHEMA_DRAFT.sql`](STAGE_B_INITIAL_SCHEMA_DRAFT.sql)
-- Current account build and next steps: [account persistence visual](assets/stage-b-account-build.png)
+- Current account build: [recoverable Delete/Restore update](assets/stage-b-recoverable-delete.png) · [account persistence visual](assets/stage-b-account-build.png)
 - Applied schema status: [database verification visual](assets/stage-b-schema-live.png)
 - Field-by-field overview: [schema detail diagram](assets/stage-b-schema-overview.png)
 
@@ -48,8 +48,9 @@ The migration creates seven tables: `user_profiles`, `style_preferences`, `wardr
 - Protected Server Components use the SSR Supabase client and query only after verifying the current Auth user. Server Actions derive `user_id` from `auth.getUser()`; they never accept a form-supplied owner ID as authorization.
 - Reads and writes use the public anon key with the signed-in session; no service-role key is used. RLS is the database authorization boundary, with explicit `user_id` filters for defense in depth.
 - The dashboard reads real per-user counts and recent rows. Profile/preferences save on demand. The first clothing item creates the account's one wardrobe if needed.
-- Wardrobe items can be added, edited, favorited, archived, and restored. No image field or demo image is used.
-- Outfits can be created from verified active items owned by that user, edited, saved/unsaved, favorited, rated, archived, and restored. Composite foreign keys enforce same-owner outfit/item relationships.
+- Wardrobe items can be added, edited, and favorited. The visible Delete action sets `deleted_at` (recoverable Archive), and restore clears it. No image field or demo image is used.
+- Outfits can be created from verified active items owned by that user, edited, saved/unsaved, favorited, rated, deleted to the recoverable Archive, and restored. Composite foreign keys enforce same-owner outfit/item relationships.
+- Delete is not a permanent erase: no direct authenticated hard-delete grant exists for clothing items or outfits. Archiving a garment preserves its outfit links so they can return when the garment is restored.
 - The outfit plus its link rows are currently written in separate Supabase requests, not one database transaction. If link creation fails, the app attempts to archive the newly created outfit rather than hard-delete it. An RPC/transaction can be considered if live testing shows it is needed.
 - The stylist, try-on, photo-upload, Storage, and AI routes remain explicit deferred states.
 

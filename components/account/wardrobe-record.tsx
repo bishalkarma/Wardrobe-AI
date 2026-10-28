@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Archive, Heart, RotateCcw, Shirt } from "lucide-react";
+import { Heart, RotateCcw, Shirt, Trash2 } from "lucide-react";
 import { archiveItemAction, restoreItemAction, toggleItemFavoriteAction } from "@/app/actions/wardrobe";
 import { formatDate } from "@/lib/data/account";
 
@@ -54,11 +54,11 @@ export function WardrobeRecord({ item, categoryLabel }: { item: WardrobeRecord; 
               </form>
               <Link className="button button-light button-small" href={`/wardrobe/${item.id}/edit`}>Edit details</Link>
               <details className="inline-confirm">
-                <summary><Archive size={14} /> Archive</summary>
+                <summary><Trash2 size={14} /> Delete</summary>
                 <form action={archiveItemAction}>
                   <input type="hidden" name="itemId" value={item.id} />
-                  <p>This hides the piece from your active wardrobe. You can restore it later.</p>
-                  <button className="button button-danger button-small" type="submit">Move to archive</button>
+                  <p>This removes the piece from your active wardrobe. It stays in the recoverable archive, and you can restore it later.</p>
+                  <button className="button button-danger button-small" type="submit">Delete piece</button>
                 </form>
               </details>
             </>

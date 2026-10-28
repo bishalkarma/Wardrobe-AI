@@ -6,11 +6,11 @@ const notices: Record<string, string> = {
   "item-added": "Your piece has been added to your private wardrobe.",
   "item-updated": "Your clothing details have been updated.",
   "item-state-saved": "Your favorite setting has been updated.",
-  "item-archived": "Your piece was moved to the recoverable archive.",
+  "item-archived": "Your piece was deleted from the active wardrobe and moved to the recoverable archive.",
   "item-restored": "Your piece has been restored to your wardrobe.",
   "outfit-added": "Your outfit has been saved to your account.",
   "outfit-updated": "Your outfit has been updated.",
-  "outfit-archived": "Your outfit was moved to the recoverable archive.",
+  "outfit-archived": "Your outfit was deleted from active lists and moved to the recoverable archive.",
   "outfit-restored": "Your outfit has been restored.",
   "outfit-state-saved": "Your outfit preferences have been updated.",
 };

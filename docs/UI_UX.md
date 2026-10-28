@@ -3,7 +3,7 @@
 **Status:** Phase 1 demo preserved under `/demo/**`; Stage A core Auth flows confirmed in Preview; Stage B authenticated account screens implemented, owner Preview testing next.
 **Last updated:** 2026-10-28
 
-**Current account-build visual:** [Implemented account features and next steps](assets/stage-b-account-build.png)
+**Current account-build visual:** [Recoverable Delete/Restore update and Preview checks](assets/stage-b-recoverable-delete.png) · [Initial account experience](assets/stage-b-account-build.png)
 
 ## Product feel
 
@@ -43,7 +43,7 @@ The five approved primary destinations remain Home, Wardrobe, Outfits, AI Stylis
 - In `/demo/**`, search, add, edit, delete, favorite, ratings, and preferences remain temporary in-memory mock interactions and reset on refresh.
 - Sign-up and sign-in use real email/password Auth; sign-up explains the confirmation-email step and errors remain recoverable.
 - Authenticated account data is read and written by session-bound server components/actions under RLS. The server derives the user ID; the browser never supplies the authorization identity. New accounts are empty until their owner saves data.
-- Wardrobe item/outfit archive actions are recoverable; there is no hard-delete UI for these records. Outfit selection is limited to active items from the same account.
+- The visible Delete action for an active wardrobe item or outfit moves it into the recoverable Archive; the user can restore it later. It does not permanently erase database rows. Deleting a clothing item this way preserves outfit links. Outfit selection is limited to active items from the same account.
 - Stylist and try-on examples remain demo-only and do not make real AI calls or claim a mock image is a generated result. The authenticated stylist/try-on routes are unavailable states.
 
 ## Deferred

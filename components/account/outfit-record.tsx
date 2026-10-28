@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Archive, Bookmark, Heart, Shirt, Star } from "lucide-react";
+import { Bookmark, Heart, Shirt, Star, Trash2 } from "lucide-react";
 import { archiveOutfitAction, restoreOutfitAction, setOutfitStateAction } from "@/app/actions/outfits";
 
 type OutfitRecordData = {
@@ -47,7 +47,7 @@ export function OutfitRecord({ outfit, items }: { outfit: OutfitRecordData; item
               <form action={setOutfitStateAction}><input type="hidden" name="outfitId" value={outfit.id} /><input type="hidden" name="stateKey" value="is_favorite" /><input type="hidden" name="nextValue" value={outfit.is_favorite ? "false" : "true"} /><button className="button button-light button-small" type="submit"><Heart size={14} fill={outfit.is_favorite ? "currentColor" : "none"} />{outfit.is_favorite ? "Unfavorite" : "Favorite"}</button></form>
               <form action={setOutfitStateAction}><input type="hidden" name="outfitId" value={outfit.id} /><input type="hidden" name="stateKey" value="is_saved" /><input type="hidden" name="nextValue" value={outfit.is_saved ? "false" : "true"} /><button className="button button-light button-small" type="submit"><Bookmark size={14} />{outfit.is_saved ? "Unsave" : "Save"}</button></form>
               <Link className="button button-outline button-small" href={`/outfits/${outfit.id}`}>Open</Link>
-              <details className="inline-confirm"><summary><Archive size={14} /> Archive</summary><form action={archiveOutfitAction}><input type="hidden" name="outfitId" value={outfit.id} /><p>This removes the outfit from active lists, but it can be restored later.</p><button className="button button-danger button-small" type="submit">Move to archive</button></form></details>
+              <details className="inline-confirm"><summary><Trash2 size={14} /> Delete</summary><form action={archiveOutfitAction}><input type="hidden" name="outfitId" value={outfit.id} /><p>This removes the outfit from active lists. It stays in the recoverable archive, and you can restore it later.</p><button className="button button-danger button-small" type="submit">Delete outfit</button></form></details>
             </>
           )}
         </div>

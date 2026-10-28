@@ -6,7 +6,7 @@ A mobile-first, PWA-ready wardrobe experience designed around the clothes a pers
 
 ## Current status
 
-**Phase 1 demo preserved; Stage A authentication is implemented and core Preview flows were confirmed. The approved Stage B schema is live, and the first authenticated account experience is now implemented in code: profile/preferences, real wardrobe CRUD with recoverable archive, and outfits built from account-owned pieces. The existing Auth user’s records are not seeded; the dashboard guides them to add their own first piece. Owner Preview verification is next. The owner waived the backup step, so no restorable backup/export was verified; a Vercel build rollback does not undo database changes.** `/welcome` remains public, `/demo/**` remains mock-only, and authenticated data never uses demo records. Personal photos/Storage and AI styling/try-on remain deferred. Password-recovery rate-limit troubleshooting remains deferred at the owner’s request.
+**Phase 1 demo preserved; Stage A authentication is implemented and core Preview flows were confirmed. The approved Stage B schema is live, and the first authenticated account experience is now implemented in code: profile/preferences, real wardrobe CRUD with a visible recoverable Delete/Restore action, and outfits built from account-owned pieces with the same behavior. The existing Auth user’s records are not seeded; the dashboard guides them to add their own first piece. Owner Preview verification is next. The owner waived the backup step, so no restorable backup/export was verified; a Vercel build rollback does not undo database changes.** `/welcome` remains public, `/demo/**` remains mock-only, and authenticated data never uses demo records. Personal photos/Storage and AI styling/try-on remain deferred. Password-recovery rate-limit troubleshooting remains deferred at the owner’s request.
 
 Vercel Preview and Production currently use the **same Supabase project**. Preview sign-up and confirmation create users in the shared Supabase Auth system; Preview is not isolated from Production. Use dedicated test accounts and do not use Production user credentials for testing.
 
@@ -48,8 +48,8 @@ npm run build
 
 - The authenticated dashboard reads real account counts and recent records, then offers a guided empty state when the user has not added anything.
 - Save a display name, units, fit/style/color preferences to the signed-in profile.
-- Add, edit, favorite, archive, and restore clothing metadata. The first saved piece creates the user's wardrobe container; there are no demo rows or image uploads.
-- Create outfits only from active pieces owned by the signed-in account. Edit, save/unsave, favorite, rate, archive, restore, and view them later.
+- Add, edit, and favorite clothing metadata. Delete removes a piece from active lists into the recoverable archive, where it can be restored. The first saved piece creates the user's wardrobe container; there are no demo rows or image uploads.
+- Create outfits only from active pieces owned by the signed-in account. Edit, save/unsave, favorite, rate, and use the same recoverable Delete/Restore flow.
 - Every Preview write uses the existing Supabase project also used by Production. Owner sign-in and CRUD verification is still pending; the agent did not seed personal account rows.
 
 ## Technology
@@ -76,6 +76,7 @@ docs/                  Architecture, UX, database, AI, security, decisions, road
 - [Stage B schema detail diagram](docs/assets/stage-b-schema-overview.png)
 - [Build #10 pre-apply handoff (historical)](docs/assets/stage-b-migration-handoff.png)
 - [Current account build and next steps](docs/assets/stage-b-account-build.png)
+- [Recoverable Delete/Restore update](docs/assets/stage-b-recoverable-delete.png)
 - [Stage B applied-schema status](docs/assets/stage-b-schema-live.png)
 - [Architecture](docs/ARCHITECTURE.md)
 - [UI/UX](docs/UI_UX.md)

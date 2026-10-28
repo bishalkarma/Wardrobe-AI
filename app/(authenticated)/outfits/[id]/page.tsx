@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Archive, ArrowLeft, Bookmark, Heart, RotateCcw, Shirt, Star } from "lucide-react";
+import { ArrowLeft, Bookmark, Heart, RotateCcw, Shirt, Star, Trash2 } from "lucide-react";
 import { archiveOutfitAction, restoreOutfitAction, setOutfitRatingAction, setOutfitStateAction } from "@/app/actions/outfits";
 import { ActionFeedback, DataUnavailable } from "@/components/account/feedback";
 import { OutfitForm } from "@/components/account/outfit-form";
@@ -58,7 +58,7 @@ export default async function OutfitDetailPage({ params, searchParams }: { param
               <form action={setOutfitStateAction}><input type="hidden" name="outfitId" value={outfit.id} /><input type="hidden" name="stateKey" value="is_saved" /><input type="hidden" name="nextValue" value={outfit.is_saved ? "false" : "true"} /><button className="button button-light" type="submit"><Bookmark size={15} />{outfit.is_saved ? "Remove from saved" : "Save this look"}</button></form>
               <form action={setOutfitStateAction}><input type="hidden" name="outfitId" value={outfit.id} /><input type="hidden" name="stateKey" value="is_favorite" /><input type="hidden" name="nextValue" value={outfit.is_favorite ? "false" : "true"} /><button className="button button-light" type="submit"><Heart size={15} fill={outfit.is_favorite ? "currentColor" : "none"} />{outfit.is_favorite ? "Remove favorite" : "Add favorite"}</button></form>
               <form action={setOutfitRatingAction} className="rating-form"><input type="hidden" name="outfitId" value={outfit.id} /><label className="field-label">Your rating<select className="text-input" name="rating" defaultValue={outfit.rating?.toString() ?? ""}><option value="">Not rated</option>{[1, 2, 3, 4, 5].map((rating) => <option key={rating} value={rating}>{rating} {rating === 1 ? "star" : "stars"}</option>)}</select></label><button className="button button-outline button-small" type="submit"><Star size={14} /> Save rating</button></form>
-              <details className="inline-confirm"><summary><Archive size={14} /> Archive outfit</summary><form action={archiveOutfitAction}><input type="hidden" name="outfitId" value={outfit.id} /><p>This hides the outfit from active lists without permanently deleting it.</p><button className="button button-danger button-small" type="submit">Move to archive</button></form></details>
+              <details className="inline-confirm"><summary><Trash2 size={14} /> Delete outfit</summary><form action={archiveOutfitAction}><input type="hidden" name="outfitId" value={outfit.id} /><p>This removes the outfit from active lists. It stays in the recoverable archive, and you can restore it later.</p><button className="button button-danger button-small" type="submit">Delete outfit</button></form></details>
             </>
           )}
         </div>

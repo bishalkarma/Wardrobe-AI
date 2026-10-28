@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Archive, ArrowLeft, Heart, RotateCcw, Shirt } from "lucide-react";
+import { ArrowLeft, Heart, RotateCcw, Shirt, Trash2 } from "lucide-react";
 import { archiveItemAction, restoreItemAction, toggleItemFavoriteAction } from "@/app/actions/wardrobe";
 import { ActionFeedback, DataUnavailable } from "@/components/account/feedback";
 import { PageHeading } from "@/components/ui";
@@ -52,7 +52,7 @@ export default async function ClothingItemDetailPage({ params, searchParams }: {
               <>
                 <Link className="button button-dark" href={`/wardrobe/${item.id}/edit`}>Edit details</Link>
                 <form action={toggleItemFavoriteAction}><input type="hidden" name="itemId" value={item.id} /><input type="hidden" name="nextValue" value={item.is_favorite ? "false" : "true"} /><button className="button button-light" type="submit"><Heart size={15} fill={item.is_favorite ? "currentColor" : "none"} />{item.is_favorite ? "Remove favorite" : "Mark favorite"}</button></form>
-                <details className="inline-confirm"><summary><Archive size={14} /> Archive</summary><form action={archiveItemAction}><input type="hidden" name="itemId" value={item.id} /><p>This hides the piece from your active wardrobe. It remains recoverable, and outfit links stay intact.</p><button className="button button-danger button-small" type="submit">Move to archive</button></form></details>
+                <details className="inline-confirm"><summary><Trash2 size={14} /> Delete</summary><form action={archiveItemAction}><input type="hidden" name="itemId" value={item.id} /><p>This removes the piece from your active wardrobe. It stays in the recoverable archive, and outfit links stay intact.</p><button className="button button-danger button-small" type="submit">Delete piece</button></form></details>
               </>
             )}
           </div>
