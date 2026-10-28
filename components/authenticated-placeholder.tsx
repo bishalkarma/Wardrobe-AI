@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, LockKeyhole } from "lucide-react";
+import { ArrowRight, ArrowUpRight, LockKeyhole } from "lucide-react";
 
 export function AuthenticatedPlaceholder({
   eyebrow,
@@ -24,9 +24,12 @@ export function AuthenticatedPlaceholder({
       </div>
       <section className="empty-state account-empty-state">
         <span className="empty-state-icon"><LockKeyhole size={20} /></span>
-        <h2>Your account is ready</h2>
-        <p>This account starts empty. Wardrobe and outfit saving will be added in a later stage. The sample garments and looks are available only in the separate demo.</p>
-        <Link className="button button-dark" href="/demo">Explore the labelled demo <ArrowUpRight size={15} /></Link>
+        <h2>This feature is coming later</h2>
+        <p>Your account can now store your profile, wardrobe pieces, and saved outfits. This feature is not connected yet; no AI provider or personal-photo upload is running here.</p>
+        <div className="placeholder-actions">
+          <Link className="button button-dark" href="/wardrobe">Open your wardrobe <ArrowRight size={15} /></Link>
+          <Link className="text-link" href="/demo">See the separately labelled demo <ArrowUpRight size={14} /></Link>
+        </div>
       </section>
     </div>
   );

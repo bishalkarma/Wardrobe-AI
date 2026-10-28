@@ -1,6 +1,6 @@
 # Architecture
 
-**Status:** Phase 1 demo complete; Stage A core Preview flows confirmed; Phase 2 Stage B schema applied and verified, application persistence next.
+**Status:** Phase 1 demo complete; Stage A core Preview flows confirmed; Stage B schema live and authenticated profile/wardrobe/outfit persistence implemented in code. Owner Preview verification next.
 **Last updated:** 2026-10-28
 
 ## Approved principles
@@ -17,7 +17,8 @@
 
 - `/welcome` is public and contains sign-up/sign-in entry points.
 - `/demo/**` is public and contains the preserved Phase 1 mock prototype. Its `PrototypeProvider` is mounted only within the demo route layout. Sample garments, outfits, preferences, and temporary changes never enter authenticated account routes.
-- `/`, `/profile/**`, `/wardrobe`, `/stylist`, `/try-on`, and `/outfits/**` are actual application routes. A server request proxy refreshes/verifies the session, and the authenticated server layout independently verifies the user before rendering. New accounts currently see empty placeholders; no application records are persisted.
+- `/`, `/profile/**`, `/wardrobe/**`, and `/outfits/**` are authenticated account routes backed by the cookie/session Supabase client. Server Components read current-user data; Server Actions derive identity with `auth.getUser()`, validate inputs, and perform owner-filtered writes under RLS. New accounts start without profile/wardrobe/outfit rows; the dashboard guides first-time setup, and the first garment creates one wardrobe on demand.
+- `/stylist` and `/try-on` are authenticated but explicitly not connected to AI or image generation. `/profile/photo` explains that private photo upload is deferred; no Storage bucket or personal images are used.
 - `/auth/callback`, `/auth/forgot-password`, and `/auth/reset-password` handle email confirmation and password recovery. Internal continuation paths are allowlisted; external and protocol-relative redirects are rejected.
 
 ## Stage A authentication implementation
@@ -32,7 +33,7 @@ Sign-up and recovery requests pass an explicit callback URL built from the curre
 
 The owner confirmed that Vercel Preview and Production use the **same Supabase project**. Preview is therefore not isolated from Production: preview sign-ups and confirmations create accounts in the shared Auth system, and Auth configuration is project-wide. Stage A added no application tables or Storage objects, but Auth user records and email activity are shared. Test Preview with dedicated synthetic accounts; do not describe it as a separate database or Auth environment.
 
-The owner-approved initial Stage B migration was applied to the shared Supabase project on 2026-10-28 as `stage_b_initial_schema` (version `20261028162903`). Read-only verification confirmed all seven intended public tables, RLS on each, seven policies, and five static category rows. User-data tables remain empty; no application persistence code is implemented yet. The owner waived the backup step because of the Supabase Free plan, and no restorable backup was verified before applying the migration. Supabase and Vercel connector access are verified. Vercel build rollback affects app code only, not database schema or data. RLS does not separate Preview from Production.
+The owner-approved initial Stage B migration was applied to the shared Supabase project on 2026-10-28 as `stage_b_initial_schema` (version `20261028162903`). Read-only verification confirmed all seven intended public tables, RLS on each, seven policies, and five static category rows. Authenticated account persistence is implemented in code; no personal profile, wardrobe, or outfit records were seeded by the agent. The owner waived the backup step because of the Supabase Free plan, and no restorable backup was verified before applying the migration. Vercel build rollback affects app code only, not database schema or data. RLS does not separate Preview from Production; any Preview account data the owner saves is in the same project used by Production.
 
 ## Phase 1 demo implementation boundary
 
@@ -53,7 +54,7 @@ Use `QUEUED`, `PROCESSING`, `COMPLETED`, `FAILED`, and `CANCELLED` states. A job
 
 ## Deployment and API decisions still open
 
-- Data-project isolation for Preview versus Production before enabling application-data writes or personal-media uploads.
+- Data-project isolation before onboarding additional test users or enabling private-media/AI workflows. Current Preview account writes use the shared Preview/Production Supabase project; use only owner-controlled test records until isolation is available or explicitly accepted.
 - Hosting/runtime and whether Next.js route handlers are sufficient for future work.
 - Durable worker/queue for slow provider calls, API versioning, and realtime/polling.
 - Database/storage backups, regional residency, retention, and deletion configuration.

@@ -5,7 +5,7 @@ export default function TryOnPage() {
     <AuthenticatedPlaceholder
       eyebrow="TRY-ON"
       title="Try-on is not connected"
-      description="No personal images are stored and no image-generation provider is called. The illustrative try-on remains demo-only."
+      description="Private photo storage and virtual try-on are separate later stages. No personal image is stored and no image-generation provider is called here."
     />
   );
 }

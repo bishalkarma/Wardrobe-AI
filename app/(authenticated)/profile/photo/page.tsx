@@ -5,7 +5,7 @@ export default function ProfilePhotoPage() {
     <AuthenticatedPlaceholder
       eyebrow="PROFILE PHOTO"
       title="Photo uploads are not enabled"
-      description="Personal-photo selection, upload, and Storage are reserved for a later approved stage. No image has been uploaded."
+      description="Personal-photo selection, upload, and private Storage are reserved for a later stage. You can already save your name and style preferences in your profile; no image has been uploaded."
     />
   );
 }

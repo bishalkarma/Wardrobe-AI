@@ -5,7 +5,7 @@ export default function StylistPage() {
     <AuthenticatedPlaceholder
       eyebrow="STYLIST"
       title="Stylist features are not connected"
-      description="This account has no wardrobe records, and no AI provider is called. Explore sample recommendations in the separate demo."
+      description="The real stylist will use only pieces you save to this account. AI recommendations are not connected yet, so no provider is called here."
     />
   );
 }

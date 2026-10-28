@@ -42,14 +42,14 @@ Use Next.js App Router 16.4.2, React 19.3.0, TypeScript 5.9.3, custom CSS, and L
 ## ADR-008 — Stage A Auth and mock-demo separation
 
 **Status:** Approved and implemented; core Preview flows confirmed by the owner. Password recovery remains deferred due to a Supabase rate-limit response.
-Keep `/welcome` public, isolate the mock prototype at `/demo/**`, and require server-verified Supabase Auth identity for actual application routes. New authenticated accounts remain empty. The demo provider and mock records are not mounted or rendered in authenticated routes. Stage A includes Auth/session handling only; it does not add application persistence, migrations, uploads, Storage, or AI.
+Keep `/welcome` public, isolate the mock prototype at `/demo/**`, and require server-verified Supabase Auth identity for actual application routes. Stage A accounts had no app rows until the owner saved them in the later Stage B account implementation. The demo provider and mock records are not mounted or rendered in authenticated routes. Stage A itself included Auth/session handling only; it did not add application persistence, migrations, uploads, Storage, or AI.
 
 Use same-origin server actions/handlers with Supabase SSR cookies, a Next.js request proxy for refresh, and server-side `getUser()` checks. Validate internal redirect destinations and use explicit email callback URLs.
 
 ## ADR-009 — Existing Supabase project shared by Preview and Production
 
-**Status:** Approved by product owner for Stage A, with shared-Auth warning.
-Use the existing Supabase project; do not create another project. Vercel Preview and Production currently point to the same project. Preview sign-ups and confirmations create users in the shared Auth system, and project-level Auth settings are shared. Stage A creates no application database records or Storage objects. Use dedicated synthetic test accounts and do not claim Preview is isolated from Production. No Production environment or Supabase dashboard setting is changed by this implementation.
+**Status:** Approved use of the existing project; shared-environment warning remains.
+Use the existing Supabase project; do not create another project. Vercel Preview and Production currently point to the same project. Preview sign-ups and confirmations create users in the shared Auth system, and project-level Auth settings are shared. Stage A initially had no application-data writes; the later Stage B account implementation can write through Preview to the shared database. Use dedicated synthetic test accounts for cross-user checks and do not claim Preview is isolated from Production. No Production environment or Supabase dashboard setting is changed by this implementation.
 
 ## ADR-010 — Begin Stage B with database discovery and safety review
 
@@ -67,7 +67,7 @@ Use recoverable deletion for clothing items and outfits, represented by `deleted
 
 **Status:** Owner waived the backup requirement on 2026-10-26 because the Supabase Free plan does not provide the desired backup option.
 
-No restorable backup/export was created or verified before the migration. The owner approved the exact SQL and instructed us to proceed. The schema has since been applied; Vercel build rollback does not reverse database changes. User-data tables are still empty, and the five static category rows are the only rows inserted.
+No restorable backup/export was created or verified before the migration. The owner approved the exact SQL and instructed us to proceed. The schema has since been applied; Vercel build rollback does not reverse database changes. At post-migration verification, user-data tables were empty, and the five static category rows were the only rows inserted. The agent did not seed personal account records.
 
 ## ADR-013 — Application builds do not roll back database changes
 
@@ -75,10 +75,16 @@ No restorable backup/export was created or verified before the migration. The ow
 
 A Vercel build number identifies an application deployment. Rolling back that build does not undo SQL migrations or restore database data. Database rollback is a separate operation, and dropping tables after user data has been written can permanently destroy that data.
 
+## ADR-014 — Session-bound server actions for initial account persistence
+
+**Status:** Implemented in the application branch on 2026-10-28; owner verification in Preview is pending.
+
+Authenticated reads run in Server Components using the cookie-backed Supabase SSR client. Writes run through same-origin Server Actions that derive the owner from `auth.getUser()`, validate form input, scope queries to that UUID, and rely on the existing RLS/composite constraints. Use the public anon key with the signed-in session; do not use a service-role key for ordinary account CRUD. Profile, preference, and wardrobe rows are created on demand. No demo rows, personal photo uploads, Storage, or AI provider calls are part of this implementation. Preview and Production share the same project, so Preview user writes are shared with Production.
+
 ## Open decisions before production integration
 
 - Hosting/runtime, API versioning, and whether Next.js route handlers meet the selected deployment’s runtime needs.
 - Durable worker/queue and polling/realtime strategy for slow AI jobs.
-- Supabase project region, retention/backup policy, and exact RLS/storage policies.
+- Supabase retention/backup policy and data-isolation plan; exercise the applied RLS policies with synthetic users. Private Storage policies are not yet implemented.
 - AI provider and model per capability after access, privacy terms, cost, latency, and fidelity testing.
 - Garment Fidelity Test pass thresholds, agreed before provider evaluation.

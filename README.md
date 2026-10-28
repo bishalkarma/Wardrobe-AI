@@ -6,7 +6,7 @@ A mobile-first, PWA-ready wardrobe experience designed around the clothes a pers
 
 ## Current status
 
-**Phase 1 demo preserved; Phase 2 Stage A authentication implemented and core Preview flows confirmed. The owner-approved Stage B schema is applied and verified in Supabase; application persistence is the next step. The owner waived the backup step due to the Supabase Free plan, so no restorable backup/export was verified. A Vercel build rollback does not undo database changes.** The mock prototype is isolated under `/demo/**` and uses local in-memory sample data. `/welcome` is public. The real application routes require a verified Supabase Auth session, but authenticated accounts are intentionally empty: wardrobe, preferences, outfits, photo uploads, Storage, and AI are not implemented. Password recovery currently returns a Supabase rate-limit response and is deferred at the owner's request.
+**Phase 1 demo preserved; Stage A authentication is implemented and core Preview flows were confirmed. The approved Stage B schema is live, and the first authenticated account experience is now implemented in code: profile/preferences, real wardrobe CRUD with recoverable archive, and outfits built from account-owned pieces. The existing Auth user’s records are not seeded; the dashboard guides them to add their own first piece. Owner Preview verification is next. The owner waived the backup step, so no restorable backup/export was verified; a Vercel build rollback does not undo database changes.** `/welcome` remains public, `/demo/**` remains mock-only, and authenticated data never uses demo records. Personal photos/Storage and AI styling/try-on remain deferred. Password-recovery rate-limit troubleshooting remains deferred at the owner’s request.
 
 Vercel Preview and Production currently use the **same Supabase project**. Preview sign-up and confirmation create users in the shared Supabase Auth system; Preview is not isolated from Production. Use dedicated test accounts and do not use Production user credentials for testing.
 
@@ -37,27 +37,35 @@ npm test
 npm run build
 ```
 
-## Stage A behavior
+## Stage A behavior (historical)
 
 - Email/password sign-up requires email confirmation. Sign-in, sign-out, recovery request, recovery completion, and the `/auth/callback` handler use same-origin server actions/handlers with cookie-backed Supabase SSR sessions.
-- New accounts see empty authenticated application routes. Mock items, preferences, and outfits exist only in `/demo/**` and are never treated as account records.
+- At the Stage A milestone, Auth accounts started without app-data rows. The later Stage B account screens now guide first-time setup; demo items, preferences, and outfits remain isolated under `/demo/**`.
 - Protected pages are checked in the Next.js request proxy and again in the server-side authenticated layout. Auth identity is verified with Supabase Auth.
 - Preview authentication tests write Auth users to the same Supabase project used by Production. No database migrations, application-data persistence, Storage uploads, or AI integrations are part of Stage A.
+
+## Stage B account experience
+
+- The authenticated dashboard reads real account counts and recent records, then offers a guided empty state when the user has not added anything.
+- Save a display name, units, fit/style/color preferences to the signed-in profile.
+- Add, edit, favorite, archive, and restore clothing metadata. The first saved piece creates the user's wardrobe container; there are no demo rows or image uploads.
+- Create outfits only from active pieces owned by the signed-in account. Edit, save/unsave, favorite, rate, archive, restore, and view them later.
+- Every Preview write uses the existing Supabase project also used by Production. Owner sign-in and CRUD verification is still pending; the agent did not seed personal account rows.
 
 ## Technology
 
 - Next.js App Router 16.4.2, React 19.3.0, and TypeScript 5.9.3.
 - Supabase SSR (`@supabase/ssr`) and Supabase JS for cookie-backed Auth.
-- Vitest for unit tests of route protection and redirect validation.
+- Vitest for account-form validation, route protection, and redirect validation.
 - Custom CSS and Lucide React; the existing responsive visual design and local editorial garment imagery remain in the mock demo.
 
 ## Project layout
 
 ```text
 app/                 Public auth routes, isolated /demo routes, protected account routes
-components/           Shared UI, auth forms, mock screens, and demo state
+components/           Shared UI, account forms/records, auth forms, mock screens, and demo state
 lib/                  Auth redirect rules, Supabase server client, mock data, domain types
-tests/                 Authentication route/redirect unit tests
+tests/                 Account validation and authentication route/redirect unit tests
 public/                Local illustrative imagery and PWA assets
 docs/                  Architecture, UX, database, AI, security, decisions, roadmap
 ```
@@ -67,6 +75,7 @@ docs/                  Architecture, UX, database, AI, security, decisions, road
 - [One-page project status and hierarchy](docs/PROJECT_STATUS.md)
 - [Stage B schema detail diagram](docs/assets/stage-b-schema-overview.png)
 - [Build #10 pre-apply handoff (historical)](docs/assets/stage-b-migration-handoff.png)
+- [Current account build and next steps](docs/assets/stage-b-account-build.png)
 - [Stage B applied-schema status](docs/assets/stage-b-schema-live.png)
 - [Architecture](docs/ARCHITECTURE.md)
 - [UI/UX](docs/UI_UX.md)
@@ -76,6 +85,6 @@ docs/                  Architecture, UX, database, AI, security, decisions, road
 - [Decisions](docs/DECISIONS.md)
 - [Roadmap](docs/ROADMAP.md)
 
-## Stage A boundary
+## Stage A boundary (historical)
 
-No database schema/migrations, profile or wardrobe persistence, photo upload/Storage bucket, AI provider, payment, or Production setting changes are included. The existing Supabase project's Auth data is shared between Preview and Production; a Preview signup creates a user in that shared Auth system. The mock demo remains illustrative and in-memory only.
+Stage A itself delivered Auth/session handling only; it did not include database schema changes, profile/wardrobe persistence, photo uploads/Storage, AI providers, payments, or Production setting changes. Stage B now supplies the initial account schema and profile/wardrobe/outfit persistence described above. Personal photos, Storage, AI, and payments remain deferred. The existing Supabase project's Auth and account data are shared between Preview and Production; Preview is not a separate data environment. The mock demo remains illustrative and in-memory only.

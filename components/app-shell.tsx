@@ -14,7 +14,7 @@ const navigation = [
 ];
 
 const routeLabels: Record<string, string> = {
-  "/": "A considered edit, every day",
+  "/": "Your wardrobe, taking shape",
   "/wardrobe": "Your pieces, in one place",
   "/outfits": "Looks made from your wardrobe",
   "/stylist": "A little inspiration, just for you",
@@ -87,7 +87,7 @@ export function AppShell({
             <span className="sidebar-note-icon"><Sparkles size={16} /></span>
             <div>
               <strong>{isDemo ? "Illustrative demo" : "Your account"}</strong>
-              <span>{isDemo ? "Sample items; changes are temporary." : "Your account is ready. Wardrobe data is not connected yet."}</span>
+              <span>{isDemo ? "Sample items; changes are temporary." : "Private account data, synced to your wardrobe."}</span>
             </div>
           </div>
           <Link href={routeHref("/profile", mode)} className="sidebar-profile">
