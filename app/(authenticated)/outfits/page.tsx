@@ -84,7 +84,7 @@ export default async function OutfitsPage({ searchParams }: { searchParams: Sear
       {shown.length ? (
         <div className="account-outfit-list">{shown.map((outfit) => <OutfitRecord key={outfit.id} outfit={outfit} items={pieceLists.get(outfit.id) ?? []} />)}</div>
       ) : view === "trash" ? (
-        <EmptyAccountState title="No archived outfits" description="Archived outfits stay recoverable here. They do not disappear permanently." actionHref="/outfits?view=all" actionLabel="Back to active outfits" />
+        <EmptyAccountState title="No archived outfits" description="Restore an archived outfit or permanently delete it from here." actionHref="/outfits?view=all" actionLabel="Back to active outfits" />
       ) : activeClothingItems.length === 0 ? (
         <EmptyAccountState title="Add your own pieces first" description="Outfits are assembled only from active garments in your account. Add your first piece to begin." actionHref="/wardrobe/new" actionLabel="Add a wardrobe piece" />
       ) : view === "saved" && counts.all > counts.saved ? (

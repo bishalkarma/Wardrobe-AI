@@ -4,6 +4,7 @@ import { ArrowLeft, Bookmark, Heart, RotateCcw, Shirt, Star, Trash2 } from "luci
 import { archiveOutfitAction, restoreOutfitAction, setOutfitRatingAction, setOutfitStateAction } from "@/app/actions/outfits";
 import { ActionFeedback, DataUnavailable } from "@/components/account/feedback";
 import { OutfitForm } from "@/components/account/outfit-form";
+import { PermanentDeleteForm } from "@/components/account/permanent-delete-form";
 import { PageHeading } from "@/components/ui";
 import { firstParam } from "@/components/account/record-utils";
 import { requireAccountContext } from "@/lib/data/account";
@@ -52,7 +53,10 @@ export default async function OutfitDetailPage({ params, searchParams }: { param
         </div>
         <div className="outfit-detail-controls">
           {archived ? (
-            <form action={restoreOutfitAction}><input type="hidden" name="outfitId" value={outfit.id} /><button className="button button-outline" type="submit"><RotateCcw size={15} /> Restore outfit</button></form>
+            <>
+              <form action={restoreOutfitAction}><input type="hidden" name="outfitId" value={outfit.id} /><button className="button button-outline" type="submit"><RotateCcw size={15} /> Restore outfit</button></form>
+              <details className="inline-confirm permanent-delete-confirm"><summary><Trash2 size={14} /> Delete forever</summary><PermanentDeleteForm kind="outfit" recordId={outfit.id} recordName={outfit.name} /></details>
+            </>
           ) : (
             <>
               <form action={setOutfitStateAction}><input type="hidden" name="outfitId" value={outfit.id} /><input type="hidden" name="stateKey" value="is_saved" /><input type="hidden" name="nextValue" value={outfit.is_saved ? "false" : "true"} /><button className="button button-light" type="submit"><Bookmark size={15} />{outfit.is_saved ? "Remove from saved" : "Save this look"}</button></form>

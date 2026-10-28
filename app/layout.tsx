@@ -9,14 +9,14 @@ export const metadata: Metadata = {
   description: "A personal wardrobe, thoughtfully styled around the clothes you already own.",
   applicationName: "Wardrobe AI",
   manifest: "/manifest.webmanifest",
-  appleWebApp: { capable: true, title: "Wardrobe AI", statusBarStyle: "default" },
+  appleWebApp: { capable: true, title: "Wardrobe AI", statusBarStyle: "black-translucent" },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#f7f5f0",
+  themeColor: "#090b11",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

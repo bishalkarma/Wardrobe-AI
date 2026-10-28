@@ -47,7 +47,7 @@ export default async function WardrobePage({ searchParams }: { searchParams: Sea
       <PageHeading
         eyebrow="THE PIECES THAT ARE ACTUALLY YOURS"
         title={title}
-        subtitle={view === "trash" ? `${shown.length} archived ${shown.length === 1 ? "piece" : "pieces"}. Restore any one to bring it back.` : `${activeCount} ${activeCount === 1 ? "piece" : "pieces"} saved to your account.`}
+        subtitle={view === "trash" ? `${shown.length} archived ${shown.length === 1 ? "piece" : "pieces"}. Restore a piece or permanently delete it from here.` : `${activeCount} ${activeCount === 1 ? "piece" : "pieces"} saved to your account.`}
         action={view === "active" ? <Link className="button button-dark" href="/wardrobe/new"><Plus size={16} /> Add a piece</Link> : undefined}
       />
 
@@ -82,7 +82,7 @@ export default async function WardrobePage({ searchParams }: { searchParams: Sea
       ) : view === "active" && activeCount === 0 ? (
         <EmptyAccountState title="Start with one piece you love" description="Add the clothes you already own. This space uses only pieces you enter for this signed-in account; photos and AI are not enabled yet." actionHref="/wardrobe/new" actionLabel="Add your first piece" />
       ) : view === "trash" ? (
-        <EmptyAccountState title="Nothing in your archive" description="When you archive a piece, it stays recoverable here until you restore it." actionHref="/wardrobe" actionLabel="Back to my wardrobe" />
+        <EmptyAccountState title="Nothing in your archive" description="Archived pieces live here until you restore them or permanently delete them." actionHref="/wardrobe" actionLabel="Back to my wardrobe" />
       ) : (
         <EmptyAccountState title="No matching pieces" description="Try a different search or category. Your saved records are unchanged." actionHref="/wardrobe" actionLabel="Clear filters" />
       )}

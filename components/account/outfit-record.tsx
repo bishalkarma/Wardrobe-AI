@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Bookmark, Heart, Shirt, Star, Trash2 } from "lucide-react";
 import { archiveOutfitAction, restoreOutfitAction, setOutfitStateAction } from "@/app/actions/outfits";
+import { PermanentDeleteForm } from "@/components/account/permanent-delete-form";
 
 type OutfitRecordData = {
   id: string;
@@ -41,7 +42,13 @@ export function OutfitRecord({ outfit, items }: { outfit: OutfitRecordData; item
         <div className="outfit-rating-display" aria-label={outfit.rating ? `Rated ${outfit.rating} out of 5` : "Not rated yet"}>{[1, 2, 3, 4, 5].map((rating) => <Star key={rating} size={14} fill={outfit.rating && rating <= outfit.rating ? "currentColor" : "none"} />)}</div>
         <div className="record-actions">
           {archived ? (
-            <form action={restoreOutfitAction}><input type="hidden" name="outfitId" value={outfit.id} /><button className="button button-outline button-small" type="submit">Restore outfit</button></form>
+            <>
+              <form action={restoreOutfitAction}><input type="hidden" name="outfitId" value={outfit.id} /><button className="button button-outline button-small" type="submit">Restore outfit</button></form>
+              <details className="inline-confirm permanent-delete-confirm">
+                <summary><Trash2 size={14} /> Delete forever</summary>
+                <PermanentDeleteForm kind="outfit" recordId={outfit.id} recordName={outfit.name} />
+              </details>
+            </>
           ) : (
             <>
               <form action={setOutfitStateAction}><input type="hidden" name="outfitId" value={outfit.id} /><input type="hidden" name="stateKey" value="is_favorite" /><input type="hidden" name="nextValue" value={outfit.is_favorite ? "false" : "true"} /><button className="button button-light button-small" type="submit"><Heart size={14} fill={outfit.is_favorite ? "currentColor" : "none"} />{outfit.is_favorite ? "Unfavorite" : "Favorite"}</button></form>

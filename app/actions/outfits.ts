@@ -55,7 +55,7 @@ export async function createOutfitAction(formData: FormData): Promise<void> {
   }));
   const { error: linkError } = await supabase.from("outfit_items").insert(links);
   if (linkError) {
-    // Outfits have recoverable deletion only; do not attempt a hard delete.
+    // Preserve the failed record in Archive; permanent deletion is a separate, explicit user action.
     await supabase.from("outfits").update({ deleted_at: new Date().toISOString() }).eq("id", outfit.id).eq("user_id", user.id);
     redirect("/outfits/new?error=save");
   }
@@ -241,4 +241,25 @@ export async function restoreOutfitAction(formData: FormData): Promise<void> {
   revalidatePath("/");
   revalidatePath("/outfits");
   redirect("/outfits?notice=outfit-restored");
+}
+
+export async function permanentlyDeleteOutfitAction(formData: FormData): Promise<void> {
+  const outfitId = field(formData, "outfitId");
+  if (!isUuid(outfitId)) redirect("/outfits?view=trash&error=invalid");
+
+  const { supabase, user } = await requireAccountContext();
+  const { data, error } = await supabase
+    .from("outfits")
+    .delete()
+    .eq("id", outfitId)
+    .eq("user_id", user.id)
+    .not("deleted_at", "is", null)
+    .select("id")
+    .maybeSingle();
+  if (error) redirect("/outfits?view=trash&error=permanent-delete");
+  if (!data) redirect("/outfits?view=trash&error=missing");
+
+  revalidatePath("/");
+  revalidatePath("/outfits");
+  redirect("/outfits?view=trash&notice=outfit-permanently-deleted");
 }

@@ -206,3 +206,25 @@ export async function restoreItemAction(formData: FormData): Promise<void> {
   revalidatePath("/outfits");
   redirect("/wardrobe?notice=item-restored");
 }
+
+export async function permanentlyDeleteClothingItemAction(formData: FormData): Promise<void> {
+  const itemId = field(formData, "itemId");
+  if (!isUuid(itemId)) redirect("/wardrobe?view=trash&error=invalid");
+
+  const { supabase, user } = await requireAccountContext();
+  const { data, error } = await supabase
+    .from("clothing_items")
+    .delete()
+    .eq("id", itemId)
+    .eq("user_id", user.id)
+    .not("deleted_at", "is", null)
+    .select("id")
+    .maybeSingle();
+  if (error) redirect("/wardrobe?view=trash&error=permanent-delete");
+  if (!data) redirect("/wardrobe?view=trash&error=missing");
+
+  revalidatePath("/");
+  revalidatePath("/wardrobe");
+  revalidatePath("/outfits");
+  redirect("/wardrobe?view=trash&notice=item-permanently-deleted");
+}

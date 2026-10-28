@@ -3,11 +3,11 @@
 **Status:** Phase 1 demo preserved under `/demo/**`; Stage A core Auth flows confirmed in Preview; Stage B authenticated account screens implemented, owner Preview testing next.
 **Last updated:** 2026-10-28
 
-**Current account-build visual:** [Long-press selection mode and bulk Delete/Restore](assets/stage-b-longpress-selection.png) · [Earlier bulk multi-select update](assets/stage-b-bulk-delete.png) · [Single-item Delete/Restore](assets/stage-b-recoverable-delete.png) · [Initial account experience](assets/stage-b-account-build.png)
+**Current app visual:** [Dark Studio Glass full-app revamp](assets/stage-b-dark-studio-glass-revamp.png) · [Long-press selection mode and bulk Delete/Restore](assets/stage-b-longpress-selection.png) · [Earlier bulk multi-select update](assets/stage-b-bulk-delete.png) · [Single-item Delete/Restore](assets/stage-b-recoverable-delete.png) · [Initial account experience](assets/stage-b-account-build.png)
 
 ## Product feel
 
-A premium consumer fashion product: calm, editorial, practical, and personal. Lead with wardrobe photography in the demo and, after private Storage is separately enabled, real wardrobe imagery. In current authenticated pages, use clean category marks and the user's own metadata rather than demo photographs. Avoid dense dashboard patterns, excessive gradients, decorative motion, and AI-demo visual tropes.
+A premium Apple-inspired **Dark Studio Glass** experience: deep graphite canvas, restrained translucent layers, crisp system typography, periwinkle/violet light accents, generous spacing, and subtle spring-like transitions. Use glass surfaces for navigation, cards, and action groups without sacrificing contrast or touch-target clarity. The account experience uses only the signed-in user's metadata and neutral garment marks; demo imagery remains clearly illustrative and isolated. Keep gradients atmospheric and restrained, respect reduced motion, and do not imply unavailable AI or personal-photo features.
 
 ## Responsive-first rules
 
@@ -30,8 +30,8 @@ A premium consumer fashion product: calm, editorial, practical, and personal. Le
 | `/demo/**` | Clearly labelled, public mock prototype. Preserves the Phase 1 screens and in-memory interactions under `/demo`, `/demo/wardrobe`, `/demo/outfits`, `/demo/profile`, `/demo/profile/photo`, `/demo/stylist`, and `/demo/try-on`. |
 | `/` | Protected account dashboard with current-user counts, first-use guidance, and recent account records. Starts with no user-data rows. |
 | `/profile` | Protected email identity and server-saved display name, units, and style preferences. Personal photos remain unavailable. |
-| `/wardrobe/**` | Protected active/trash lists, add/edit/detail pages, favorites, and per-item recoverable Delete/Restore. A long press (or context-menu gesture) reveals multi-select and bulk Delete controls. No image uploads. |
-| `/outfits/**` | Protected outfit creation from the user's active wardrobe items, editing, saved/favorite/rating state, detail, and archive/restore. |
+| `/wardrobe/**` | Protected active/archive lists, add/edit/detail pages, favorites, and recoverable Delete/Restore. A long press (or context-menu gesture) reveals multi-select and bulk soft-delete. Archived pieces can be restored or individually deleted forever after two-step confirmation. No image uploads. |
+| `/outfits/**` | Protected outfit creation from the user's active wardrobe items, editing, saved/favorite/rating state, detail, archive/restore, and confirmed Delete Forever for archived outfits. |
 | `/stylist`, `/try-on`, `/profile/photo` | Protected, explicit not-yet-available states. No AI calls, personal photo uploads, or demo data are shown as real account results. |
 
 ## Shared navigation and components
@@ -43,7 +43,8 @@ The five approved primary destinations remain Home, Wardrobe, Outfits, AI Stylis
 - In `/demo/**`, search, add, edit, delete, favorite, ratings, and preferences remain temporary in-memory mock interactions and reset on refresh.
 - Sign-up and sign-in use real email/password Auth; sign-up explains the confirmation-email step and errors remain recoverable.
 - Authenticated account data is read and written by session-bound server components/actions under RLS. The server derives the user ID; the browser never supplies the authorization identity. New accounts are empty until their owner saves data.
-- The visible Delete action for an active wardrobe item or outfit moves it into the recoverable Archive; the user can restore it later. Keep item checkboxes and bulk actions hidden in normal wardrobe view. Long-press (or open the context menu on) a piece to select it and reveal multi-select, Select all visible, Cancel, and Delete selected controls. Bulk deletion does not permanently erase rows and preserves outfit links. Outfit selection is limited to active items from the same account.
+- The visible Delete action for an active wardrobe item or outfit moves it into the recoverable Archive; Restore remains available. Keep item checkboxes and bulk actions hidden in normal wardrobe view. Long-press (or open the context menu on) a piece to select it and reveal multi-select, Select all visible, Cancel, and bulk soft-delete controls. Bulk deletion never permanently erases rows and preserves outfit links.
+- In Archive, offer **Delete Forever** for clothing items and outfits after expanding an inline explanation and confirming in a branded, accessible dialog. This is irreversible and available only for archived rows owned by the signed-in user. Permanently deleting a garment removes it from all linked outfits; permanently deleting an outfit removes its piece links. Do not offer permanent delete for active rows.
 - Stylist and try-on examples remain demo-only and do not make real AI calls or claim a mock image is a generated result. The authenticated stylist/try-on routes are unavailable states.
 
 ## Deferred

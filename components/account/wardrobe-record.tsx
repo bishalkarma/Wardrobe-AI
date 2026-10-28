@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Heart, RotateCcw, Shirt, Trash2 } from "lucide-react";
 import { archiveItemAction, restoreItemAction, toggleItemFavoriteAction } from "@/app/actions/wardrobe";
+import { PermanentDeleteForm } from "@/components/account/permanent-delete-form";
 import { formatDate } from "@/lib/data/account";
 
 type WardrobeRecord = {
@@ -42,10 +43,16 @@ export function WardrobeRecord({ item, categoryLabel, selectionFormId }: { item:
         {tags.length > 0 && <div className="record-tags">{tags.map((tag, index) => <span key={`${tag}-${index}`}>{tag}</span>)}</div>}
         <div className="record-actions">
           {archived ? (
-            <form action={restoreItemAction}>
-              <input type="hidden" name="itemId" value={item.id} />
-              <button className="button button-outline button-small" type="submit"><RotateCcw size={14} /> Restore piece</button>
-            </form>
+            <>
+              <form action={restoreItemAction}>
+                <input type="hidden" name="itemId" value={item.id} />
+                <button className="button button-outline button-small" type="submit"><RotateCcw size={14} /> Restore piece</button>
+              </form>
+              <details className="inline-confirm permanent-delete-confirm">
+                <summary><Trash2 size={14} /> Delete forever</summary>
+                <PermanentDeleteForm kind="clothing" recordId={item.id} recordName={item.name} />
+              </details>
+            </>
           ) : (
             <>
               <form action={toggleItemFavoriteAction}>

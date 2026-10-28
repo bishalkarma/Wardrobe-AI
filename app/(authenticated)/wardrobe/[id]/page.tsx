@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Heart, RotateCcw, Shirt, Trash2 } from "lucide-react";
 import { archiveItemAction, restoreItemAction, toggleItemFavoriteAction } from "@/app/actions/wardrobe";
+import { PermanentDeleteForm } from "@/components/account/permanent-delete-form";
 import { ActionFeedback, DataUnavailable } from "@/components/account/feedback";
 import { PageHeading } from "@/components/ui";
 import { requireAccountContext, formatDate } from "@/lib/data/account";
@@ -47,7 +48,10 @@ export default async function ClothingItemDetailPage({ params, searchParams }: {
           {!!item.occasions?.length && <div className="piece-tag-group"><span>Occasions</span><div className="record-tags">{item.occasions.map((value: string) => <span key={value}>{value}</span>)}</div></div>}
           <div className="record-actions piece-detail-actions">
             {archived ? (
-              <form action={restoreItemAction}><input type="hidden" name="itemId" value={item.id} /><button className="button button-outline" type="submit"><RotateCcw size={15} /> Restore to wardrobe</button></form>
+              <>
+                <form action={restoreItemAction}><input type="hidden" name="itemId" value={item.id} /><button className="button button-outline" type="submit"><RotateCcw size={15} /> Restore to wardrobe</button></form>
+                <details className="inline-confirm permanent-delete-confirm"><summary><Trash2 size={14} /> Delete forever</summary><PermanentDeleteForm kind="clothing" recordId={item.id} recordName={item.name} /></details>
+              </>
             ) : (
               <>
                 <Link className="button button-dark" href={`/wardrobe/${item.id}/edit`}>Edit details</Link>
