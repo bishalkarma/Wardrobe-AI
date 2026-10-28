@@ -1,7 +1,7 @@
 # Architecture
 
-**Status:** Phase 1 demo complete; Stage A core Preview flows confirmed; Phase 2 Stage B discovery/design active.
-**Last updated:** 2026-10-20
+**Status:** Phase 1 demo complete; Stage A core Preview flows confirmed; Phase 2 Stage B schema applied and verified, application persistence next.
+**Last updated:** 2026-10-28
 
 ## Approved principles
 
@@ -32,7 +32,7 @@ Sign-up and recovery requests pass an explicit callback URL built from the curre
 
 The owner confirmed that Vercel Preview and Production use the **same Supabase project**. Preview is therefore not isolated from Production: preview sign-ups and confirmations create accounts in the shared Auth system, and Auth configuration is project-wide. Stage A added no application tables or Storage objects, but Auth user records and email activity are shared. Test Preview with dedicated synthetic accounts; do not describe it as a separate database or Auth environment.
 
-The initial Stage B schema is owner-approved and the migration is staged in `supabase/migrations/`, but no application persistence is implemented and the migration has not been applied. Read-only inventory found no app-owned tables. The owner waived/deferred the backup step because of the Supabase Free plan; no restorable backup is verified. This workspace has no Supabase database access. Vercel build rollback affects app code only, not database schema or data. RLS does not separate Preview from Production.
+The owner-approved initial Stage B migration was applied to the shared Supabase project on 2026-10-28 as `stage_b_initial_schema` (version `20261028162903`). Read-only verification confirmed all seven intended public tables, RLS on each, seven policies, and five static category rows. User-data tables remain empty; no application persistence code is implemented yet. The owner waived the backup step because of the Supabase Free plan, and no restorable backup was verified before applying the migration. Supabase and Vercel connector access are verified. Vercel build rollback affects app code only, not database schema or data. RLS does not separate Preview from Production.
 
 ## Phase 1 demo implementation boundary
 

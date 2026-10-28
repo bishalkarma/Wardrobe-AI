@@ -1,8 +1,8 @@
--- Owner-approved initial schema migration (2026-10-26).
--- The owner deferred the backup step due to the Supabase Free plan; no
--- restorable backup was verified at approval time. Apply through a Supabase
--- migration workflow or SQL Editor after checking project context.
--- A Vercel build number does not run or roll back database schema or data.
+-- Owner-approved initial schema migration (approved 2026-10-26; applied 2026-10-28).
+-- Recorded Supabase migration version: 20261028162903.
+-- The owner waived the backup step due to the Supabase Free plan; no restorable
+-- backup was verified before applying. A Vercel build does not run or roll back
+-- database schema or data.
 --
 -- Scope: initial relational persistence only. This draft creates new tables
 -- in public, leaves all Supabase-managed schemas untouched, and inserts only

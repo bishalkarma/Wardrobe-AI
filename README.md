@@ -6,7 +6,7 @@ A mobile-first, PWA-ready wardrobe experience designed around the clothes a pers
 
 ## Current status
 
-**Phase 1 demo preserved; Phase 2 Stage A authentication implemented and core Preview flows confirmed. Stage B schema is owner-approved and its migration file is prepared, but it has not been applied. The backup step is deferred by the owner due to the Supabase Free plan; no restorable backup/export has been verified. A Vercel build rollback does not undo database changes.** The mock prototype is isolated under `/demo/**` and uses local in-memory sample data. `/welcome` is public. The real application routes require a verified Supabase Auth session, but authenticated accounts are intentionally empty: wardrobe, preferences, outfits, photo uploads, Storage, and AI are not implemented. Password recovery currently returns a Supabase rate-limit response and is deferred at the owner's request.
+**Phase 1 demo preserved; Phase 2 Stage A authentication implemented and core Preview flows confirmed. The owner-approved Stage B schema is applied and verified in Supabase; application persistence is the next step. The owner waived the backup step due to the Supabase Free plan, so no restorable backup/export was verified. A Vercel build rollback does not undo database changes.** The mock prototype is isolated under `/demo/**` and uses local in-memory sample data. `/welcome` is public. The real application routes require a verified Supabase Auth session, but authenticated accounts are intentionally empty: wardrobe, preferences, outfits, photo uploads, Storage, and AI are not implemented. Password recovery currently returns a Supabase rate-limit response and is deferred at the owner's request.
 
 Vercel Preview and Production currently use the **same Supabase project**. Preview sign-up and confirmation create users in the shared Supabase Auth system; Preview is not isolated from Production. Use dedicated test accounts and do not use Production user credentials for testing.
 
@@ -66,7 +66,8 @@ docs/                  Architecture, UX, database, AI, security, decisions, road
 
 - [One-page project status and hierarchy](docs/PROJECT_STATUS.md)
 - [Stage B schema detail diagram](docs/assets/stage-b-schema-overview.png)
-- [Current Stage B migration handoff](docs/assets/stage-b-migration-handoff.png)
+- [Build #10 pre-apply handoff (historical)](docs/assets/stage-b-migration-handoff.png)
+- [Stage B applied-schema status](docs/assets/stage-b-schema-live.png)
 - [Architecture](docs/ARCHITECTURE.md)
 - [UI/UX](docs/UI_UX.md)
 - [Database](docs/DATABASE.md)

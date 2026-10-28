@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1240" viewBox="0 0 1920 1240" role="img" aria-labelledby="title desc">
-  <title id="title">Stage B initial schema draft overview</title>
-  <desc id="desc">A review-only diagram of seven proposed Supabase public tables, relationships, RLS ownership, chosen recoverable deletion and record-column state, and deferred backup status.</desc>
+  <title id="title">Stage B applied schema overview</title>
+  <desc id="desc">A diagram of the seven applied Supabase public tables, relationships, RLS ownership, recoverable deletion, and record-column state.</desc>
   <defs>
     <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
       <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#17243d" flood-opacity="0.09"/>
@@ -27,10 +27,10 @@
   <circle cx="1835" cy="70" r="170" fill="#ece9df" opacity="0.42"/>
   <circle cx="76" cy="1170" r="150" fill="#e9eee8" opacity="0.54"/>
 
-  <text x="64" y="76" class="sans title">Stage B — Initial Schema Draft</text>
-  <text x="67" y="117" class="sans subtitle">Seven proposed public tables · review only · NOT APPLIED</text>
-  <rect x="1550" y="48" width="306" height="54" rx="27" fill="#f2ead8" stroke="#b89b62" stroke-width="1.5"/>
-  <text x="1703" y="82" text-anchor="middle" class="sans tag" fill="#755b2e">DRAFT · NO DATABASE WRITES</text>
+  <text x="64" y="76" class="sans title">Stage B — Applied Schema</text>
+  <text x="67" y="117" class="sans subtitle">Seven public tables · owner-scoped RLS · applied 2026-10-28</text>
+  <rect x="1550" y="48" width="306" height="54" rx="27" fill="#e7efe9" stroke="#7b9b88" stroke-width="1.5"/>
+  <text x="1703" y="82" text-anchor="middle" class="sans tag" fill="#315b4d">APPLIED · RLS VERIFIED</text>
 
   <text x="64" y="166" class="sans eyebrow">IDENTITY &amp; OWNER BOUNDARY</text>
   <g filter="url(#shadow)">
@@ -122,8 +122,8 @@
     <text x="742" y="1081" class="sans note">Favorites, saved state, rating: record columns</text>
     <circle cx="1325" cy="1074" r="8" fill="#315b4d"/>
     <text x="1347" y="1081" class="sans note">No photos, Storage, AI, or demo rows</text>
-    <text x="96" y="1128" class="sans small">This build: SQL + visual draft. Next: owner review/approval → persistence CRUD. Later: private photos + AI. Backup deferred (Free plan); no writes. Preview and Production share this project.</text>
+    <text x="96" y="1128" class="sans small">Applied 2026-10-28 (migration 20261028162903) · RLS/policies verified · five categories only · user-data tables empty</text>
   </g>
 
-  <text x="1860" y="1208" text-anchor="end" class="sans small">WARDROBE AI · STAGE B REVIEW</text>
+  <text x="1860" y="1208" text-anchor="end" class="sans small">WARDROBE AI · STAGE B APPLIED SCHEMA</text>
 </svg>
